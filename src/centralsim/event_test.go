@@ -7,12 +7,12 @@ import (
 
 func TestEvent(t *testing.T) {
 	//t.Skip("skipping test evento.")
-	log.Printf("Test insercion lista eventos")
+	log.Printf("Test Insertcion lista eventos")
 	le := EventList{}
-	le.Inser(Event{1, 1, 1})
+	le.Insert(Event{1, 1, 1})
 	le.PrintEvent()
-	le.Inser(Event{1, 1, 1})
+	le.Insert(Event{1, 1, 1})
 	le.PrintEvent()
-	le.Inser(Event{0, 3, 3})
+	le.Insert(Event{0, 3, 3})
 	le.PrintEvent()
 }

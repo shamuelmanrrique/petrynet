@@ -52,7 +52,7 @@ func MakeMotorSimulation(alLaLef Lefs) SimulationEngine {
 
 /*
 -----------------------------------------------------------------
-   METODO: disparar_transiciones_sensibilizadas
+   METODO: Shoot_transiciones_sensibilizadas
    RECIBE: Valor del reloj local
    DEVUELVE: Nada
    PROPOSITO: Accede a la lista de transiciones sensibilizadas y procede con su
@@ -64,9 +64,9 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngine) fireEnabledTransitions(aiLocalClock TypeClock) {
-	for self.il_mislefs.hay_sensibilizadas() { //while
-		liCodTrans := self.il_mislefs.get_sensibilizada()
-		self.il_mislefs.disparar(liCodTrans)
+	for self.il_mislefs.ThereSensitive() { //while
+		liCodTrans := self.il_mislefs.GetSensitive()
+		self.il_mislefs.Shoot(liCodTrans)
 
 		// Anotar el Resultado que disparo la liCodTrans en tiempoaiLocalClock
 		self.iv_results = append(self.iv_results,
@@ -90,8 +90,8 @@ COMENTARIOS:
 func (self *SimulationEngine) tratar_eventos(ai_tiempo TypeClock) {
 	var le_evento Event
 
-	for self.il_mislefs.hay_eventos(ai_tiempo) {
-		le_evento = self.il_mislefs.get_primer_evento()
+	for self.il_mislefs.ThereEvent(ai_tiempo) {
+		le_evento = self.il_mislefs.GetFirstEvent()
 
 		// Si el valor de la transicion es negativo,indica que pertenece
 		// a otra subred y el codigo global de la transicion es pasarlo
@@ -99,10 +99,10 @@ func (self *SimulationEngine) tratar_eventos(ai_tiempo TypeClock) {
 		// ej: -3 -> transicion -(-3) -1 = 2
 		if le_evento.ITransition >= 0 {
 			// Establecer nuevo valor de la funcion
-			self.il_mislefs.updateFuncValue(le_evento.ITransition,
+			self.il_mislefs.UpdateFuncValue(le_evento.ITransition,
 				le_evento.IConst)
 			// Establecer nuevo valor del tiempo
-			self.il_mislefs.actualiza_tiempo(le_evento.ITransition,
+			self.il_mislefs.UpdateTime(le_evento.ITransition,
 				le_evento.ITime)
 		}
 	}
@@ -137,7 +137,7 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngine) avanzar_tiempo() TypeClock {
-	nextTime := self.il_mislefs.tiempo_primer_evento()
+	nextTime := self.il_mislefs.TimeFirstEvent()
 	fmt.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
 }
@@ -194,7 +194,7 @@ func (self *SimulationEngine) Simular(ai_cicloinicial, ai_nciclos TypeClock) {
 	// Inicializamos las transiciones sensibilizadas, es decir, ver si con el
 	// marcado inicial tenemos transiciones sensibilizadas
 	// ------------------------------------------------------------------
-	self.il_mislefs.actualiza_sensibilizadas(self.ii_relojlocal)
+	self.il_mislefs.UpdateSensitive(self.ii_relojlocal)
 
 	for self.ii_relojlocal <= ai_nciclos {
 		self.il_mislefs.PrintEvent() //DEPURACION
@@ -202,30 +202,30 @@ func (self *SimulationEngine) Simular(ai_cicloinicial, ai_nciclos TypeClock) {
 
 		// Si existen transiciones sensibilizadas para reloj local las disparamos
 		// ------------------------------------------------------------------
-		if self.il_mislefs.hay_sensibilizadas() {
+		if self.il_mislefs.ThereSensitive() {
 			self.fireEnabledTransitions(self.ii_relojlocal)
 		}
 
-		//self.il_mislefs.il_eventos.PrintEvent()
+		//self.il_mislefs.IlEvents.PrintEvent()
 
 		// Si existen eventos para el reloj local los tratamos
 		// ------------------------------------------------------------------
-		if self.il_mislefs.hay_eventos(self.ii_relojlocal) {
+		if self.il_mislefs.ThereEvent(self.ii_relojlocal) {
 			self.tratar_eventos(self.ii_relojlocal)
 		}
 
 		// Los nuevos eventos han podido sensibilizar nuevas transiciones
 		// ------------------------------------------------------------------
-		self.il_mislefs.actualiza_sensibilizadas(self.ii_relojlocal)
+		self.il_mislefs.UpdateSensitive(self.ii_relojlocal)
 
 		// Tras tratar todos los eventos, si no nos quedan transiciones
 		// sensibilizadas no podemos simular nada mas, luego esperamos a
 		// los agentes y si no nos generan nuevos eventos procedemos a avanzar
 		// el reloj local
 		// ------------------------------------------------------------------
-		if !self.il_mislefs.hay_sensibilizadas() {
+		if !self.il_mislefs.ThereSensitive() {
 			// self.esperar_agentes()
-			if !self.il_mislefs.hay_eventos(self.ii_relojlocal) {
+			if !self.il_mislefs.ThereEvent(self.ii_relojlocal) {
 				self.ii_relojlocal = self.avanzar_tiempo()
 
 				if self.ii_relojlocal == -1 {

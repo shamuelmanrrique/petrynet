@@ -140,17 +140,17 @@ func MakeEventList(aiLongitud int) EventList {
 
 /*
 -----------------------------------------------------------------
-   METODO: inserta
-RECIBE: Evento a insertar
+   METODO: Insertta
+RECIBE: Evento a Inserttar
    DEVUELVE: Nada
-PROPOSITO: Insertar el evento en la lista de eventos, de forma que
-   	la insercion sea ordenada por tiempo.
+PROPOSITO: Inserttar el evento en la lista de eventos, de forma que
+   	la Insertcion sea ordenada por tiempo.
 -----------------------------------------------------------------
 */
-func (self *EventList) Inser(ae_evento Event) {
+func (self *EventList) Insert(ae_evento Event) {
 	var i int // INITIALIZED to 0 !!!
 
-	//fmt.Println("Insertar evento en lista : ", ae_evento, *self)
+	//fmt.Println("Inserttar evento en lista : ", ae_evento, *self)
 
 	// Obtengo la posicion ordenada del evento en slice con i
 	for _, e := range *self {
@@ -160,10 +160,10 @@ func (self *EventList) Inser(ae_evento Event) {
 		i++
 	}
 
-	//fmt.Println("POSICION a INSERTAR en lista de evnetos : ", i)
+	//fmt.Println("POSICION a InsertTAR en lista de evnetos : ", i)
 	*self = append((*self)[:i], append([]Event{ae_evento}, (*self)[i:]...)...)
 
-	//fmt.Println("DESPUES de insertar : ", *self)
+	//fmt.Println("DESPUES de Inserttar : ", *self)
 }
 
 /*
