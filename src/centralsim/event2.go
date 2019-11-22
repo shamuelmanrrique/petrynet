@@ -26,46 +26,46 @@ type Event struct {
 */
 func NewEvento(ai_tiempo TypeClock, ai_transicion IndLocalTrans, ai_cte TypeConst) *Event {
 	e := new(Event)
-	e.Set_tiempo(ai_tiempo)
-	e.Set_transicion(ai_transicion)
-	e.Set_cte(ai_cte)
+	e.SetTime(ai_tiempo)
+	e.SetTransition(ai_transicion)
+	e.SetCons(ai_cte)
 	return e
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_tiempo
+   METODO: SetTime
    RECIBE: Tiempo
    DEVUELVE: Nada
    PROPOSITO: Modificar el tiempo del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_tiempo(ai_tiempo TypeClock) {
+func (self *Event) SetTime(ai_tiempo TypeClock) {
 	self.Ii_tiempo = ai_tiempo
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_transicion
+   METODO: SetTransition
    RECIBE: Identificador de la transicion (indice en array
 	   de transiciones de esa subred)
    DEVUELVE: Nada
    PROPOSITO: Modificar la transicion del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_transicion(ai_transicion IndLocalTrans) {
+func (self *Event) SetTransition(ai_transicion IndLocalTrans) {
 	self.Ii_transicion = ai_transicion
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_cte
+   METODO: SetCons
    RECIBE: Cte a transmitir
    DEVUELVE: Nada
    PROPOSITO: Modificar la cte del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_cte(ai_cte TypeConst) {
+func (self *Event) SetCons(ai_cte TypeConst) {
 	self.Ii_cte = ai_cte
 }
 
