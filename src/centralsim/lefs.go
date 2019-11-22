@@ -11,13 +11,13 @@ package centralsim
 
 import "fmt"
 
-type TypeIndexSubnet int32
+type TypeIndexSubNet int32
 
 //----------------------------------------------------------------------------
 
 // Lefs es el tipo de datos principal que gestiona el disparo de transiciones.
 type Lefs struct {
-	Subnet TransitionList // Slice de transiciones de esta subred
+	SubNet TransitionList // Slice de transiciones de esta subred
 	// Identificadores de las transiciones sensibilizadas para
 	// T = Reloj local actual. Slice que funciona como Stack
 	IsTransSensib StackTransitions
@@ -34,7 +34,7 @@ type Lefs struct {
 */
 func NewLefs(listaTransiciones TransitionList) Lefs {
 	l := Lefs{}
-	l.Subnet = listaTransiciones
+	l.SubNet = listaTransiciones
 	l.IsTransSensib = nil
 	l.IlEvents = nil
 
@@ -167,7 +167,7 @@ COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
 -----------------------------------------------------------------
 */
 func (self *Lefs) UpdateSensitive(ai_relojlocal TypeClock) bool {
-	for li_i, t := range (*self).Subnet {
+	for li_i, t := range (*self).SubNet {
 		if t.IiValorLef <= 0 && t.ITime == ai_relojlocal {
 			(*self).IsTransSensib.push(IndLocalTrans(li_i))
 		}
@@ -185,9 +185,9 @@ func (self *Lefs) UpdateSensitive(ai_relojlocal TypeClock) bool {
 */
 func (self *Lefs) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
 	// Algunas comprobaciones...
-	if il_tr >= 0 && il_tr < self.Subnet.length() {
+	if il_tr >= 0 && il_tr < self.SubNet.length() {
 		// Modificacion del tiempo
-		self.Subnet[il_tr].ITime = ai_ti
+		self.SubNet[il_tr].ITime = ai_ti
 		return true
 	} else { // index out of range
 		return false
@@ -206,9 +206,9 @@ func (self *Lefs) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
 */
 func (self *Lefs) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 	// Algunas comprobaciones...
-	if ilTr >= 0 && ilTr < self.Subnet.length() {
+	if ilTr >= 0 && ilTr < self.SubNet.length() {
 		// Modificacion del valor de la funcion lef
-		self.Subnet[ilTr].IiValorLef += aiValLef
+		self.SubNet[ilTr].IiValorLef += aiValLef
 		return true
 	} else { // Out of range
 		return false
@@ -226,11 +226,11 @@ func (self *Lefs) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 */
 func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
-	if ilTr >= 0 && ilTr < self.Subnet.length() {
+	if ilTr >= 0 && ilTr < self.SubNet.length() {
 		// Prepare 3 local variables
-		tiTrans := self.Subnet[ilTr].ITime             // time to spread to new events
-		tiDur := self.Subnet[ilTr].IiShotDuration //time length
-		listCtes := self.Subnet[ilTr].IiListactes     // list of TransCtes
+		tiTrans := self.SubNet[ilTr].ITime             // time to spread to new events
+		tiDur := self.SubNet[ilTr].IiShotDuration //time length
+		listCtes := self.SubNet[ilTr].IiListactes     // list of TransCtes
 
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
@@ -260,7 +260,7 @@ func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
 func (self Lefs) PrintEventTransitions() {
 	fmt.Println(" ")
 	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
-	for _, tr := range self.Subnet {
+	for _, tr := range self.SubNet {
 		tr.PrintEventValues()
 	}
 	fmt.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
@@ -279,7 +279,7 @@ func (self Lefs) PrintEvent() {
 
 	fmt.Println("STRUCT LEFS")
 	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
-	fmt.Println("\tNº transiciones: ", self.Subnet.length())
+	fmt.Println("\tNº transiciones: ", self.SubNet.length())
 
 	if self.IsTransSensib.isEmpty() {
 		fmt.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
@@ -291,7 +291,7 @@ func (self Lefs) PrintEvent() {
 		}
 	}
 	fmt.Println("------Lista transiciones---------")
-	for _, tr := range self.Subnet {
+	for _, tr := range self.SubNet {
 		tr.PrintEvent()
 	}
 	fmt.Println("------Final lista transiciones---------")

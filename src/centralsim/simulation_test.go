@@ -8,7 +8,7 @@ import (
 func TestSimulationEngine(t *testing.T) {
 	//t.Skip("skipping test simulation.")
 	lfs := Lefs{ //Ejemplo PN documento adjunto
-		Subnet: TransitionList{
+		SubNet: TransitionList{
 			Transition{
 				IdLocal:             0,
 				IiValorLef:          0,
