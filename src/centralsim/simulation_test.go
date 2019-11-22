@@ -40,7 +40,7 @@ func TestSimulationEngine(t *testing.T) {
 		},
 	}
 	ms := MakeMotorSimulation(lfs)
-	ms.Simular(0, 3) // ciclo 0 hasta ciclo 3
+	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
 
 /*
