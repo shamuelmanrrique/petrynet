@@ -40,15 +40,15 @@ type Transition struct {
 	// sensibilizacion en el instante de tiempo que nos da
 	// la variable ITime
 	IiValorLef TypeConst
-	ITime  TypeClock
+	ITime      TypeClock
 
 	// tiempo que dura el disparo de la transicion
-	Ii_duracion_disparo TypeClock
+	IiShotDuration TypeClock
 
 	// vector de transiciones a las que tengo que propagar cte
 	// cuando se dispare esta transicion, junto con la cte que
 	// tengo que propagar
-	Ii_listactes []TransitionConstant
+	IiListactes []TransitionConstant
 }
 
 /*
@@ -64,23 +64,23 @@ func (self *Transition) PrintEvent() {
 	fmt.Println("IDGLOBAL: ", self.IdLocal)
 	fmt.Println(" VALOR LEF: ", self.IiValorLef)
 	fmt.Println(" TIEMPO: ", self.ITime)
-	fmt.Println(" DURACION DISPARO: ", self.Ii_duracion_disparo)
+	fmt.Println(" DURACION DISPARO: ", self.IiShotDuration)
 	fmt.Println(" LISTA DE CTES: ")
-	for _, v := range self.Ii_listactes {
+	for _, v := range self.IiListactes {
 		fmt.Println("\tTRANSICION: ", v.INextTrans, "\t\tCTE: ", v.Cnstnt)
 	}
 }
 
 /*
 	-----------------------------------------------------------------
-   METODO: PrintEvent_valores
+   METODO: PrintEventValues
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Imprimir simplemente el valor de la transicion
 	COMENTARIO : es solo de lectura
 	-----------------------------------------------------------------
 */
-func (self Transition) PrintEvent_valores() {
+func (self Transition) PrintEventValues() {
 	fmt.Println("Transicion -> ")
 	//	fmt.Println("\tIDGLOBAL: ", self.Ii_idglobal)
 	fmt.Println("\t\tVALOR LEF: ", self.IiValorLef)

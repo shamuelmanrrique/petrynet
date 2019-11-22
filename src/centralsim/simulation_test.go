@@ -12,8 +12,8 @@ func TestSimulationEngine(t *testing.T) {
 			Transition{
 				IdLocal:             0,
 				IiValorLef:          0,
-				Ii_duracion_disparo: 1,
-				Ii_listactes: []TransitionConstant{
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
 					TransitionConstant{0, 1},
 					TransitionConstant{1, 1},
 					TransitionConstant{2, 1},
@@ -22,8 +22,8 @@ func TestSimulationEngine(t *testing.T) {
 			Transition{
 				IdLocal:             1,
 				IiValorLef:          1,
-				Ii_duracion_disparo: 1,
-				Ii_listactes: []TransitionConstant{
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
 					TransitionConstant{2, 1},
 				},
@@ -31,8 +31,8 @@ func TestSimulationEngine(t *testing.T) {
 			Transition{
 				IdLocal:             2,
 				IiValorLef:          2,
-				Ii_duracion_disparo: 1,
-				Ii_listactes: []TransitionConstant{
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 2},
 					TransitionConstant{0, 1},
 				},

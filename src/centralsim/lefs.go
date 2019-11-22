@@ -229,8 +229,8 @@ func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
 	if ilTr >= 0 && ilTr < self.Subnet.length() {
 		// Prepare 3 local variables
 		tiTrans := self.Subnet[ilTr].ITime             // time to spread to new events
-		tiDur := self.Subnet[ilTr].Ii_duracion_disparo //time length
-		listCtes := self.Subnet[ilTr].Ii_listactes     // list of TransCtes
+		tiDur := self.Subnet[ilTr].IiShotDuration //time length
+		listCtes := self.Subnet[ilTr].IiListactes     // list of TransCtes
 
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
@@ -261,7 +261,7 @@ func (self Lefs) PrintEventTransitions() {
 	fmt.Println(" ")
 	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
 	for _, tr := range self.Subnet {
-		tr.PrintEvent_valores()
+		tr.PrintEventValues()
 	}
 	fmt.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
 	fmt.Println(" ")
