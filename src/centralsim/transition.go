@@ -38,9 +38,9 @@ type Transition struct {
 
 	// iiValorLef es el valor que tiene la funcion de
 	// sensibilizacion en el instante de tiempo que nos da
-	// la variable ii_tiempo
+	// la variable ITime
 	IiValorLef TypeConst
-	Ii_tiempo  TypeClock
+	ITime  TypeClock
 
 	// tiempo que dura el disparo de la transicion
 	Ii_duracion_disparo TypeClock
@@ -53,17 +53,17 @@ type Transition struct {
 
 /*
 	-----------------------------------------------------------------
-	   METODO: Imprime
+	   METODO: PrintEvent
 	   RECIBE: Nada
 	   DEVUELVE: Nada
 	   PROPOSITO: Imprimir los atributos de la clase para depurar errores
 		-----------------------------------------------------------------
 */
-func (self *Transition) Imprime() {
+func (self *Transition) PrintEvent() {
 	fmt.Println("Dato Transicion:")
 	fmt.Println("IDGLOBAL: ", self.IdLocal)
 	fmt.Println(" VALOR LEF: ", self.IiValorLef)
-	fmt.Println(" TIEMPO: ", self.Ii_tiempo)
+	fmt.Println(" TIEMPO: ", self.ITime)
 	fmt.Println(" DURACION DISPARO: ", self.Ii_duracion_disparo)
 	fmt.Println(" LISTA DE CTES: ")
 	for _, v := range self.Ii_listactes {
@@ -73,18 +73,18 @@ func (self *Transition) Imprime() {
 
 /*
 	-----------------------------------------------------------------
-   METODO: Imprime_valores
+   METODO: PrintEvent_valores
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Imprimir simplemente el valor de la transicion
 	COMENTARIO : es solo de lectura
 	-----------------------------------------------------------------
 */
-func (self Transition) Imprime_valores() {
+func (self Transition) PrintEvent_valores() {
 	fmt.Println("Transicion -> ")
 	//	fmt.Println("\tIDGLOBAL: ", self.Ii_idglobal)
 	fmt.Println("\t\tVALOR LEF: ", self.IiValorLef)
-	fmt.Println("\t\tTIEMPO: ", self.Ii_tiempo)
+	fmt.Println("\t\tTIEMPO: ", self.ITime)
 }
 
 //----------------------------------------------------------------------

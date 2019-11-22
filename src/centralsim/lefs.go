@@ -50,7 +50,7 @@ func NewLefs(listaTransiciones TransitionList) Lefs {
 -----------------------------------------------------------------
 */
 func (self *Lefs) agnade_evento(ae_evento Event) bool {
-	self.Il_eventos.inserta(ae_evento)
+	self.Il_eventos.Inser(ae_evento)
 	return true
 }
 
@@ -78,9 +78,9 @@ func (self *Lefs) agnade_sensibilizada(ai_transicion IndLocalTrans) bool {
 -----------------------------------------------------------------
 */
 func (self Lefs) tiempo_primer_evento() TypeClock {
-	if self.Il_eventos.longitud() > 0 {
-		le_evento := self.Il_eventos.recoge_primer_evento()
-		return le_evento.Ii_tiempo
+	if self.Il_eventos.length() > 0 {
+		le_evento := self.Il_eventos.GetFirstEvent()
+		return le_evento.ITime
 	} else {
 		return -1
 	}
@@ -144,12 +144,12 @@ func (self *Lefs) get_sensibilizada() IndLocalTrans {
 */
 func (self *Lefs) get_primer_evento() Event {
 	/* fmt.Println("Lista antes de eliminar primer evento :")
-	(*self).il_eventos.Imprime()
+	(*self).il_eventos.PrintEvent()
 	*/
-	le_evento := (*self).Il_eventos.recoge_primer_evento()
-	(*self).Il_eventos.elimina_primer_evento()
+	le_evento := (*self).Il_eventos.GetFirstEvent()
+	(*self).Il_eventos.DeleteFirstEvent()
 	/*fmt.Println("Lista DESPUES de eliminar primer evento :")
-	(*self).il_eventos.Imprime()
+	(*self).il_eventos.PrintEvent()
 	*/
 	return le_evento
 }
@@ -168,7 +168,7 @@ COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
 */
 func (self *Lefs) actualiza_sensibilizadas(ai_relojlocal TypeClock) bool {
 	for li_i, t := range (*self).Subnet {
-		if t.IiValorLef <= 0 && t.Ii_tiempo == ai_relojlocal {
+		if t.IiValorLef <= 0 && t.ITime == ai_relojlocal {
 			(*self).IsTransSensib.push(IndLocalTrans(li_i))
 		}
 	}
@@ -187,7 +187,7 @@ func (self *Lefs) actualiza_tiempo(il_tr IndLocalTrans, ai_ti TypeClock) bool {
 	// Algunas comprobaciones...
 	if il_tr >= 0 && il_tr < self.Subnet.length() {
 		// Modificacion del tiempo
-		self.Subnet[il_tr].Ii_tiempo = ai_ti
+		self.Subnet[il_tr].ITime = ai_ti
 		return true
 	} else { // index out of range
 		return false
@@ -228,7 +228,7 @@ func (self *Lefs) disparar(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.Subnet.length() {
 		// Prepare 3 local variables
-		tiTrans := self.Subnet[ilTr].Ii_tiempo         // time to spread to new events
+		tiTrans := self.Subnet[ilTr].ITime         // time to spread to new events
 		tiDur := self.Subnet[ilTr].Ii_duracion_disparo //time length
 		listCtes := self.Subnet[ilTr].Ii_listactes     // list of TransCtes
 
@@ -251,17 +251,17 @@ func (self *Lefs) disparar(ilTr IndLocalTrans) bool {
 
 /*
 -----------------------------------------------------------------
-   METODO: Imprime_transiciones
+   METODO: PrintEvent_transiciones
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Imprimir las transiciones para depurar errores
 -----------------------------------------------------------------
 */
-func (self Lefs) Imprime_transiciones() {
+func (self Lefs) PrintEvent_transiciones() {
 	fmt.Println(" ")
 	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
 	for _, tr := range self.Subnet {
-		tr.Imprime_valores()
+		tr.PrintEvent_valores()
 	}
 	fmt.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
 	fmt.Println(" ")
@@ -269,13 +269,13 @@ func (self Lefs) Imprime_transiciones() {
 
 /*
 -----------------------------------------------------------------
-   METODO: Imprime
+   METODO: PrintEvent
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Imprimir los atributos de la clase para depurar errores
 -----------------------------------------------------------------
 */
-func (self Lefs) Imprime() {
+func (self Lefs) PrintEvent() {
 
 	fmt.Println("STRUCT LEFS")
 	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
@@ -292,12 +292,12 @@ func (self Lefs) Imprime() {
 	}
 	fmt.Println("------Lista transiciones---------")
 	for _, tr := range self.Subnet {
-		tr.Imprime()
+		tr.PrintEvent()
 	}
 	fmt.Println("------Final lista transiciones---------")
 
 	fmt.Println("-----------Lista eventos---------")
-	self.Il_eventos.Imprime()
+	self.Il_eventos.PrintEvent()
 	fmt.Println("-----------Final lista eventos---------")
 	fmt.Println("FINAL ESTRUCTURA LEFS")
 }

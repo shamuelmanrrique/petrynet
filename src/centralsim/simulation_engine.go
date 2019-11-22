@@ -97,13 +97,13 @@ func (self *SimulationEngine) tratar_eventos(ai_tiempo TypeClock) {
 		// a otra subred y el codigo global de la transicion es pasarlo
 		// a positivo y restarle 1
 		// ej: -3 -> transicion -(-3) -1 = 2
-		if le_evento.Ii_transicion >= 0 {
+		if le_evento.ITransition >= 0 {
 			// Establecer nuevo valor de la funcion
-			self.il_mislefs.updateFuncValue(le_evento.Ii_transicion,
-				le_evento.Ii_cte)
+			self.il_mislefs.updateFuncValue(le_evento.ITransition,
+				le_evento.IConst)
 			// Establecer nuevo valor del tiempo
-			self.il_mislefs.actualiza_tiempo(le_evento.Ii_transicion,
-				le_evento.Ii_tiempo)
+			self.il_mislefs.actualiza_tiempo(le_evento.ITransition,
+				le_evento.ITime)
 		}
 	}
 }
@@ -197,7 +197,7 @@ func (self *SimulationEngine) Simular(ai_cicloinicial, ai_nciclos TypeClock) {
 	self.il_mislefs.actualiza_sensibilizadas(self.ii_relojlocal)
 
 	for self.ii_relojlocal <= ai_nciclos {
-		self.il_mislefs.Imprime() //DEPURACION
+		self.il_mislefs.PrintEvent() //DEPURACION
 		fmt.Println("RELOJ LOCAL !!!  = ", self.ii_relojlocal)
 
 		// Si existen transiciones sensibilizadas para reloj local las disparamos
@@ -206,7 +206,7 @@ func (self *SimulationEngine) Simular(ai_cicloinicial, ai_nciclos TypeClock) {
 			self.fireEnabledTransitions(self.ii_relojlocal)
 		}
 
-		//self.il_mislefs.il_eventos.Imprime()
+		//self.il_mislefs.il_eventos.PrintEvent()
 
 		// Si existen eventos para el reloj local los tratamos
 		// ------------------------------------------------------------------

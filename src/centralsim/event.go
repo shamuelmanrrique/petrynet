@@ -9,115 +9,115 @@ import "fmt"
 
 type Event struct {
 	// Tiempo para el que debemos considerar el evento
-	Ii_tiempo TypeClock
+	ITime TypeClock
 	// A que transicion (indice transicion en subred)
-	Ii_transicion IndLocalTrans
+	ITransition IndLocalTrans
 	// Constante que mandamos
-	Ii_cte TypeConst
+	IConst TypeConst
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: NewEvento
+   METODO: NewEvent
    RECIBE: Tiempo, transicion y cte del evento a crear
    DEVUELVE: Event
    PROPOSITO: Crear evento con todos los datos del nuevo evento creados
 -----------------------------------------------------------------
 */
-func NewEvento(ai_tiempo TypeClock, ai_transicion IndLocalTrans, ai_cte TypeConst) *Event {
+func NewEvent(ai_tiempo TypeClock, ai_transicion IndLocalTrans, ai_cte TypeConst) *Event {
 	e := new(Event)
-	e.Set_tiempo(ai_tiempo)
-	e.Set_transicion(ai_transicion)
-	e.Set_cte(ai_cte)
+	e.SetTime(ai_tiempo)
+	e.SetTransition(ai_transicion)
+	e.SetConst(ai_cte)
 	return e
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_tiempo
+   METODO: SetTime
    RECIBE: Tiempo
    DEVUELVE: Nada
    PROPOSITO: Modificar el tiempo del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_tiempo(ai_tiempo TypeClock) {
-	self.Ii_tiempo = ai_tiempo
+func (self *Event) SetTime(ai_tiempo TypeClock) {
+	self.ITime = ai_tiempo
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_transicion
+   METODO: SetTransition
    RECIBE: Identificador de la transicion (indice en array
 	   de transiciones de esa subred)
    DEVUELVE: Nada
    PROPOSITO: Modificar la transicion del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_transicion(ai_transicion IndLocalTrans) {
-	self.Ii_transicion = ai_transicion
+func (self *Event) SetTransition(ai_transicion IndLocalTrans) {
+	self.ITransition = ai_transicion
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: set_cte
+   METODO: SetConst
    RECIBE: Cte a transmitir
    DEVUELVE: Nada
    PROPOSITO: Modificar la cte del evento
 -----------------------------------------------------------------
 */
-func (self *Event) Set_cte(ai_cte TypeConst) {
-	self.Ii_cte = ai_cte
+func (self *Event) SetConst(ai_cte TypeConst) {
+	self.IConst = ai_cte
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: get_tiempo
+   METODO: GetTime
    RECIBE: Nada
-   DEVUELVE: El atributo Ii_tiempo
+   DEVUELVE: El atributo ITime
    PROPOSITO: Recoger el tiempo del evento
 -----------------------------------------------------------------
 */
-func (self Event) get_tiempo() TypeClock {
-	return self.Ii_tiempo
+func (self Event) GetTime() TypeClock {
+	return self.ITime
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: get_transicion
+   METODO: GetTransition
    RECIBE: Nada
-   DEVUELVE: El atributo Ii_transicion
+   DEVUELVE: El atributo ITransition
    PROPOSITO: Recoger la transicion del evento
 -----------------------------------------------------------------
 */
-func (self Event) get_transicion() IndLocalTrans {
-	return self.Ii_transicion
+func (self Event) GetTransition() IndLocalTrans {
+	return self.ITransition
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: get_cte
+   METODO: getConst
    RECIBE: Nada
-   DEVUELVE: El atributo Ii_cte
+   DEVUELVE: El atributo IConst
    PROPOSITO: Recoger la cte del evento
 -----------------------------------------------------------------
 */
-func (self Event) get_cte() TypeConst {
-	return self.Ii_cte
+func (self Event) getConst() TypeConst {
+	return self.IConst
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: Imprime
+   METODO: PrintEvent
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Visualizar los atributos de un evento para depurar errores
 -----------------------------------------------------------------
 */
-func (self Event) Imprime(i int) {
+func (self Event) PrintEvent(i int) {
 	fmt.Println("  EVENTO -> ", i)
-	fmt.Println("    Tiempo: ", self.Ii_tiempo)
-	fmt.Println("    Transicion: ", self.Ii_transicion)
-	fmt.Println("    Constante: ", self.Ii_cte)
+	fmt.Println("    Tiempo: ", self.ITime)
+	fmt.Println("    Transicion: ", self.ITransition)
+	fmt.Println("    Constante: ", self.IConst)
 }
 
 //----------------------------------------------------------------------------
@@ -147,14 +147,14 @@ PROPOSITO: Insertar el evento en la lista de eventos, de forma que
    	la insercion sea ordenada por tiempo.
 -----------------------------------------------------------------
 */
-func (self *EventList) inserta(ae_evento Event) {
+func (self *EventList) Inser(ae_evento Event) {
 	var i int // INITIALIZED to 0 !!!
 
 	//fmt.Println("Insertar evento en lista : ", ae_evento, *self)
 
 	// Obtengo la posicion ordenada del evento en slice con i
 	for _, e := range *self {
-		if e.get_tiempo() >= ae_evento.get_tiempo() {
+		if e.GetTime() >= ae_evento.GetTime() {
 			break
 		}
 		i++
@@ -174,7 +174,7 @@ func (self *EventList) inserta(ae_evento Event) {
 	PROPOSITO: Recoger el primer evento encolado
  -----------------------------------------------------------------
 */
-func (self EventList) recoge_primer_evento() Event {
+func (self EventList) GetFirstEvent() Event {
 	if len(self) > 0 {
 		return self[0]
 	} else {
@@ -190,7 +190,7 @@ RECIBE: Nada
 PROPOSITO: Eliminar el primer evento encolado
 -----------------------------------------------------------------
 */
-func (self *EventList) elimina_primer_evento() {
+func (self *EventList) DeleteFirstEvent() {
 	if len(*self) > 0 {
 		//suprimir con posibilidad de liberacion de memoria
 		copy(*self, (*self)[1:])
@@ -207,21 +207,21 @@ RECIBE: Nada
 PROPOSITO: Conocer el numero de elementos de la lista de eventos
 -----------------------------------------------------------------
 */
-func (self EventList) longitud() int {
+func (self EventList) length() int {
 	return len(self)
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: Imprime
+   METODO: PrintEvent
 RECIBE: Nada
    DEVUELVE: Nada
 PROPOSITO: Imprimir la lista de eventos
 -----------------------------------------------------------------
 */
-func (self EventList) Imprime() {
+func (self EventList) PrintEvent() {
 	fmt.Println("Estructura EventList")
 	for i, e := range self {
-		e.Imprime(i)
+		e.PrintEvent(i)
 	}
 }
