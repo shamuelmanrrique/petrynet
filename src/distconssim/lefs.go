@@ -228,9 +228,9 @@ func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.length() {
 		// Prepare 3 local variables
-		tiTrans := self.SubNet[ilTr].ITime        // time to spread to new events
+		tiTrans := self.SubNet[ilTr].ITime             // time to spread to new events
 		tiDur := self.SubNet[ilTr].IiShotDuration //time length
-		listCtes := self.SubNet[ilTr].IiListactes // list of TransCtes
+		listCtes := self.SubNet[ilTr].IiListactes     // list of TransCtes
 
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
