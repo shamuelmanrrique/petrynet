@@ -14,7 +14,7 @@ func (self TransitionList) Length() IndLocalTrans {
 //--------------------------------------------------------------------------
 
 // IndGlobalTrans is a index of a transition in the global list
-//type IndGlobalTrans int32
+type IndGlobalTrans int32
 
 // IndLocalTrans is a index of a transition in the local lefs list
 type IndLocalTrans int32
