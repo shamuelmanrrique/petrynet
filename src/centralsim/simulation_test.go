@@ -1,7 +1,6 @@
 package centralsim
 
 import (
-	//"log"
 	"testing"
 )
 
@@ -10,31 +9,31 @@ func TestSimulationEngine(t *testing.T) {
 	lfs := Lefs{ //Ejemplo PN documento adjunto
 		SubNet: TransitionList{
 			Transition{
-				IdLocal:             0,
-				IiValorLef:          0,
+				IdLocal:        0,
+				IiValorLef:     0,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{0, 1},
-					TransitionConstant{1, 1},
-					TransitionConstant{2, 1},
+					TransitionConstant{1, -1},
+					TransitionConstant{2, -1},
 				},
 			},
 			Transition{
-				IdLocal:             1,
-				IiValorLef:          1,
-				IiShotDuration: 1,
+				IdLocal:        1,
+				IiValorLef:     1,
+				IiShotDuration: 2,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
-					TransitionConstant{2, 1},
+					TransitionConstant{2, -1},
 				},
 			},
 			Transition{
-				IdLocal:             2,
-				IiValorLef:          2,
+				IdLocal:        2,
+				IiValorLef:     2,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 2},
-					TransitionConstant{0, 1},
+					TransitionConstant{0, -1},
 				},
 			},
 		},

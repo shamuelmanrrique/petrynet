@@ -68,7 +68,7 @@ func (self *LefsDist) AddSensitive(ai_transicion IndLocalTrans) bool {
 -----------------------------------------------------------------
 */
 func (self LefsDist) TimeFirstEvent() c.TypeClock {
-	if self.IlEvents.length() > 0 {
+	if self.IlEvents.Length() > 0 {
 		le_evento := self.IlEvents.GetFirstEvent()
 		return le_evento.ITime
 	} else {
@@ -175,7 +175,7 @@ func (self *LefsDist) UpdateSensitive(ai_relojlocal c.TypeClock) bool {
 */
 func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti c.TypeClock) bool {
 	// Algunas comprobaciones...
-	if il_tr >= 0 && il_tr < self.SubNet.length() {
+	if il_tr >= 0 && il_tr < self.SubNet.Length() {
 		// Modificacion del tiempo
 		self.SubNet[il_tr].ITime = ai_ti
 		return true
@@ -196,7 +196,7 @@ func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti c.TypeClock) bool {
 */
 func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 	// Algunas comprobaciones...
-	if ilTr >= 0 && ilTr < self.SubNet.length() {
+	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Modificacion del valor de la funcion lef
 		self.SubNet[ilTr].IiValorLef += aiValLef
 		return true
@@ -216,7 +216,7 @@ func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bo
 */
 func (self *LefsDist) Shoot(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
-	if ilTr >= 0 && ilTr < self.SubNet.length() {
+	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Prepare 3 local variables
 		tiTrans := self.SubNet[ilTr].ITime        // time to spread to new events
 		tiDur := self.SubNet[ilTr].IiShotDuration //time length
@@ -269,7 +269,7 @@ func (self LefsDist) PrintEvent() {
 
 	fmt.Println("STRUCT LefsDist")
 	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
-	fmt.Println("\tNº transiciones: ", self.SubNet.length())
+	fmt.Println("\tNº transiciones: ", self.SubNet.Length())
 
 	if self.IsTransSensib.isEmpty() {
 		fmt.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")

@@ -7,7 +7,7 @@ import "fmt"
 type TransitionList []Transition //Slice de transiciones como Lista
 
 // length return length of TransitionList with type adapted to IndLocalTrans
-func (self TransitionList) length() IndLocalTrans {
+func (self TransitionList) Length() IndLocalTrans {
 	return IndLocalTrans(len(self))
 }
 

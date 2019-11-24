@@ -4,10 +4,10 @@ import "fmt"
 
 //--------------------------------------------------------------------------
 // TransitionList is a list of transitions themselves
-type TransitionList []Transition //Slice de transiciones como Lista
+type TransitionList []TransitionDist //Slice de transiciones como Lista
 
 // length return length of TransitionList with type adapted to IndLocalTrans
-func (self TransitionList) length() IndLocalTrans {
+func (self TransitionList) Length() IndLocalTrans {
 	return IndLocalTrans(len(self))
 }
 
@@ -32,7 +32,7 @@ type TransitionConstant struct {
 // -----------------------------------------------------------------------
 // Tipo abstracto Transition para guardar la informacion de una transicion
 // -----------------------------------------------------------------------
-type Transition struct {
+type TransitionDist struct {
 	// indice en la tabla global de transiciones
 	IdLocal IndLocalTrans
 
@@ -59,7 +59,7 @@ type Transition struct {
 	   PROPOSITO: Imprimir los atributos de la clase para depurar errores
 		-----------------------------------------------------------------
 */
-func (self *Transition) PrintEvent() {
+func (self *TransitionDist) PrintEvent() {
 	fmt.Println("Dato Transicion:")
 	fmt.Println("IDGLOBAL: ", self.IdLocal)
 	fmt.Println(" VALOR LEF: ", self.IiValorLef)
@@ -80,7 +80,7 @@ func (self *Transition) PrintEvent() {
 	COMENTARIO : es solo de lectura
 	-----------------------------------------------------------------
 */
-func (self Transition) PrintEventValues() {
+func (self TransitionDist) PrintEventValues() {
 	fmt.Println("Transicion -> ")
 	//	fmt.Println("\tIDGLOBAL: ", self.Ii_idglobal)
 	fmt.Println("\t\tVALOR LEF: ", self.IiValorLef)

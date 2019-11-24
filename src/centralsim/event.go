@@ -207,7 +207,7 @@ RECIBE: Nada
 PROPOSITO: Conocer el numero de elementos de la lista de eventos
 -----------------------------------------------------------------
 */
-func (self EventList) length() int {
+func (self EventList) Length() int {
 	return len(self)
 }
 
