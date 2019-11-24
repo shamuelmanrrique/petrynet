@@ -2,9 +2,9 @@ package distconssim
 
 import (
 	"fmt"
-	"time"
 	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
+	"time"
+	// cm "github.com/shamuelmanrrique/petrynet/src/communication"
 )
 
 // TypeClock defines integer size for holding time.
@@ -18,7 +18,7 @@ import (
 
 // SimulationEngine is the basic data type for simulation execution
 type SimulationEngine struct {
-	IlMisLefs    LefsDist                  // Estructura de datos del simulador
+	IlMisLefs    LefsDist                 // Estructura de datos del simulador
 	IlRelojLocal cs.TypeClock             // Valor de mi reloj local
 	IvResults    []cs.ResultadoTransition // slice dinamico con los resultados
 }
@@ -77,8 +77,8 @@ func (self *SimulationEngine) FireEnabledTransitions(aiLocalClock cs.TypeClock) 
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngine) TreatEvent(ai_tiempo TypeClock) {
-	var le_evento Event
+func (self *SimulationEngine) TreatEvent(ai_tiempo cs.TypeClock) {
+	var le_evento cs.Event
 
 	for self.IlMisLefs.ThereEvent(ai_tiempo) {
 		le_evento = self.IlMisLefs.GetFirstEvent()
@@ -126,7 +126,7 @@ func (self *SimulationEngine) WaitAgents() {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngine) AdvanceTime() TypeClock {
+func (self *SimulationEngine) AdvanceTime() cs.TypeClock {
 	nextTime := self.IlMisLefs.TimeFirstEvent()
 	fmt.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
@@ -174,7 +174,7 @@ func (self SimulationEngine) RetornResults() string {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
+func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos cs.TypeClock) {
 	ld_ini := time.Now()
 
 	// Inicializamos el reloj local
