@@ -2,16 +2,15 @@ package distconssim
 
 import (
 	"fmt"
-	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 )
 
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {
-	Post, Pre     map[cs.IndLocalTrans]string //
-	Lookout       map[string]cs.TypeClock     //
-	SubNet        TransitionList              // Slice de transiciones de esta subred
-	IsTransSensib StackTransitions            // Identificadores de las transiciones sensibilizadas para
-	IlEvents      cs.EventList                //Lista de eventos a procesar
+	Post, Pre     map[IndLocalTrans]string //
+	Lookout       map[string]TypeClock     //
+	SubNet        TransitionList           // Slice de transiciones de esta subred
+	IsTransSensib StackTransitions         // Identificadores de las transiciones sensibilizadas para
+	IlEvents      EventList                //Lista de eventos a procesar
 
 }
 
@@ -40,7 +39,7 @@ func NewLefsDist(listaTransiciones TransitionList) LefsDist {
    PROPOSITO: A�ade a la lista de eventos
 -----------------------------------------------------------------
 */
-func (self *LefsDist) AddEvents(ae_evento cs.Event) bool {
+func (self *LefsDist) AddEvents(ae_evento EventDist) bool {
 	self.IlEvents.Insert(ae_evento)
 	return true
 }
@@ -53,7 +52,7 @@ func (self *LefsDist) AddEvents(ae_evento cs.Event) bool {
    PROPOSITO: A�ade a la lista de transiciones sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *LefsDist) AddSensitive(ai_transicion cs.IndLocalTrans) bool {
+func (self *LefsDist) AddSensitive(ai_transicion IndLocalTrans) bool {
 	self.IsTransSensib.push(ai_transicion)
 	return true // OK
 }
@@ -68,7 +67,7 @@ func (self *LefsDist) AddSensitive(ai_transicion cs.IndLocalTrans) bool {
 	   posteriormente si debemos avanzar el reloj local
 -----------------------------------------------------------------
 */
-func (self LefsDist) TimeFirstEvent() cs.TypeClock {
+func (self LefsDist) TimeFirstEvent() TypeClock {
 	if self.IlEvents.Length() > 0 {
 		le_evento := self.IlEvents.GetFirstEvent()
 		return le_evento.ITime
@@ -85,7 +84,7 @@ func (self LefsDist) TimeFirstEvent() cs.TypeClock {
    PROPOSITO: Conocer si restan eventos disponibles para el tiempo dado
 -----------------------------------------------------------------
 */
-func (self LefsDist) ThereEvent(ai_tiempo cs.TypeClock) bool {
+func (self LefsDist) ThereEvent(ai_tiempo TypeClock) bool {
 	if self.TimeFirstEvent() == ai_tiempo {
 		return true
 	} else {
@@ -117,7 +116,7 @@ func (self LefsDist) ThereSensitive() bool {
 	 sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *LefsDist) GetSensitive() cs.IndLocalTrans {
+func (self *LefsDist) GetSensitive() IndLocalTrans {
 	if (*self).IsTransSensib.isEmpty() {
 		return -1
 	} else {
@@ -133,7 +132,7 @@ func (self *LefsDist) GetSensitive() cs.IndLocalTrans {
    PROPOSITO: Coger el primer evento de la lista de eventos
 -----------------------------------------------------------------
 */
-func (self *LefsDist) GetFirstEvent() cs.Event {
+func (self *LefsDist) GetFirstEvent() EventDist {
 	/* fmt.Println("Lista antes de eliminar primer evento :")
 	(*self).IlEvents.PrintEvent()
 	*/
@@ -157,10 +156,10 @@ COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
 	   invocar a esta funcion cuando ya hayan sido a�adidas todas las transiciones.
 -----------------------------------------------------------------
 */
-func (self *LefsDist) UpdateSensitive(ai_relojlocal cs.TypeClock) bool {
+func (self *LefsDist) UpdateSensitive(ai_relojlocal TypeClock) bool {
 	for li_i, t := range (*self).SubNet {
 		if t.IiValorLef <= 0 && t.ITime == ai_relojlocal {
-			(*self).IsTransSensib.push(cs.IndLocalTrans(li_i))
+			(*self).IsTransSensib.push(IndLocalTrans(li_i))
 		}
 	}
 	return true
@@ -174,7 +173,7 @@ func (self *LefsDist) UpdateSensitive(ai_relojlocal cs.TypeClock) bool {
    PROPOSITO: Modificar el tiempo de la transicion dada
 -----------------------------------------------------------------
 */
-func (self *LefsDist) UpdateTime(il_tr cs.IndLocalTrans, ai_ti cs.TypeClock) bool {
+func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
 	// Algunas comprobaciones...
 	if il_tr >= 0 && il_tr < self.SubNet.Length() {
 		// Modificacion del tiempo
@@ -195,7 +194,7 @@ func (self *LefsDist) UpdateTime(il_tr cs.IndLocalTrans, ai_ti cs.TypeClock) boo
    PROPOSITO: Modificar valor de funcion de sensibilizacion de transicion dada
 -----------------------------------------------------------------
 */
-func (self *LefsDist) UpdateFuncValue(ilTr cs.IndLocalTrans, aiValLef cs.TypeConst) bool {
+func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Modificacion del valor de la funcion lef
@@ -215,7 +214,7 @@ func (self *LefsDist) UpdateFuncValue(ilTr cs.IndLocalTrans, aiValLef cs.TypeCon
 	   ocurridos por el disparo de una transicion
 -----------------------------------------------------------------
 */
-func (self *LefsDist) Shoot(ilTr cs.IndLocalTrans) bool {
+func (self *LefsDist) Shoot(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Prepare 3 local variables
@@ -226,12 +225,12 @@ func (self *LefsDist) Shoot(ilTr cs.IndLocalTrans) bool {
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
 		// tiempo, cod_transicion, cte
-		self.AddEvents(cs.Event{tiTrans, listCtes[0].INextTrans, listCtes[0].Cnstnt})
+		self.AddEvents(EventDist{tiTrans, listCtes[0].INextTrans, listCtes[0].Cnstnt})
 
 		// Generamos eventos ocurridos por disparo de transicion ilTr
 		for _, trCo := range listCtes[1:] {
 			// tiempo = tiempo de la transicion + coste disparo
-			self.AddEvents(cs.Event{tiTrans + tiDur, trCo.INextTrans, trCo.Cnstnt})
+			self.AddEvents(EventDist{tiTrans + tiDur, trCo.INextTrans, trCo.Cnstnt})
 		}
 
 		return true

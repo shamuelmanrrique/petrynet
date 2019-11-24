@@ -2,8 +2,7 @@ package distconssim
 
 import (
 	"testing"
-	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
-
+	// cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 )
 
 func TestSimulationEngine(t *testing.T) {
@@ -14,28 +13,28 @@ func TestSimulationEngine(t *testing.T) {
 				IdLocal:        0,
 				IiValorLef:     0,
 				IiShotDuration: 1,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{0, 1},
-					cs.TransitionConstant{1, -1},
-					cs.TransitionConstant{2, -1},
+				IiListactes: []TransitionConstant{
+					TransitionConstant{0, 1},
+					TransitionConstant{1, -1},
+					TransitionConstant{2, -1},
 				},
 			},
 			TransitionDist{
 				IdLocal:        1,
 				IiValorLef:     1,
 				IiShotDuration: 2,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{1, 1},
-					cs.TransitionConstant{2, -1},
+				IiListactes: []TransitionConstant{
+					TransitionConstant{1, 1},
+					TransitionConstant{2, -1},
 				},
 			},
 			TransitionDist{
 				IdLocal:        2,
 				IiValorLef:     2,
 				IiShotDuration: 1,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{2, 2},
-					cs.TransitionConstant{0, -1},
+				IiListactes: []TransitionConstant{
+					TransitionConstant{2, 2},
+					TransitionConstant{0, -1},
 				},
 			},
 		},

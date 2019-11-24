@@ -2,16 +2,26 @@ package distconssim
 
 import (
 	"fmt"
-	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	"time"
+
+	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 )
 
-// SimulationEngine is the basic data type for simulation execution
+// TypeClock defines integer size for holding time.
+type TypeClock int64
+
+// ResultadoTransition holds fired transition id and time of firing
+type ResultadoTransition struct {
+	CodTransition IndLocalTrans
+	// CodTransition     IndGlobalTrans
+	ValorRelojDisparo TypeClock
+}
+
+// SimulationEngineDist is the basic data type for simulation execution
 type SimulationEngineDist struct {
-	IlMisLefs    LefsDist                 // Estructura de datos del simulador
-	IlRelojLocal cs.TypeClock             // Valor de mi reloj local
-	IvResults    []cs.ResultadoTransition // slice dinamico con los resultados
+	IlMisLefs    LefsDist              // Estructura de datos del simulador
+	IlRelojLocal TypeClock             // Valor de mi reloj local
+	IvResults    []ResultadoTransition // slice dinamico con los resultados
 }
 
 /*
@@ -44,14 +54,14 @@ func MakeMotorSimulation(alLaLef LefsDist) SimulationEngineDist {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock cs.TypeClock) {
+func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock TypeClock) {
 	for self.IlMisLefs.ThereSensitive() { //while
 		liCodTrans := self.IlMisLefs.GetSensitive()
 		self.IlMisLefs.Shoot(liCodTrans)
 
 		// Anotar el Resultado que disparo la liCodTrans en tiempoaiLocalClock
 		self.IvResults = append(self.IvResults,
-			cs.ResultadoTransition{liCodTrans, aiLocalClock})
+			ResultadoTransition{liCodTrans, aiLocalClock})
 	}
 }
 
@@ -68,8 +78,8 @@ func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock cs.TypeClo
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) TreatEvent(ai_tiempo cs.TypeClock) {
-	var lEvent cs.Event
+func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
+	var lEvent EventDist
 
 	for self.IlMisLefs.ThereEvent(ai_tiempo) {
 		lEvent = self.IlMisLefs.GetFirstEvent()
@@ -131,7 +141,7 @@ func (self *SimulationEngineDist) WaitAgents() {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) AdvanceTime() cs.TypeClock {
+func (self *SimulationEngineDist) AdvanceTime() TypeClock {
 	nextTime := self.IlMisLefs.TimeFirstEvent()
 	fmt.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
@@ -179,7 +189,7 @@ func (self SimulationEngineDist) RetornResults() string {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) Simulate(ai_cicloinicial, ai_nciclos cs.TypeClock) {
+func (self *SimulationEngineDist) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 	ld_ini := time.Now()
 
 	// Inicializamos el reloj local

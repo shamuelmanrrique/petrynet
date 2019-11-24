@@ -2,7 +2,6 @@ package distconssim
 
 import (
 	"fmt"
-	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 )
 
 //--------------------------------------------------------------------------
@@ -10,25 +9,27 @@ import (
 type TransitionList []TransitionDist //Slice de transiciones como Lista
 
 // Length return length of TransitionList with type adapted to IndLocalTrans
-func (self TransitionList) Length() cs.IndLocalTrans {
-	return cs.IndLocalTrans(len(self))
+func (self TransitionList) Length() IndLocalTrans {
+	return IndLocalTrans(len(self))
 }
 
 //--------------------------------------------------------------------------
 
 // IndGlobalTrans is a index of a transition in the global list
-//type IndGlobalTrans int32
+type IndGlobalTrans int32
 
 // IndLocalTrans is a index of a transition in the local lefs list
-// type IndLocalTrans int32
+type IndLocalTrans int32
 
-// //TypeConst is the constant to propagate in lefs
-// type TypeConst int32
+//TypeConst is the constant to propagate in lefs
+type TypeConst int32
 
-// type TransitionConstant struct {
-// 	INextTrans IndLocalTransIdLocal
-// 	Cnstnt     TypeConst
-// }
+// TransitionConstant is
+type TransitionConstant struct {
+	INextTrans IndLocalTrans
+	// INextTransGl IndGlobalTrans
+	Cnstnt TypeConst
+}
 
 //------------------------------------------------------------------------
 
@@ -36,21 +37,21 @@ func (self TransitionList) Length() cs.IndLocalTrans {
 // Tipo abstracto Transition para guardar la informacion de una transicion
 // -----------------------------------------------------------------------
 type TransitionDist struct {
-	IDGlobal cs.IndGlobalTrans // indice en la tabla global de transiciones
-	IdLocal cs.IndLocalTrans
+	IDGlobal IndGlobalTrans // indice en la tabla global de transiciones
+	IdLocal  IndLocalTrans
 	// iiValorLef es el valor que tiene la funcion de
 	// sensibilizacion en el instante de tiempo que nos da
 	// la variable ITime
-	IiValorLef cs.TypeConst
-	ITime      cs.TypeClock
+	IiValorLef TypeConst
+	ITime      TypeClock
 
 	// tiempo que dura el disparo de la transicion
-	IiShotDuration cs.TypeClock
+	IiShotDuration TypeClock
 
 	// vector de transiciones a las que tengo que propagar cte
 	// cuando se dispare esta transicion, junto con la cte que
 	// tengo que propagar
-	IiListactes []cs.TransitionConstant
+	IiListactes []TransitionConstant
 }
 
 /*
@@ -92,15 +93,15 @@ func (self TransitionDist) PrintEventValues() {
 //----------------------------------------------------------------------
 
 // Stack Transition is a Stack of transitions indices
-type StackTransitions []cs.IndLocalTrans
+type StackTransitions []IndLocalTrans
 
 //Push transition id to stack
-func (self *StackTransitions) push(i_tr cs.IndLocalTrans) {
+func (self *StackTransitions) push(i_tr IndLocalTrans) {
 	*self = append(*self, i_tr)
 }
 
 //Pop transition id from stack
-func (self *StackTransitions) pop() cs.IndLocalTrans {
+func (self *StackTransitions) pop() IndLocalTrans {
 	if (*self).isEmpty() {
 		return -1
 	} else {

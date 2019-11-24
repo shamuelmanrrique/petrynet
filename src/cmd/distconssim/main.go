@@ -1,9 +1,8 @@
 package main
 
 import (
-	// "simbot/centralsim"
-	cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 	dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
+	// cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 )
 
 func main() {
@@ -13,28 +12,28 @@ func main() {
 				IdLocal:        0,
 				IiValorLef:     0,
 				IiShotDuration: 1,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{0, 1},
-					cs.TransitionConstant{1, -1},
-					cs.TransitionConstant{2, -1},
+				IiListactes: []dcs.TransitionConstant{
+					dcs.TransitionConstant{0, 1},
+					dcs.TransitionConstant{1, -1},
+					dcs.TransitionConstant{2, -1},
 				},
 			},
 			dcs.TransitionDist{
 				IdLocal:        1,
 				IiValorLef:     1,
 				IiShotDuration: 2,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{1, 1},
-					cs.TransitionConstant{2, -1},
+				IiListactes: []dcs.TransitionConstant{
+					dcs.TransitionConstant{1, 1},
+					dcs.TransitionConstant{2, -1},
 				},
 			},
 			dcs.TransitionDist{
 				IdLocal:        2,
 				IiValorLef:     2,
 				IiShotDuration: 1,
-				IiListactes: []cs.TransitionConstant{
-					cs.TransitionConstant{2, 2},
-					cs.TransitionConstant{0, -1},
+				IiListactes: []dcs.TransitionConstant{
+					dcs.TransitionConstant{2, 2},
+					dcs.TransitionConstant{0, -1},
 				},
 			},
 		},

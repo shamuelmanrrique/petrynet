@@ -1,17 +1,12 @@
-/*
-PROPOSITO: Guardar la informacion de los eventos necesarios para
-   la simulacion
------------------------------------------------------------------
-*/
-package centralsim
+package distconssim
 
 import "fmt"
 
 type EventDist struct {
-	ITime           TypeClock      // Tiempo para el que debemos considerar el evento
-	ITransition     IndLocalTrans  // A que transicion (indice transicion en subred)
+	ITime       TypeClock     // Tiempo para el que debemos considerar el evento
+	ITransition IndLocalTrans // A que transicion (indice transicion en subred)
 	// IGlobTransition IndGlobalTrans // Indice transicion Global
-	IConst          TypeConst      // Constante que mandamos
+	IConst TypeConst // Constante que mandamos
 }
 
 /*
