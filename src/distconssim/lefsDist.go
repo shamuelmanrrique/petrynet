@@ -7,12 +7,11 @@ import (
 
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {
-	Post, Pre map[cs.IndGlobalTrans]string        //
-	Lookout   map[string]cs.TypeClock //
-	SubNet    TransitionList          // Slice de transiciones de esta subred
-	// Identificadores de las transiciones sensibilizadas para
-	IsTransSensib StackTransitions
-	IlEvents      cs.EventList //Lista de eventos a procesar
+	Post, Pre     map[cs.IndLocalTrans]string //
+	Lookout       map[string]cs.TypeClock     //
+	SubNet        TransitionList              // Slice de transiciones de esta subred
+	IsTransSensib StackTransitions            // Identificadores de las transiciones sensibilizadas para
+	IlEvents      cs.EventList                //Lista de eventos a procesar
 
 }
 

@@ -36,9 +36,8 @@ func (self TransitionList) Length() cs.IndLocalTrans {
 // Tipo abstracto Transition para guardar la informacion de una transicion
 // -----------------------------------------------------------------------
 type TransitionDist struct {
-	// indice en la tabla global de transiciones
+	IDGlobal cs.IndGlobalTrans // indice en la tabla global de transiciones
 	IdLocal cs.IndLocalTrans
-
 	// iiValorLef es el valor que tiene la funcion de
 	// sensibilizacion en el instante de tiempo que nos da
 	// la variable ITime
