@@ -10,7 +10,7 @@ func TestSimulationEngine(t *testing.T) {
 	lfs := LefsDist{ //Ejemplo PN documento adjunto
 		SubNet: TransitionList{
 			TransitionDist{
-				IdLocal:        0,
+				IDGlobal:       0,
 				IiValorLef:     0,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
@@ -20,7 +20,7 @@ func TestSimulationEngine(t *testing.T) {
 				},
 			},
 			TransitionDist{
-				IdLocal:        1,
+				IDGlobal:       1,
 				IiValorLef:     1,
 				IiShotDuration: 2,
 				IiListactes: []TransitionConstant{
@@ -29,7 +29,7 @@ func TestSimulationEngine(t *testing.T) {
 				},
 			},
 			TransitionDist{
-				IdLocal:        2,
+				IDGlobal:       2,
 				IiValorLef:     2,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{

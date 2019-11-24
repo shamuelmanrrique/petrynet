@@ -2,11 +2,11 @@ package distconssim
 
 import "fmt"
 
+// EventDist es la es
 type EventDist struct {
-	ITime       TypeClock     // Tiempo para el que debemos considerar el evento
-	ITransition IndLocalTrans // A que transicion (indice transicion en subred)
-	// IGlobTransition IndGlobalTrans // Indice transicion Global
-	IConst TypeConst // Constante que mandamos
+	ITime       TypeClock      // Tiempo para el que debemos considerar el evento
+	ITransition IndGlobalTrans // A que transicion (indice transicion Global
+	IConst      TypeConst      // Constante que mandamos
 }
 
 /*
@@ -17,7 +17,7 @@ type EventDist struct {
    PROPOSITO: Crear evento con todos los datos del nuevo evento creados
 -----------------------------------------------------------------
 */
-func NewEvent(ai_tiempo TypeClock, ai_transicion IndLocalTrans, ai_cte TypeConst) *EventDist {
+func NewEvent(ai_tiempo TypeClock, ai_transicion IndGlobalTrans, ai_cte TypeConst) *EventDist {
 	e := new(EventDist)
 	e.SetTime(ai_tiempo)
 	e.SetTransition(ai_transicion)
@@ -46,7 +46,7 @@ func (self *EventDist) SetTime(ai_tiempo TypeClock) {
    PROPOSITO: Modificar la transicion del evento
 -----------------------------------------------------------------
 */
-func (self *EventDist) SetTransition(ai_transicion IndLocalTrans) {
+func (self *EventDist) SetTransition(ai_transicion IndGlobalTrans) {
 	self.ITransition = ai_transicion
 }
 
@@ -82,7 +82,7 @@ func (self EventDist) GetTime() TypeClock {
    PROPOSITO: Recoger la transicion del evento
 -----------------------------------------------------------------
 */
-func (self EventDist) GetTransition() IndLocalTrans {
+func (self EventDist) GetTransition() IndGlobalTrans {
 	return self.ITransition
 }
 

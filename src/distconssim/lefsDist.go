@@ -6,11 +6,11 @@ import (
 
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {
-	Post, Pre     map[IndLocalTrans]string //
-	Lookout       map[string]TypeClock     //
-	SubNet        TransitionList           // Slice de transiciones de esta subred
-	IsTransSensib StackTransitions         // Identificadores de las transiciones sensibilizadas para
-	IlEvents      EventList                //Lista de eventos a procesar
+	Post, Pre     map[IndGlobalTrans]string //
+	Lookout       map[string]TypeClock      //
+	SubNet        TransitionList            // Slice de transiciones de esta subred
+	IsTransSensib StackTransitions          // Identificadores de las transiciones sensibilizadas para
+	IlEvents      EventList                 //Lista de eventos a procesar
 
 }
 
@@ -52,7 +52,7 @@ func (self *LefsDist) AddEvents(ae_evento EventDist) bool {
    PROPOSITO: A�ade a la lista de transiciones sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *LefsDist) AddSensitive(ai_transicion IndLocalTrans) bool {
+func (self *LefsDist) AddSensitive(ai_transicion IndGlobalTrans) bool {
 	self.IsTransSensib.push(ai_transicion)
 	return true // OK
 }
@@ -116,7 +116,7 @@ func (self LefsDist) ThereSensitive() bool {
 	 sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *LefsDist) GetSensitive() IndLocalTrans {
+func (self *LefsDist) GetSensitive() IndGlobalTrans {
 	if (*self).IsTransSensib.isEmpty() {
 		return -1
 	} else {
@@ -159,7 +159,7 @@ COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
 func (self *LefsDist) UpdateSensitive(ai_relojlocal TypeClock) bool {
 	for li_i, t := range (*self).SubNet {
 		if t.IiValorLef <= 0 && t.ITime == ai_relojlocal {
-			(*self).IsTransSensib.push(IndLocalTrans(li_i))
+			(*self).IsTransSensib.push(IndGlobalTrans(li_i))
 		}
 	}
 	return true
@@ -173,7 +173,7 @@ func (self *LefsDist) UpdateSensitive(ai_relojlocal TypeClock) bool {
    PROPOSITO: Modificar el tiempo de la transicion dada
 -----------------------------------------------------------------
 */
-func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
+func (self *LefsDist) UpdateTime(il_tr IndGlobalTrans, ai_ti TypeClock) bool {
 	// Algunas comprobaciones...
 	if il_tr >= 0 && il_tr < self.SubNet.Length() {
 		// Modificacion del tiempo
@@ -194,7 +194,7 @@ func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
    PROPOSITO: Modificar valor de funcion de sensibilizacion de transicion dada
 -----------------------------------------------------------------
 */
-func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
+func (self *LefsDist) UpdateFuncValue(ilTr IndGlobalTrans, aiValLef TypeConst) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Modificacion del valor de la funcion lef
@@ -214,7 +214,7 @@ func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bo
 	   ocurridos por el disparo de una transicion
 -----------------------------------------------------------------
 */
-func (self *LefsDist) Shoot(ilTr IndLocalTrans) bool {
+func (self *LefsDist) Shoot(ilTr IndGlobalTrans) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.Length() {
 		// Prepare 3 local variables
@@ -225,12 +225,12 @@ func (self *LefsDist) Shoot(ilTr IndLocalTrans) bool {
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
 		// tiempo, cod_transicion, cte
-		self.AddEvents(EventDist{tiTrans, listCtes[0].INextTrans, listCtes[0].Cnstnt})
+		self.AddEvents(EventDist{tiTrans, listCtes[0].INextTrans, listCtes[0].Const})
 
 		// Generamos eventos ocurridos por disparo de transicion ilTr
 		for _, trCo := range listCtes[1:] {
 			// tiempo = tiempo de la transicion + coste disparo
-			self.AddEvents(EventDist{tiTrans + tiDur, trCo.INextTrans, trCo.Cnstnt})
+			self.AddEvents(EventDist{tiTrans + tiDur, trCo.INextTrans, trCo.Const})
 		}
 
 		return true

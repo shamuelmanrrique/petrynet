@@ -12,8 +12,7 @@ type TypeClock int64
 
 // ResultadoTransition holds fired transition id and time of firing
 type ResultadoTransition struct {
-	CodTransition IndLocalTrans
-	// CodTransition     IndGlobalTrans
+	CodTransition     IndGlobalTrans
 	ValorRelojDisparo TypeClock
 }
 
