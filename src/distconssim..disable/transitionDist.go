@@ -1,4 +1,4 @@
-package centralsim
+package distconssim
 
 import "fmt"
 

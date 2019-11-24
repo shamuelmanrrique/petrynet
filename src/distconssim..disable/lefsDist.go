@@ -1,39 +1,29 @@
-/*
-PROPOSITO:
-		- Estructura de datos para gestionar las Lefs de las transiciones. Sera
-		rellenada a partir de los datos obtenidos de la entrada de
-		datos del usuario y es diferente para cada una de las subredes,
-		es decir cada simulador local tendra una instancia distinta de
-		esta clase.
------------------------------------------------------------------
-*/
-package centralsim
+package distconssim
 
-import "fmt"
+import (
+	"fmt"
+	c "github.com/shamuelmanrrique/petrynet/src/centralsim"
+)
 
-type TypeIndexSubNet int32
-
-//----------------------------------------------------------------------------
-
-// Lefs es el tipo de datos principal que gestiona el disparo de transiciones.
-type Lefs struct {
+// LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
+type LefsDist struct {
 	SubNet TransitionList // Slice de transiciones de esta subred
 	// Identificadores de las transiciones sensibilizadas para
 	// T = Reloj local actual. Slice que funciona como Stack
 	IsTransSensib StackTransitions
-	IlEvents      EventList //Lista de eventos a procesar
+	IlEvents      c.EventList //Lista de eventos a procesar
 }
 
 /*
 -----------------------------------------------------------------
-   METODO: NewLefs
+   METODO: NewLefsDist
    RECIBE: Lista de transiciones
    DEVUELVE: Nada
    PROPOSITO: crear nueva estructura LEF
 -----------------------------------------------------------------
 */
-func NewLefs(listaTransiciones TransitionList) Lefs {
-	l := Lefs{}
+func NewLefsDist(listaTransiciones TransitionList) LefsDist {
+	l := LefsDist{}
 	l.SubNet = listaTransiciones
 	l.IsTransSensib = nil
 	l.IlEvents = nil
@@ -49,7 +39,7 @@ func NewLefs(listaTransiciones TransitionList) Lefs {
    PROPOSITO: A�ade a la lista de eventos
 -----------------------------------------------------------------
 */
-func (self *Lefs) AddEvents(ae_evento Event) bool {
+func (self *LefsDist) AddEvents(ae_evento c.Event) bool {
 	self.IlEvents.Insert(ae_evento)
 	return true
 }
@@ -62,7 +52,7 @@ func (self *Lefs) AddEvents(ae_evento Event) bool {
    PROPOSITO: A�ade a la lista de transiciones sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *Lefs) AddSensitive(ai_transicion IndLocalTrans) bool {
+func (self *LefsDist) AddSensitive(ai_transicion IndLocalTrans) bool {
 	self.IsTransSensib.push(ai_transicion)
 	return true // OK
 }
@@ -77,7 +67,7 @@ func (self *Lefs) AddSensitive(ai_transicion IndLocalTrans) bool {
 	   posteriormente si debemos avanzar el reloj local
 -----------------------------------------------------------------
 */
-func (self Lefs) TimeFirstEvent() TypeClock {
+func (self LefsDist) TimeFirstEvent() c.TypeClock {
 	if self.IlEvents.length() > 0 {
 		le_evento := self.IlEvents.GetFirstEvent()
 		return le_evento.ITime
@@ -94,7 +84,7 @@ func (self Lefs) TimeFirstEvent() TypeClock {
    PROPOSITO: Conocer si restan eventos disponibles para el tiempo dado
 -----------------------------------------------------------------
 */
-func (self Lefs) ThereEvent(ai_tiempo TypeClock) bool {
+func (self LefsDist) ThereEvent(ai_tiempo c.TypeClock) bool {
 	if self.TimeFirstEvent() == ai_tiempo {
 		return true
 	} else {
@@ -112,7 +102,7 @@ func (self Lefs) ThereEvent(ai_tiempo TypeClock) bool {
 	   se ha tenido que llamar a UpdateSensitive (reloj_local)
 -----------------------------------------------------------------
 */
-func (self Lefs) ThereSensitive() bool {
+func (self LefsDist) ThereSensitive() bool {
 	return !self.IsTransSensib.isEmpty()
 }
 
@@ -126,7 +116,7 @@ func (self Lefs) ThereSensitive() bool {
 	 sensibilizadas
 -----------------------------------------------------------------
 */
-func (self *Lefs) GetSensitive() IndLocalTrans {
+func (self *LefsDist) GetSensitive() IndLocalTrans {
 	if (*self).IsTransSensib.isEmpty() {
 		return -1
 	} else {
@@ -142,7 +132,7 @@ func (self *Lefs) GetSensitive() IndLocalTrans {
    PROPOSITO: Coger el primer evento de la lista de eventos
 -----------------------------------------------------------------
 */
-func (self *Lefs) GetFirstEvent() Event {
+func (self *LefsDist) GetFirstEvent() c.Event {
 	/* fmt.Println("Lista antes de eliminar primer evento :")
 	(*self).IlEvents.PrintEvent()
 	*/
@@ -166,7 +156,7 @@ COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
 	   invocar a esta funcion cuando ya hayan sido a�adidas todas las transiciones.
 -----------------------------------------------------------------
 */
-func (self *Lefs) UpdateSensitive(ai_relojlocal TypeClock) bool {
+func (self *LefsDist) UpdateSensitive(ai_relojlocal c.TypeClock) bool {
 	for li_i, t := range (*self).SubNet {
 		if t.IiValorLef <= 0 && t.ITime == ai_relojlocal {
 			(*self).IsTransSensib.push(IndLocalTrans(li_i))
@@ -183,7 +173,7 @@ func (self *Lefs) UpdateSensitive(ai_relojlocal TypeClock) bool {
    PROPOSITO: Modificar el tiempo de la transicion dada
 -----------------------------------------------------------------
 */
-func (self *Lefs) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
+func (self *LefsDist) UpdateTime(il_tr IndLocalTrans, ai_ti c.TypeClock) bool {
 	// Algunas comprobaciones...
 	if il_tr >= 0 && il_tr < self.SubNet.length() {
 		// Modificacion del tiempo
@@ -204,7 +194,7 @@ func (self *Lefs) UpdateTime(il_tr IndLocalTrans, ai_ti TypeClock) bool {
    PROPOSITO: Modificar valor de funcion de sensibilizacion de transicion dada
 -----------------------------------------------------------------
 */
-func (self *Lefs) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
+func (self *LefsDist) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.length() {
 		// Modificacion del valor de la funcion lef
@@ -224,23 +214,23 @@ func (self *Lefs) UpdateFuncValue(ilTr IndLocalTrans, aiValLef TypeConst) bool {
 	   ocurridos por el disparo de una transicion
 -----------------------------------------------------------------
 */
-func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
+func (self *LefsDist) Shoot(ilTr IndLocalTrans) bool {
 	// Algunas comprobaciones...
 	if ilTr >= 0 && ilTr < self.SubNet.length() {
 		// Prepare 3 local variables
-		tiTrans := self.SubNet[ilTr].ITime             // time to spread to new events
+		tiTrans := self.SubNet[ilTr].ITime        // time to spread to new events
 		tiDur := self.SubNet[ilTr].IiShotDuration //time length
-		listCtes := self.SubNet[ilTr].IiListactes     // list of TransCtes
+		listCtes := self.SubNet[ilTr].IiListactes // list of TransCtes
 
 		// La CTE de la primera trans., hace referencia a la cte a mandar a
 		// TRANS. QUE SE HA DISPARADO, y va con tiempo igual al de la transicion
 		// tiempo, cod_transicion, cte
-		self.AddEvents(Event{tiTrans, listCtes[0].INextTrans, listCtes[0].Cnstnt})
+		self.AddEvents(c.Event{tiTrans, listCtes[0].INextTrans, listCtes[0].Cnstnt})
 
 		// Generamos eventos ocurridos por disparo de transicion ilTr
 		for _, trCo := range listCtes[1:] {
 			// tiempo = tiempo de la transicion + coste disparo
-			self.AddEvents(Event{tiTrans + tiDur, trCo.INextTrans, trCo.Cnstnt})
+			self.AddEvents(c.Event{tiTrans + tiDur, trCo.INextTrans, trCo.Cnstnt})
 		}
 
 		return true
@@ -257,7 +247,7 @@ func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
    PROPOSITO: Imprimir las transiciones para depurar errores
 -----------------------------------------------------------------
 */
-func (self Lefs) PrintEventTransitions() {
+func (self LefsDist) PrintEventTransitions() {
 	fmt.Println(" ")
 	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
 	for _, tr := range self.SubNet {
@@ -275,9 +265,9 @@ func (self Lefs) PrintEventTransitions() {
    PROPOSITO: Imprimir los atributos de la clase para depurar errores
 -----------------------------------------------------------------
 */
-func (self Lefs) PrintEvent() {
+func (self LefsDist) PrintEvent() {
 
-	fmt.Println("STRUCT LEFS")
+	fmt.Println("STRUCT LefsDist")
 	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
 	fmt.Println("\tNº transiciones: ", self.SubNet.length())
 
@@ -299,5 +289,5 @@ func (self Lefs) PrintEvent() {
 	fmt.Println("-----------Lista eventos---------")
 	self.IlEvents.PrintEvent()
 	fmt.Println("-----------Final lista eventos---------")
-	fmt.Println("FINAL ESTRUCTURA LEFS")
+	fmt.Println("FINAL ESTRUCTURA LefsDist")
 }

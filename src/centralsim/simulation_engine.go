@@ -28,9 +28,9 @@ type ResultadoTransition struct {
 
 // SimulationEngine is the basic data type for simulation execution
 type SimulationEngine struct {
-	ilMisLefs    Lefs                  // Estructura de datos del simulador
-	ilRelojLocal TypeClock             // Valor de mi reloj local
-	ivResults    []ResultadoTransition // slice dinamico con los resultados
+	IlMisLefs    Lefs                  // Estructura de datos del simulador
+	IlRelojLocal TypeClock             // Valor de mi reloj local
+	IvResults    []ResultadoTransition // slice dinamico con los resultados
 }
 
 /*
@@ -46,7 +46,7 @@ COMENTARIOS:
 */
 func MakeMotorSimulation(alLaLef Lefs) SimulationEngine {
 	m := SimulationEngine{}
-	m.ilMisLefs = alLaLef
+	m.IlMisLefs = alLaLef
 	return m
 }
 
@@ -63,13 +63,13 @@ func MakeMotorSimulation(alLaLef Lefs) SimulationEngine {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngine) fireEnabledTransitions(aiLocalClock TypeClock) {
-	for self.ilMisLefs.ThereSensitive() { //while
-		liCodTrans := self.ilMisLefs.GetSensitive()
-		self.ilMisLefs.Shoot(liCodTrans)
+func (self *SimulationEngine) FireEnabledTransitions(aiLocalClock TypeClock) {
+	for self.IlMisLefs.ThereSensitive() { //while
+		liCodTrans := self.IlMisLefs.GetSensitive()
+		self.IlMisLefs.Shoot(liCodTrans)
 
 		// Anotar el Resultado que disparo la liCodTrans en tiempoaiLocalClock
-		self.ivResults = append(self.ivResults,
+		self.IvResults = append(self.IvResults,
 			ResultadoTransition{liCodTrans, aiLocalClock})
 	}
 }
@@ -90,8 +90,8 @@ COMENTARIOS:
 func (self *SimulationEngine) TreatEvent(ai_tiempo TypeClock) {
 	var le_evento Event
 
-	for self.ilMisLefs.ThereEvent(ai_tiempo) {
-		le_evento = self.ilMisLefs.GetFirstEvent()
+	for self.IlMisLefs.ThereEvent(ai_tiempo) {
+		le_evento = self.IlMisLefs.GetFirstEvent()
 
 		// Si el valor de la transicion es negativo,indica que pertenece
 		// a otra subred y el codigo global de la transicion es pasarlo
@@ -99,10 +99,10 @@ func (self *SimulationEngine) TreatEvent(ai_tiempo TypeClock) {
 		// ej: -3 -> transicion -(-3) -1 = 2
 		if le_evento.ITransition >= 0 {
 			// Establecer nuevo valor de la funcion
-			self.ilMisLefs.UpdateFuncValue(le_evento.ITransition,
+			self.IlMisLefs.UpdateFuncValue(le_evento.ITransition,
 				le_evento.IConst)
 			// Establecer nuevo valor del tiempo
-			self.ilMisLefs.UpdateTime(le_evento.ITransition,
+			self.IlMisLefs.UpdateTime(le_evento.ITransition,
 				le_evento.ITime)
 		}
 	}
@@ -110,7 +110,7 @@ func (self *SimulationEngine) TreatEvent(ai_tiempo TypeClock) {
 
 /*
 -----------------------------------------------------------------
-   METODO: waitAgents
+   METODO: WaitAgents
    RECIBE: Nada
    DEVUELVE: Nada
    PROPOSITO: Espera a que lleguen todos los agentes que hemos enviado
@@ -120,7 +120,7 @@ func (self *SimulationEngine) TreatEvent(ai_tiempo TypeClock) {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngine) waitAgents() {
+func (self *SimulationEngine) WaitAgents() {
 	fmt.Println("Aun sin agentes")
 }
 
@@ -137,7 +137,7 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngine) AdvanceTime() TypeClock {
-	nextTime := self.ilMisLefs.TimeFirstEvent()
+	nextTime := self.IlMisLefs.TimeFirstEvent()
 	fmt.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
 }
@@ -157,11 +157,11 @@ func (self SimulationEngine) RetornResults() string {
 	resultados := "----------------------------------------\n"
 	resultados += "Resultados del simulador local\n"
 	resultados += "----------------------------------------\n"
-	if len(self.ivResults) == 0 {
+	if len(self.IvResults) == 0 {
 		resultados += "No esperes ningun resultado...\n"
 	}
 
-	for _, li_result := range self.ivResults {
+	for _, li_result := range self.IvResults {
 		resultados +=
 			"TIEMPO: " + fmt.Sprintf("%v", li_result.ValorRelojDisparo) +
 				" -> TRANSICION: " + fmt.Sprintf("%v", li_result.CodTransition) + "\n"
@@ -189,47 +189,47 @@ func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 
 	// Inicializamos el reloj local
 	// ------------------------------------------------------------------
-	self.ilRelojLocal = ai_cicloinicial
+	self.IlRelojLocal = ai_cicloinicial
 
 	// Inicializamos las transiciones sensibilizadas, es decir, ver si con el
 	// marcado inicial tenemos transiciones sensibilizadas
 	// ------------------------------------------------------------------
-	self.ilMisLefs.UpdateSensitive(self.ilRelojLocal)
+	self.IlMisLefs.UpdateSensitive(self.IlRelojLocal)
 
-	for self.ilRelojLocal <= ai_nciclos {
-		self.ilMisLefs.PrintEvent() //DEPURACION
-		fmt.Println("RELOJ LOCAL !!!  = ", self.ilRelojLocal)
+	for self.IlRelojLocal <= ai_nciclos {
+		self.IlMisLefs.PrintEvent() //DEPURACION
+		fmt.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
 
 		// Si existen transiciones sensibilizadas para reloj local las disparamos
 		// ------------------------------------------------------------------
-		if self.ilMisLefs.ThereSensitive() {
-			self.fireEnabledTransitions(self.ilRelojLocal)
+		if self.IlMisLefs.ThereSensitive() {
+			self.FireEnabledTransitions(self.IlRelojLocal)
 		}
 
-		//self.ilMisLefs.IlEvents.PrintEvent()
+		//self.IlMisLefs.IlEvents.PrintEvent()
 
 		// Si existen eventos para el reloj local los tratamos
 		// ------------------------------------------------------------------
-		if self.ilMisLefs.ThereEvent(self.ilRelojLocal) {
-			self.TreatEvent(self.ilRelojLocal)
+		if self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
+			self.TreatEvent(self.IlRelojLocal)
 		}
 
 		// Los nuevos eventos han podido sensibilizar nuevas transiciones
 		// ------------------------------------------------------------------
-		self.ilMisLefs.UpdateSensitive(self.ilRelojLocal)
+		self.IlMisLefs.UpdateSensitive(self.IlRelojLocal)
 
 		// Tras tratar todos los eventos, si no nos quedan transiciones
 		// sensibilizadas no podemos Simulate nada mas, luego esperamos a
 		// los agentes y si no nos generan nuevos eventos procedemos a avanzar
 		// el reloj local
 		// ------------------------------------------------------------------
-		if !self.ilMisLefs.ThereSensitive() {
-			// self.waitAgents()
-			if !self.ilMisLefs.ThereEvent(self.ilRelojLocal) {
-				self.ilRelojLocal = self.AdvanceTime()
+		if !self.IlMisLefs.ThereSensitive() {
+			// self.WaitAgents()
+			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
+				self.IlRelojLocal = self.AdvanceTime()
 
-				if self.ilRelojLocal == -1 {
-					self.ilRelojLocal = ai_nciclos + 1
+				if self.IlRelojLocal == -1 {
+					self.IlRelojLocal = ai_nciclos + 1
 				}
 			}
 		}
@@ -241,7 +241,7 @@ func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 	self.RetornResults()
 	result := "\n---------------------"
 	result += "NUMERO DE TRANSICIONES DISPARADAS " +
-		fmt.Sprintf("%d", len(self.ivResults)) + "\n"
+		fmt.Sprintf("%d", len(self.IvResults)) + "\n"
 	result += "TIEMPO SIMULADO en ciclos: " +
 		fmt.Sprintf("%d", ai_nciclos-ai_cicloinicial) + "\n"
 	result += "COSTE REAL SIMULACION: " +
