@@ -1,34 +1,18 @@
 package utils
 
-import (
-	"log"
-	v "practice1/vclock"
-	"time"
-)
+import "log"
 
-type PackInt interface {
-	GetMes() Message
-	GetConfACK() Ack
-}
-
-type Pack struct {
-	Mes     Message
-	ConfACK Ack
-}
-
+// Msm int
 type Msm interface {
 	GetTo() string
 	GetFrom() string
-	GetData() string
-	GetTarg() string
-	GetDelay() time.Duration
-	GetVector() v.VClock
+	GetPack() interface{}
 }
 
+// Mensssage Struct
 type Message struct {
-	To, From, Data, Targ string
-	Delay                time.Duration
-	Vector               v.VClock
+	To, From string
+	Pack     interface{} // Can be Type Event, LookA, IndGlobalTrans
 }
 
 func (m Message) GetTo() string {
@@ -39,24 +23,8 @@ func (m Message) GetFrom() string {
 	return m.From
 }
 
-func (m Message) GetData() string {
-	return m.Data
-}
-
-func (m Message) GetTarg() string {
-	return m.Targ
-}
-
-func (m Message) GetVector() v.VClock {
-	return m.Vector
-}
-
-func (m *Message) SetDelay(t time.Duration) {
-	m.Delay = t
-}
-
-func (m *Message) GetDelay() time.Duration {
-	return m.Delay
+func (m Message) GetPack() interface{} {
+	return m.Pack
 }
 
 func DistMsm(s string) {
@@ -69,25 +37,4 @@ func DistWall() {
 
 func DistUnic(s string) {
 	log.Printf("#########################  %s ################################# \n", s)
-}
-
-func (p *Pack) GetMes() Message {
-	return p.Mes
-}
-
-func (p *Pack) GetConfACK() Ack {
-	return p.ConfACK
-}
-
-func CheckMsm(msms []Message, m Message) ([]Message, bool, Message) {
-	for _, a := range msms {
-		if m.GetFrom() == a.GetFrom() && m.GetVector().Compare(a.GetVector(), v.Equal) {
-			return msms, true, m
-		}
-	}
-
-	msms = append(msms, m)
-
-	return msms, false, m
-
 }

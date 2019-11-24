@@ -1,118 +1,41 @@
 package utils
 
-import (
-	"net"
-	v "practice1/vclock"
-	"time"
-)
-
-const (
-	MulticastAddress = "229.0.40.000:9999"
-	MaxBufferSize    = 8192
-)
-
 type Connection interface {
 	GetId() string
 	GetIp() string
 	GetPort() string
-	GetKill() []string
 	GetIds() []string
-	GetDelays() []time.Duration
-	GetDelay(n int) time.Duration
-	GetTarget(n int) string //puedo elminar
-	GetEnv(n int) string
-	GetVector() v.VClock
-	GetListe() net.Listener
-	GetAccept() int
+	GetAccept() bool
 }
 
-type Conn struct {
-	Id, Ip, Port, Host, Env string
-	Vector                  v.VClock
-	Ids                     []string
-	Kill                    []string
-	Delays                  []time.Duration
-	Liste                   net.Listener
-	Accept                  int
+type Connect struct {
+	Id, Ip, Port, Host string
+	Ids                []string
+	Delays             []int
+	Accept             bool
 }
 
-func (c *Conn) SetKill() {
-	n := len(c.Kill)
-	if n > 0 {
-		c.Kill = c.Kill[:n-1]
-	}
-}
+var RemoteIPs = []string{"155.210.154.199", "155.210.154.197", "155.210.154.196"}
+var RemoteFlags = []string{"-r=\"proof\" -i=\"155.210.154.199\" -t=\"155.210.154.197\" -d=\"5s\" -n=3 -m=true -p=\":1400\"", "-i=\"155.210.154.197\" -r=\"proof\" -n=3 -p=\":1400\"", "-i=\"155.210.154.196\" -r=\"proof\" -n=3 -p=\":1400\""}
+var LocalFlags = []string{"-r=\"local\" -t=\"127.0.1.1:5002\" -d=\"5s\" -n=3 -m=true -p=\":5001\"", "-r=\"local\" -n=3 -p=\":5002\"", " -r=\"local\" -n=3 -p=\":5003\""}
+var Command = make(map[string]string)
 
-func (c *Conn) SetDelay() {
-	n := len(c.Kill)
-	if n > 0 {
-		c.Delays = c.Delays[:n-1]
-	}
-}
-
-func (c *Conn) SetClock(v v.VClock) {
-	c.Vector = v
-}
-
-func (c Conn) GetId() string {
+func (c Connect) GetId() string {
 	return c.Id
 }
 
-func (c Conn) GetIp() string {
+func (c Connect) GetIp() string {
 	return c.Ip
 }
 
-func (c Conn) GetEnv(n int) string {
-	for i, v := range c.GetIds() {
-		if i == n {
-			return v
-		}
-	}
-	return ""
-}
-
-func (c Conn) GetDelay(n int) time.Duration {
-	for i, v := range c.GetDelays() {
-		if i == n {
-			return v
-		}
-	}
-	return 0
-}
-
-func (c Conn) GetPort() string {
+func (c Connect) GetPort() string {
 	return c.Port
 }
 
-func (c Conn) GetAccept() int {
+func (c Connect) GetAccept() bool {
 	return c.Accept
 }
 
-func (c Conn) GetIds() []string {
+func (c Connect) GetIds() []string {
 	return c.Ids
-}
-
-func (c Conn) GetKill() []string {
-	return c.Kill
-}
-
-func (c Conn) GetDelays() []time.Duration {
-	return c.Delays
-}
-
-func (c Conn) GetVector() v.VClock {
-	return c.Vector
-}
-
-func (c Conn) GetTarget(n int) string {
-	for i, v := range c.GetKill() {
-		if i == n {
-			return v
-		}
-	}
-	return ""
-}
-
-func (c Conn) GetListe() net.Listener {
-	return c.Liste
 }

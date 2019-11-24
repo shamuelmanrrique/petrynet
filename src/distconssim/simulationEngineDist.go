@@ -5,6 +5,7 @@ import (
 	"time"
 
 	cm "github.com/shamuelmanrrique/petrynet/src/communication"
+	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
 // TypeClock defines integer size for holding time.
@@ -18,6 +19,7 @@ type ResultadoTransition struct {
 
 // SimulationEngineDist is the basic data type for simulation execution
 type SimulationEngineDist struct {
+	Connect      *u.Connect            // Embided connect struct
 	IlMisLefs    LefsDist              // Estructura de datos del simulador
 	IlRelojLocal TypeClock             // Valor de mi reloj local
 	IvResults    []ResultadoTransition // slice dinamico con los resultados
@@ -26,7 +28,7 @@ type SimulationEngineDist struct {
 /*
 -----------------------------------------------------------------
    METODO: NewMotorSimulation
-   RECIBE: EStructura datos Lefs
+   RECIBE: EStructura datos Lefs, Estructura datos Connect
    DEVUELVE: Nada
    PROPOSITO: Construir que recibe la estructura de datos con la que
 	   Simulate, inicializa variables...
@@ -34,9 +36,10 @@ type SimulationEngineDist struct {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func MakeMotorSimulation(alLaLef LefsDist) SimulationEngineDist {
+func MakeMotorSimulation(alLaLef LefsDist, connect *u.Connect) SimulationEngineDist {
 	m := SimulationEngineDist{}
 	m.IlMisLefs = alLaLef
+	m.Connect = connect
 	return m
 }
 
@@ -74,7 +77,7 @@ func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock TypeClock)
 		las funciones de sensibilizacion de algunas transiciones, por lo que puede
 		que tengamos nuevas transiciones sensibilizadas.
    HISTORIA DE CAMBIOS:
-COMENTARIOS:
+   COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
@@ -91,15 +94,16 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 			fmt.Println("Transicion Remota")
 			lEvent.ITransition *= -1
 			// lEvent.ITransition = Abs(lEvent.ITransition)
-
-			addr := self.IlMisLefs.Post[lEvent.ITransition]
-			fmt.Println(addr)
+			// addr := self.IlMisLefs.Post[lEvent.ITransition]
+			// fmt.Println(addr)
 			// TODO aun no me queda claro lo que voy a enviar
-			var message interface{}
-			// var msg MsgI
-			// msg = MsgEvent{le_evento}
-			cm.Send(message, addr)
-
+			message := u.Message{
+				To: self.IlMisLefs.Post[lEvent.ITransition],
+				//TODO
+				From: self.Connect.GetId(),
+				Pack: lEvent,
+			}
+			cm.Send(message, message.GetTo())
 		} else {
 			// Establecer nuevo valor de la funcion
 			self.IlMisLefs.UpdateFuncValue(lEvent.ITransition,
@@ -124,7 +128,23 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) WaitAgents() {
-	fmt.Println("Aun sin agentes")
+	subNets := self.IlMisLefs.Pre
+	// TODOREVISAR POR STRUCT
+	self.Connect.Accept = false
+	for idTrans, addr := range subNets {
+		message := u.Message{
+			To: addr,
+			//TODO
+			From: self.Connect.GetId(),
+			Pack: idTrans,
+		}
+		self.IlMisLefs.Lookout[addr] = -1
+		cm.Send(message, message.GetTo())
+	}
+
+	for !self.Connect.GetAccept() {
+	}
+	return
 
 }
 

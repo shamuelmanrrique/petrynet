@@ -1,8 +1,8 @@
 package distconssim
 
 import (
+	u "github.com/shamuelmanrrique/petrynet/src/utils"
 	"testing"
-	// cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
 )
 
 func TestSimulationEngine(t *testing.T) {
@@ -39,7 +39,8 @@ func TestSimulationEngine(t *testing.T) {
 			},
 		},
 	}
-	ms := MakeMotorSimulation(lfs)
+	var connect *u.Connect
+	ms := MakeMotorSimulation(lfs, connect)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
 
