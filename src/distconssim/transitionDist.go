@@ -37,7 +37,7 @@ type TransitionConstant struct {
 // -----------------------------------------------------------------------
 type TransitionDist struct {
 	IDGlobal IndGlobalTrans // indice en la tabla global de transiciones
-	// IdLocal  IndLocalTrans
+	IDLocal  IndLocalTrans
 	// iiValorLef es el valor que tiene la funcion de
 	// sensibilizacion en el instante de tiempo que nos da
 	// la variable ITime

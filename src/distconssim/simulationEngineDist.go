@@ -128,23 +128,24 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) WaitAgents() {
-	subNets := self.IlMisLefs.Pre
-	// TODOREVISAR POR STRUCT
-	self.Connect.Accept = false
-	for idTrans, addr := range subNets {
-		message := u.Message{
-			To: addr,
-			//TODO
-			From: self.Connect.GetId(),
-			Pack: idTrans,
-		}
-		self.IlMisLefs.Lookout[addr] = -1
-		cm.Send(message, message.GetTo())
-	}
+	fmt.Println("TODO")
+	// subNets := self.IlMisLefs.Pre
+	// // TODOREVISAR POR STRUCT
+	// self.Connect.Accept = false
+	// for idTrans, addr := range subNets {
+	// 	message := u.Message{
+	// 		To: addr,
+	// 		//TODO
+	// 		From: self.Connect.GetId(),
+	// 		Pack: idTrans,
+	// 	}
+	// 	self.IlMisLefs.Lookout[addr] = -1
+	// 	cm.Send(message, message.GetTo())
+	// }
 
-	for !self.Connect.GetAccept() {
-	}
-	return
+	// for !self.Connect.GetAccept() {
+	// }
+	// return
 
 }
 
