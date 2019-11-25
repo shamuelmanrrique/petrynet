@@ -2,14 +2,16 @@ package main
 
 import (
 	dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
-	// cs "github.com/shamuelmanrrique/petrynet/src/centralsim"
+
+	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
 func main() {
+	//t.Skip("skipping test simulation.")
 	lfs := dcs.LefsDist{ //Ejemplo PN documento adjunto
 		SubNet: dcs.TransitionList{
 			dcs.TransitionDist{
-				IdLocal:        0,
+				IDGlobal:       0,
 				IiValorLef:     0,
 				IiShotDuration: 1,
 				IiListactes: []dcs.TransitionConstant{
@@ -19,7 +21,7 @@ func main() {
 				},
 			},
 			dcs.TransitionDist{
-				IdLocal:        1,
+				IDGlobal:       1,
 				IiValorLef:     1,
 				IiShotDuration: 2,
 				IiListactes: []dcs.TransitionConstant{
@@ -28,7 +30,7 @@ func main() {
 				},
 			},
 			dcs.TransitionDist{
-				IdLocal:        2,
+				IDGlobal:       2,
 				IiValorLef:     2,
 				IiShotDuration: 1,
 				IiListactes: []dcs.TransitionConstant{
@@ -38,6 +40,7 @@ func main() {
 			},
 		},
 	}
-	ms := dcs.MakeMotorSimulation(lfs)
+	var connect *u.Connect
+	ms := dcs.MakeMotorSimulation(lfs, connect)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
