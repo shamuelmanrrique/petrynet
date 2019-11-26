@@ -239,6 +239,7 @@ func (self *LefsDist) Shoot(ilTr IndGlobalTrans) bool {
 
 		return true
 	} else {
+		//  Enviar a red remota
 		return false
 	}
 }

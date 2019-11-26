@@ -3,6 +3,7 @@ package distconssim
 import (
 	"fmt"
 	"time"
+	// "time"
 
 	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
@@ -19,7 +20,7 @@ type ResultadoTransition struct {
 
 // SimulationEngineDist is the basic data type for simulation execution
 type SimulationEngineDist struct {
-	Connect      *u.Connect            // Embided connect struct
+	connect      *u.Connect            // Embided connect struct
 	IlMisLefs    LefsDist              // Estructura de datos del simulador
 	IlRelojLocal TypeClock             // Valor de mi reloj local
 	IvResults    []ResultadoTransition // slice dinamico con los resultados
@@ -36,10 +37,10 @@ type SimulationEngineDist struct {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func MakeMotorSimulation(alLaLef LefsDist, connect *u.Connect) SimulationEngineDist {
-	m := SimulationEngineDist{}
+func MakeMotorSimulation(alLaLef LefsDist, connect *u.Connect) *SimulationEngineDist {
+	m := &SimulationEngineDist{}
 	m.IlMisLefs = alLaLef
-	m.Connect = connect
+	m.connect = connect
 	return m
 }
 
@@ -202,7 +203,7 @@ func (self SimulationEngineDist) RetornResults() string {
    METODO: Simulate
    RECIBE: Ciclo con el que partimos (por si el marcado recibido no
 				se corresponde al inicial sino a uno obtenido tras Simulate
-				ai_cicloinicial ciclos)
+				initCycle ciclos)
 			Ciclo con el que terminamos
    DEVUELVE: Nada
    PROPOSITO: Simulate una RdP
@@ -210,19 +211,20 @@ func (self SimulationEngineDist) RetornResults() string {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
+func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
+	u.DistMsm(self.connect.IDSubRed)
 	ld_ini := time.Now()
 
 	// Inicializamos el reloj local
 	// ------------------------------------------------------------------
-	self.IlRelojLocal = ai_cicloinicial
+	self.IlRelojLocal = initCycle
 
 	// Inicializamos las transiciones sensibilizadas, es decir, ver si con el
 	// marcado inicial tenemos transiciones sensibilizadas
 	// ------------------------------------------------------------------
 	self.IlMisLefs.UpdateSensitive(self.IlRelojLocal)
 
-	for self.IlRelojLocal <= ai_nciclos {
+	for self.IlRelojLocal <= endCycle {
 		self.IlMisLefs.PrintEvent() //DEPURACION
 		fmt.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
 
@@ -255,7 +257,7 @@ func (self *SimulationEngineDist) Simulate(ai_cicloinicial, ai_nciclos TypeClock
 				self.IlRelojLocal = self.AdvanceTime()
 
 				if self.IlRelojLocal == -1 {
-					self.IlRelojLocal = ai_nciclos + 1
+					self.IlRelojLocal = endCycle + 1
 				}
 			}
 		}
@@ -269,7 +271,7 @@ func (self *SimulationEngineDist) Simulate(ai_cicloinicial, ai_nciclos TypeClock
 	result += "NUMERO DE TRANSICIONES DISPARADAS " +
 		fmt.Sprintf("%d", len(self.IvResults)) + "\n"
 	result += "TIEMPO SIMULADO en ciclos: " +
-		fmt.Sprintf("%d", ai_nciclos-ai_cicloinicial) + "\n"
+		fmt.Sprintf("%d", endCycle-initCycle) + "\n"
 	result += "COSTE REAL SIMULACION: " +
 		fmt.Sprintf("%v", elapsedTime.String()) + "\n"
 	fmt.Println(result)

@@ -2,40 +2,49 @@ package communication
 
 import (
 	"encoding/gob"
+	"fmt"
 	"net"
-	f "practice1/functions"
+	"time"
+
+	// dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
+	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
 // Receive TODO
-func Receive(chanInterf chan<- interface{}, addr string) error {
+// func Receive( sim *dcs.SimulationEngineDist, connect *u.Connect ) error {
+func Receive(chanInterf chan<- interface{}, connect *u.Connect) error {
+	// time.Sleep(time.Duration(10) * time.Second)
+	time.Sleep(5 * time.Second)
 	var listener net.Listener
 	var decoder *gob.Decoder
 	var pack interface{}
 	var red net.Conn
 	var err error
 
-	listener, err = net.Listen("tcp", addr)
-	f.Error(err, "Listen Error")
+	listener, err = net.Listen("tcp", connect.GetIDSubRed())
+	u.Error(err, "Listen Error")
 	defer listener.Close()
 
 	for {
 
 		red, err = listener.Accept()
-		f.Error(err, "Server accept red error")
+		u.Error(err, "Server accept red error")
 		// defer red.Close()
 
 		decoder = gob.NewDecoder(red)
 		err = decoder.Decode(&pack)
-		f.Error(err, "Receive error  \n")
-		chanInterf <- pack
+		u.Error(err, "Receive error  \n")
+		fmt.Sprintln()
+		// chanInterf <- pack
+
 		// log.Println("[Receive] PACK", pack)
 		// switch packNew := pack.(type) {
-		// case f.Message:
+		// case u.Message:
 		// 	chanMes <- packNew
 		// 	// log.Println("[ReceiveM] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
 		// 	log.Println(" RECEIVE -->: from ", packNew.GetFrom(), " to ", packNew.GetTo(), "  || OBJ: ", packNew.GetTarg(),
 		// 		"\n                     Vector: ", packNew.GetVector())
-		// case f.Marker:
+		// case u.Marker:
 		// 	chanMar <- packNew
 		// 	// log.Println("[ReceiveM] ----> Marker ", packNew, " DE ", packNew.GetCounter())
 		// 	// log.Println(" RECEIVE -->: Init Marker:", packNew.Recoder, "  ||Counter:", packNew.GetCounter(),
@@ -49,7 +58,8 @@ func Receive(chanInterf chan<- interface{}, addr string) error {
 
 		// }
 
-		red.Close()
+		// red.Close()
+		// if connect.
 
 	}
 
