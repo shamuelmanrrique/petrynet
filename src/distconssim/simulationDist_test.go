@@ -1,11 +1,13 @@
 package distconssim
 
 import (
+	"fmt"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 	"testing"
 )
 
-func TestSubRed0(t *testing.T) {
+func TestSubNet0(t *testing.T) {
+	conects := u.NewConnec(u.LocalIP3s)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T0
@@ -32,13 +34,23 @@ func TestSubRed0(t *testing.T) {
 				},
 			},
 		},
+		Pre: Incidence{
+			1: conects.GetConnection(1),
+			3: conects.GetConnection(2),
+		},
+		Post: Incidence{
+			1: conects.GetConnection(1),
+			3: conects.GetConnection(2),
+		},
 	}
-	var connect *u.Connect
-	ms := MakeMotorSimulation(lfs, connect)
+	ms := MakeMotorSimulation(lfs, conects.GetConnection(0))
+	fmt.Println(ms)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
 
-func TestSubRed1(t *testing.T) {
+func TestSubNet1(t *testing.T) {
+	conects := u.NewConnec(u.LocalIP3s)
+	fmt.Println(*conects[1])
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T1
@@ -64,13 +76,19 @@ func TestSubRed1(t *testing.T) {
 				},
 			},
 		},
+		Pre: Incidence{
+			0: conects.GetConnection(0),
+		},
+		Post: Incidence{
+			5: conects.GetConnection(0),
+		},
 	}
-	var connect *u.Connect
-	ms := MakeMotorSimulation(lfs, connect)
+	ms := MakeMotorSimulation(lfs, conects.GetConnection(1))
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
 
-func TestSubRed2(t *testing.T) {
+func TestSubNet2(t *testing.T) {
+	conects := u.NewConnec(u.LocalIP3s)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T3
@@ -96,6 +114,12 @@ func TestSubRed2(t *testing.T) {
 				},
 			},
 		},
+		Pre: Incidence{
+			0: conects.GetConnection(0),
+		},
+		Post: Incidence{
+			5: conects.GetConnection(0),
+		},
 	}
 	var connect *u.Connect
 	ms := MakeMotorSimulation(lfs, connect)
@@ -103,10 +127,6 @@ func TestSubRed2(t *testing.T) {
 }
 
 /*
-func TestTransition(t *testing.T) {
-
-}
-
 func TestLefs(t *testing.T) {
 
 }

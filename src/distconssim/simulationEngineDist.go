@@ -98,9 +98,10 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 			// fmt.Println(addr)
 			// TODO aun no me queda claro lo que voy a enviar
 			message := u.Message{
-				To: self.IlMisLefs.Post[lEvent.ITransition],
+				To: self.IlMisLefs.Post[lEvent.ITransition].GetIDSubRed(),
+				// To: self.IlMisLefs.Post[lEvent.ITransition],
 				//TODO
-				From: self.Connect.GetId(),
+				// From: self.Connect.GetId(),
 				Pack: lEvent,
 			}
 			cm.Send(message, message.GetTo())

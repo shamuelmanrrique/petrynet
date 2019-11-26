@@ -2,15 +2,19 @@ package distconssim
 
 import (
 	"fmt"
+	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
+
+// Incidence is a dictionary of incidence  Pre, Post
+type Incidence map[IndGlobalTrans]*u.Connect
 
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {
-	Post, Pre     map[IndGlobalTrans]string //
-	Lookout       map[string]TypeClock      //
-	SubNet        TransitionList            // Slice de transiciones de esta subred
-	IsTransSensib StackTransitions          // Identificadores de las transiciones sensibilizadas para
-	IlEvents      EventList                 //Lista de eventos a procesar
+	Post, Pre     Incidence            //
+	Lookout       map[string]TypeClock //
+	SubNet        TransitionList       // Slice de transiciones de esta subred
+	IsTransSensib StackTransitions     // Identificadores de las transiciones sensibilizadas para
+	IlEvents      EventList            //Lista de eventos a procesar
 
 }
 
