@@ -34,7 +34,7 @@ func Receive(chanInterf chan<- interface{}, connect *u.Connect) error {
 		decoder = gob.NewDecoder(red)
 		err = decoder.Decode(&pack)
 		u.Error(err, "Receive error  \n")
-		fmt.Sprintln()
+		fmt.Sprintln(pack)
 		// chanInterf <- pack
 
 		// log.Println("[Receive] PACK", pack)
