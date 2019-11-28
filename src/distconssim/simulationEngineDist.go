@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -58,6 +59,7 @@ COMENTARIOS:
 func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock TypeClock) {
 	for self.IlMisLefs.ThereSensitive() { //while
 		liCodTrans := self.IlMisLefs.GetSensitive()
+		// fmt.Println("-----------------------------------------------------------------SED-FIreEnabled", liCodTrans)
 		self.IlMisLefs.Shoot(liCodTrans)
 
 		// Anotar el Resultado que disparo la liCodTrans en tiempoaiLocalClock
@@ -86,20 +88,27 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 		lEvent = self.IlMisLefs.GetFirstEvent()
 
 		IDtrans := lEvent.GetTransition()
+		// fmt.Println("------------------********--------------------------SED IDTRA-", IDtrans)
+
 		if IDtrans < 0 {
 			fmt.Println("Transicion Remota")
-			lEvent.SetTransition(IDtrans * (-1))
-
-			// // m := self.IlMisLefs.Post[trans]
-			// fmt.Println("connection to send", self.IlMisLefs.Post[IDtrans])
-			// message := u.Message{
-			// 	To: m.GetIDSubRed(),
-			// 	// To: self.IlMisLefs.Post[lEvent.ITransition],
-			// 	//TODO
-			// 	// From: self.Connect.GetId(),
-			// 	Pack: lEvent,
-			// }
-			// cm.Send(message, message.GetTo())
+			IDtrans *= -1
+			lEvent.SetTransition(IDtrans)
+			fmt.Println("---------------------------22", IDtrans)
+			fmt.Println("---------------------------SAl", self.IlMisLefs.Post)
+			fmt.Println("---------------------------subredTo", self.IlMisLefs.Post[IDtrans].GetIDSubRed())
+			fmt.Println("---------------------------subredfrom", self.connect.GetIDSubRed())
+			message := u.Message{
+				// Pack: lEvent}
+				// message.To = self.IlMisLefs.Post[IDtrans].GetIDSubRed()
+				// message.From = self.connect.GetIDSubRed()
+				To:   self.IlMisLefs.Post[IDtrans].GetIDSubRed(),
+				From: self.connect.GetIDSubRed(),
+				Pack: lEvent,
+			}
+			fmt.Println("******************************* SED", message)
+			// addr := self.IlMisLefs.Post[IDtrans].GetIp()
+			cm.Send(message, message.GetTo())
 		} else {
 			// Establecer nuevo valor de la funcion
 			self.IlMisLefs.UpdateFuncValue(lEvent.ITransition,
@@ -206,7 +215,7 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
-	// u.DistMsm(self.connect.GetIDSubRed())
+	fmt.Println(*self)
 	ldInit := time.Now()
 
 	// Inicializamos el reloj local
@@ -233,6 +242,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		// Si existen eventos para el reloj local los tratamos
 		// ------------------------------------------------------------------
 		if self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
+			fmt.Println("-----------------------------------------------------------------SIMUlate-LReloj", self.IlRelojLocal)
 			self.TreatEvent(self.IlRelojLocal)
 		}
 

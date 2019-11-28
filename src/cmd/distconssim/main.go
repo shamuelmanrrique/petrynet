@@ -1,10 +1,19 @@
 package main
 
 import (
+	"encoding/gob"
 	dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
 
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
+
+func init() {
+	gob.Register(u.Message{})
+	gob.Register(dcs.EventDist{})
+	gob.Register(dcs.LefsDist{})
+	gob.Register(dcs.TransitionConstant{})
+	gob.Register(dcs.TransitionList{})
+}
 
 func main() {
 	//t.Skip("skipping test simulation.")
@@ -40,7 +49,7 @@ func main() {
 			},
 		},
 	}
-	var connect *u.Connect
+	var connect u.Connect
 	ms := dcs.MakeMotorSimulation(lfs, connect)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
