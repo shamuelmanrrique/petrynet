@@ -1,10 +1,10 @@
 package distconssim
 
 import (
-	"fmt"
+	"testing"
+
 	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
-	"testing"
 )
 
 func TestSubNet0(t *testing.T) {
@@ -47,7 +47,6 @@ func TestSubNet0(t *testing.T) {
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go cm.Receive(make(chan<- interface{}), IDSubNet)
-	fmt.Println(ms)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 }
 

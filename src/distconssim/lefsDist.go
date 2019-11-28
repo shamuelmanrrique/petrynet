@@ -6,7 +6,7 @@ import (
 )
 
 // Incidence is a dictionary of incidence  Pre, Post
-type Incidence map[IndGlobalTrans]*u.Connect
+type Incidence map[IndGlobalTrans]u.Connect
 
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {

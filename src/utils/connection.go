@@ -10,7 +10,7 @@ var RemoteIP2s = []string{"155.210.154.207:1400", "155.210.154.208:1400", "155.2
 var Command = make(map[string]string)
 
 // Connections is an array of connection
-type Connections []*Connect
+type Connections []Connect
 
 // Connection is a interface
 type Connection interface {
@@ -29,23 +29,23 @@ type Connect struct {
 	Accept             bool
 }
 
-func (c *Connect) GetIDSubRed() string {
+func (c Connect) GetIDSubRed() string {
 	return c.IDSubRed
 }
 
-func (c *Connect) GetIp() string {
+func (c Connect) GetIp() string {
 	return c.IP
 }
 
-func (c *Connect) GetPort() string {
+func (c Connect) GetPort() string {
 	return c.Port
 }
 
-func (c *Connect) GetAccept() bool {
+func (c Connect) GetAccept() bool {
 	return c.Accept
 }
 
-func (c *Connect) GetIds() []string {
+func (c Connect) GetIds() []string {
 	return c.IDs
 }
 
@@ -54,7 +54,7 @@ func NewConnec(IPs []string) Connections {
 	var connections Connections
 	for _, val := range IPs {
 		addr := strings.Split(val, ":")
-		conn := new(Connect)
+		conn := Connect{}
 		conn.IP = addr[0]
 		conn.Port = addr[1]
 		conn.Accept = false
@@ -65,11 +65,11 @@ func NewConnec(IPs []string) Connections {
 }
 
 // GetConnection return connection by Index in slices
-func (c Connections) GetConnection(n int) *Connect {
+func (c Connections) GetConnection(n int) Connect {
 	for i, connect := range c {
 		if i == n {
 			return connect
 		}
 	}
-	return &Connect{}
+	return Connect{}
 }

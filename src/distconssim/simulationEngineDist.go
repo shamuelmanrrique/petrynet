@@ -3,9 +3,7 @@ package distconssim
 import (
 	"fmt"
 	"time"
-	// "time"
 
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -20,7 +18,7 @@ type ResultadoTransition struct {
 
 // SimulationEngineDist is the basic data type for simulation execution
 type SimulationEngineDist struct {
-	connect      *u.Connect            // Embided connect struct
+	connect      u.Connect             // Embided connect struct
 	IlMisLefs    LefsDist              // Estructura de datos del simulador
 	IlRelojLocal TypeClock             // Valor de mi reloj local
 	IvResults    []ResultadoTransition // slice dinamico con los resultados
@@ -37,7 +35,7 @@ type SimulationEngineDist struct {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func MakeMotorSimulation(alLaLef LefsDist, connect *u.Connect) *SimulationEngineDist {
+func MakeMotorSimulation(alLaLef LefsDist, connect u.Connect) *SimulationEngineDist {
 	m := &SimulationEngineDist{}
 	m.IlMisLefs = alLaLef
 	m.connect = connect
@@ -87,25 +85,21 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 	for self.IlMisLefs.ThereEvent(ai_tiempo) {
 		lEvent = self.IlMisLefs.GetFirstEvent()
 
-		// Si el valor de la transicion es negativo,indica que pertenece
-		// a otra subred y el codigo global de la transicion es pasarlo
-		// a positivo y restarle 1
-		// ej: -3 -> transicion -(-3) -1 = 2
-		if lEvent.ITransition < 0 {
+		IDtrans := lEvent.GetTransition()
+		if IDtrans < 0 {
 			fmt.Println("Transicion Remota")
-			lEvent.ITransition *= -1
-			// lEvent.ITransition = Abs(lEvent.ITransition)
-			// addr := self.IlMisLefs.Post[lEvent.ITransition]
-			// fmt.Println(addr)
-			// TODO aun no me queda claro lo que voy a enviar
-			message := u.Message{
-				To: self.IlMisLefs.Post[lEvent.ITransition].GetIDSubRed(),
-				// To: self.IlMisLefs.Post[lEvent.ITransition],
-				//TODO
-				// From: self.Connect.GetId(),
-				Pack: lEvent,
-			}
-			cm.Send(message, message.GetTo())
+			lEvent.SetTransition(IDtrans * (-1))
+
+			// // m := self.IlMisLefs.Post[trans]
+			// fmt.Println("connection to send", self.IlMisLefs.Post[IDtrans])
+			// message := u.Message{
+			// 	To: m.GetIDSubRed(),
+			// 	// To: self.IlMisLefs.Post[lEvent.ITransition],
+			// 	//TODO
+			// 	// From: self.Connect.GetId(),
+			// 	Pack: lEvent,
+			// }
+			// cm.Send(message, message.GetTo())
 		} else {
 			// Establecer nuevo valor de la funcion
 			self.IlMisLefs.UpdateFuncValue(lEvent.ITransition,
@@ -212,8 +206,8 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
-	u.DistMsm(self.connect.IDSubRed)
-	ld_ini := time.Now()
+	// u.DistMsm(self.connect.GetIDSubRed())
+	ldInit := time.Now()
 
 	// Inicializamos el reloj local
 	// ------------------------------------------------------------------
@@ -263,7 +257,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		}
 	}
 
-	elapsedTime := time.Since(ld_ini)
+	elapsedTime := time.Since(ldInit)
 
 	// Devolver los resultados de la simulacion
 	self.RetornResults()

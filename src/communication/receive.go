@@ -12,7 +12,7 @@ import (
 
 // Receive TODO
 // func Receive( sim *dcs.SimulationEngineDist, connect *u.Connect ) error {
-func Receive(chanInterf chan<- interface{}, connect *u.Connect) error {
+func Receive(chanInterf chan<- interface{}, connect u.Connect) error {
 	// time.Sleep(time.Duration(10) * time.Second)
 	time.Sleep(5 * time.Second)
 	var listener net.Listener
