@@ -296,3 +296,6 @@ func (self LefsDist) PrintEvent() {
 	fmt.Println("-----------Final lista eventos---------")
 	fmt.Println("FINAL ESTRUCTURA LefsDist")
 }
+
+
+

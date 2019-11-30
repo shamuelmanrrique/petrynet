@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -26,21 +25,17 @@ func TestConnect(t *testing.T) {
 }
 
 func TestSendReceive(t *testing.T) {
-	// gob.Register(u.Message{})
-	// gob.Register(EventDist{})
-	// gob.Register(LefsDist{})
-	// gob.Register(TransitionConstant{})
-	// gob.Register(TransitionList{})
 	even := EventDist{ITime: 4}
 	addr := "127.0.1.1:5002"
-	con := u.Connect{IDSubRed: "127.0.1.1:5002"}
-	go cm.Receive(make(chan<- interface{}), con)
+	// con := u.Connect{IDSubRed: "127.0.1.1:5002"}
+	// sim := new(SimulationEngineDist)
+	// go Receive(sim, con)
 	time.Sleep(4 * time.Second)
 	message := u.Message{
 		To:   addr,
 		From: addr,
 		Pack: even,
 	}
-	cm.Send(message, addr)
+	Send(message, addr)
 
 }

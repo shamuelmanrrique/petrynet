@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -45,7 +44,7 @@ func MakeMotorSimulation(alLaLef LefsDist, connect u.Connect) *SimulationEngineD
 
 /*
 -----------------------------------------------------------------
-   METODO: Shoot_transiciones_sensibilizadas
+   METODO: FireEnabledTransitions
    RECIBE: Valor del reloj local
    DEVUELVE: Nada
    PROPOSITO: Accede a la lista de transiciones sensibilizadas y procede con su
@@ -66,6 +65,23 @@ func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock TypeClock)
 		self.IvResults = append(self.IvResults,
 			ResultadoTransition{liCodTrans, aiLocalClock})
 	}
+}
+
+/*
+-----------------------------------------------------------------
+   METODO: TreatMenssage
+   RECIBE: Valor del reloj local
+   DEVUELVE: Nada
+   PROPOSITO: Accede a la lista de transiciones sensibilizadas y procede con su
+	   disparo, lo que generara nuevos eventos y modificara el marcado de la
+		transicion disparada. Igualmente anotara en los resultados el disparo de
+		cada transicion para el reloj actual dado
+   HISTORIA DE CAMBIOS:
+COMENTARIOS:
+-----------------------------------------------------------------
+*/
+func (self *SimulationEngineDist) TreatMenssage(msm u.Message) {
+	fmt.Println("todo")
 }
 
 /*
@@ -108,7 +124,7 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 			}
 			fmt.Println("******************************* SED", message)
 			// addr := self.IlMisLefs.Post[IDtrans].GetIp()
-			cm.Send(message, message.GetTo())
+			Send(message, message.GetTo())
 		} else {
 			// Establecer nuevo valor de la funcion
 			self.IlMisLefs.UpdateFuncValue(lEvent.ITransition,
@@ -133,24 +149,25 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) WaitAgents() {
-	fmt.Println("TODO")
-	// subNets := self.IlMisLefs.Pre
-	// // TODOREVISAR POR STRUCT
-	// self.Connect.Accept = false
-	// for idTrans, addr := range subNets {
-	// 	message := u.Message{
-	// 		To: addr,
-	// 		//TODO
-	// 		From: self.Connect.GetId(),
-	// 		Pack: idTrans,
-	// 	}
-	// 	self.IlMisLefs.Lookout[addr] = -1
-	// 	cm.Send(message, message.GetTo())
-	// }
+	fmt.Println("Wait agent")
+	subNets := self.IlMisLefs.Pre
+	for idTrans, conn := range subNets {
+		message := u.Message{
+			To:   conn.GetIDSubRed(),
+			From: self.connect.GetIDSubRed(),
+			Pack: idTrans,
+		}
+		self.IlMisLefs.Lookout[conn.GetIDSubRed()] = TypeClock(-1)
+		Send(message, message.GetTo())
+	}
 
-	// for !self.Connect.GetAccept() {
-	// }
-	// return
+	// Debo encontrar la manera de validar que me llegaron todos
+	// los lookout de las subredes
+	for !self.connect.GetAccept() {
+		// for !self.connect.GetAccept() {
+
+	}
+	return
 
 }
 

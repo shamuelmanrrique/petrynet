@@ -1,4 +1,4 @@
-package communication
+package distconssim
 
 import (
 	"encoding/gob"
@@ -10,7 +10,7 @@ import (
 )
 
 // Receive a msm and check by type of packet received
-func Receive(chanInterf chan<- interface{}, connect u.Connect) error {
+func Receive(sim *SimulationEngineDist, connect u.Connect) error {
 	var listener net.Listener
 	var decoder *gob.Decoder
 	var pack interface{}
@@ -33,9 +33,8 @@ receiveChannel:
 		log.Println("[Receive] PACK", pack)
 		switch packNew := pack.(type) {
 		case u.Message:
-			// chanMes <- packNew
+			sim.TreatMenssage(packNew)
 			log.Println("[ReceiveM] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
-
 		default:
 			u.Error(nil, "ERROR Receive type")
 		}

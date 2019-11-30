@@ -1,4 +1,4 @@
-package communication
+package distconssim
 
 import (
 	"encoding/gob"
@@ -10,8 +10,6 @@ import (
 
 // Send function
 func Send(pack interface{}, addr string) error {
-	// gob.Register(u.Message{})
-	// gob.Register(u.Connect{})
 	var connection net.Conn
 	var err error
 	var encoder *gob.Encoder

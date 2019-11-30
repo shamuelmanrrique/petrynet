@@ -5,7 +5,6 @@ import (
 	"testing"
 	"time"
 
-	cm "github.com/shamuelmanrrique/petrynet/src/communication"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -50,8 +49,7 @@ func TestSubNet0(t *testing.T) {
 	}
 	// fmt.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
-	fmt.Println("^^^^^^^^^^^^ESCUCHANDO", IDSubNet)
-	go cm.Receive(make(chan<- interface{}), IDSubNet)
+	go Receive(ms, IDSubNet)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	time.Sleep(10 * time.Second)
 }
@@ -96,7 +94,8 @@ func TestSubNet1(t *testing.T) {
 	// ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	fmt.Println("^^^^^^^^^^^^ESCUCHANDO", IDSubNet)
-	cm.Receive(make(chan<- interface{}), IDSubNet)
+	// Receive(ms, IDSubNet)
+	go Receive(ms, IDSubNet)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	time.Sleep(10 * time.Second)
 }
@@ -137,13 +136,8 @@ func TestSubNet2(t *testing.T) {
 			0: conects.GetConnection(0),
 		},
 	}
-	// var connect *u.Connect
-	// ms := MakeMotorSimulation(lfs, connect)
-	// ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	ms := MakeMotorSimulation(lfs, IDSubNet)
-	fmt.Println("^^^^^^^^^^^^ESCUCHANDO", IDSubNet)
-	// go cm.Receive(make(chan<- interface{}), IDSubNet)
-	cm.Receive(make(chan<- interface{}), IDSubNet)
+	go Receive(ms, IDSubNet)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	time.Sleep(10 * time.Second)
 }

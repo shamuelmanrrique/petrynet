@@ -75,3 +75,9 @@ func (c Connections) GetConnection(n int) Connect {
 	}
 	return Connect{}
 }
+
+// func (c *u.Connect) SetAddrs(inc Incidence) {
+// 	for _, addr := range inc {
+// 		*c.IDs = append(*c.IDs, addr)
+// 	}
+// }
