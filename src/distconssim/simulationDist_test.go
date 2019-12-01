@@ -60,10 +60,12 @@ func TestSubNet0(t *testing.T) {
 	// fmt.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
-	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	// time.Sleep(2 * time.Second)
+	init := TypeClock(u.InitTransition)
+	end := TypeClock(u.EndTransition)
+	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	fmt.Println("SDT Termino en 10s")
-	time.Sleep(10 * time.Second)
+	time.Sleep(160 * time.Second)
 }
 
 func TestSubNet1(t *testing.T) {
@@ -95,18 +97,20 @@ func TestSubNet1(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			5: conects.GetConnection(0),
+			0: conects.GetConnection(0),
 		},
 		Post: Incidence{
-			0: conects.GetConnection(0),
+			5: conects.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	time.Sleep(4 * time.Second)
-	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	// time.Sleep(2 * time.Second)
+	init := TypeClock(u.InitTransition)
+	end := TypeClock(u.EndTransition)
+	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	fmt.Println("SDT Termino en 10s")
-	time.Sleep(10 * time.Second)
+	time.Sleep(160 * time.Second)
 }
 
 func TestSubNet2(t *testing.T) {
@@ -138,16 +142,18 @@ func TestSubNet2(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			5: conects.GetConnection(0),
+			0: conects.GetConnection(0),
 		},
 		Post: Incidence{
-			0: conects.GetConnection(0),
+			5: conects.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	time.Sleep(3 * time.Second)
-	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	// time.Sleep(2 * time.Second)
+	init := TypeClock(u.InitTransition)
+	end := TypeClock(u.EndTransition)
+	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	fmt.Println("SDT Termino en 10s")
-	time.Sleep(10 * time.Second)
+	time.Sleep(160 * time.Second)
 }

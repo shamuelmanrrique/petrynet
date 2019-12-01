@@ -2,6 +2,7 @@ package distconssim
 
 import (
 	"fmt"
+
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
@@ -110,7 +111,8 @@ func (self LefsDist) TimeFirstEvent() TypeClock {
    PROPOSITO:
 -----------------------------------------------------------------
 */
-func (self *LefsDist) CheckLookout() {
+func (self *LefsDist) CheckLookout() bool {
+	var aux = false
 	for _, lookahead := range self.Lookout {
 		if lookahead < 0 {
 			Active = false
@@ -118,6 +120,8 @@ func (self *LefsDist) CheckLookout() {
 			Active = true
 		}
 	}
+	aux = Active
+	return aux
 }
 
 /*

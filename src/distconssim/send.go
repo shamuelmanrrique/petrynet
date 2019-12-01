@@ -14,11 +14,12 @@ func Send(pack interface{}, addr string) error {
 	var err error
 	var encoder *gob.Encoder
 
+	// log.Println(" ++> SEND+++++++++++++++:", addr)
 	connection, err = net.Dial("tcp", addr)
 	u.Error(err, "Error Sending message")
 	defer connection.Close()
 
-	log.Println(" ++> SEND Marker:", addr)
+	log.Println(" ++> SEND Message:", addr, "MSM", pack)
 	encoder = gob.NewEncoder(connection)
 	// err = encoder.Encode(&pack)
 	err = encoder.Encode(&pack)

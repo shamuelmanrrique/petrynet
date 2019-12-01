@@ -27,6 +27,15 @@ func TestConnect(t *testing.T) {
 
 }
 
+func TestMinTime(t *testing.T) {
+	var value = map[string]TypeClock{"127.0.1.1:5000": 3, "127.0.1.1:5001": 1, "127.0.1.1:5002": 2}
+	// d = {320:1, 321:0, 322:3}
+	// m := min(value, key=lambda value: value[k])
+	// u.NewConnec(LocalIPs)
+	fmt.Println(value)
+
+}
+
 func TestSendReceive(t *testing.T) {
 	even := &EventDist{ITime: 4}
 	tim := TypeClock(1)

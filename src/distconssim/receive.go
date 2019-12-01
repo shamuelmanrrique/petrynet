@@ -2,7 +2,6 @@ package distconssim
 
 import (
 	"encoding/gob"
-	"log"
 	"net"
 
 	// dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
@@ -32,7 +31,7 @@ receiveChannel:
 
 		switch packNew := pack.(type) {
 		case *u.Message:
-			log.Println("[Receive] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
+			// log.Println("[Receive] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
 			go sim.TreatMenssage(packNew)
 		default:
 			u.Error(nil, "ERROR Receive type")
