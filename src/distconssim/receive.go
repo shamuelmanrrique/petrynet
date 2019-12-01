@@ -32,9 +32,9 @@ receiveChannel:
 
 		log.Println("[Receive] PACK", pack)
 		switch packNew := pack.(type) {
-		case u.Message:
-			sim.TreatMenssage(packNew)
+		case *u.Message:
 			log.Println("[ReceiveM] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
+			// go sim.TreatMenssage(packNew)
 		default:
 			u.Error(nil, "ERROR Receive type")
 		}

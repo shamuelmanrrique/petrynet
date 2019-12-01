@@ -81,7 +81,30 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) TreatMenssage(msm u.Message) {
-	fmt.Println("todo")
+	switch pack := msm.GetPack().(type) {
+	case EventDist:
+		IDTrans := pack.GetTransition()
+		pack.SetTransition(self.GetIDTransition(IDTrans))
+		self.IlMisLefs.AddEvents(pack)
+		fmt.Println("Evendist")
+
+	case TypeClock:
+		self.IlMisLefs.Lookout[msm.GetFrom()] = pack
+		self.IlMisLefs.CheckLookout()
+		fmt.Println("tyclock")
+
+	case IndGlobalTrans:
+		timeD := self.IlRelojLocal + self.IlMisLefs.TimeDuration(pack)
+		message := u.Message{
+			To:   msm.GetFrom(),
+			From: self.connect.GetIDSubRed(),
+			Pack: timeD,
+		}
+		Send(message, message.GetTo())
+		fmt.Println("default")
+	default:
+		fmt.Println("default")
+	}
 }
 
 /*
@@ -110,14 +133,11 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 			fmt.Println("Transicion Remota")
 			IDtrans *= -1
 			lEvent.SetTransition(IDtrans)
-			fmt.Println("---------------------------22", IDtrans)
-			fmt.Println("---------------------------SAl", self.IlMisLefs.Post)
-			fmt.Println("---------------------------subredTo", self.IlMisLefs.Post[IDtrans].GetIDSubRed())
-			fmt.Println("---------------------------subredfrom", self.connect.GetIDSubRed())
+			// fmt.Println("---------------------------22", IDtrans)
+			// fmt.Println("---------------------------SAl", self.IlMisLefs.Post)
+			// fmt.Println("---------------------------subredTo", self.IlMisLefs.Post[IDtrans].GetIDSubRed())
+			// fmt.Println("---------------------------subredfrom", self.connect.GetIDSubRed())
 			message := u.Message{
-				// Pack: lEvent}
-				// message.To = self.IlMisLefs.Post[IDtrans].GetIDSubRed()
-				// message.From = self.connect.GetIDSubRed()
 				To:   self.IlMisLefs.Post[IDtrans].GetIDSubRed(),
 				From: self.connect.GetIDSubRed(),
 				Pack: lEvent,
@@ -151,21 +171,29 @@ COMENTARIOS:
 func (self *SimulationEngineDist) WaitAgents() {
 	fmt.Println("Wait agent")
 	subNets := self.IlMisLefs.Pre
+	fmt.Println("SED ------> ", subNets)
 	for idTrans, conn := range subNets {
+		fmt.Println("+++++++++++++++++IDTRANS", idTrans, "-----------CONN: ", conn)
 		message := u.Message{
 			To:   conn.GetIDSubRed(),
 			From: self.connect.GetIDSubRed(),
 			Pack: idTrans,
 		}
+		// if self.IlMisLefs.Lookout == nil {
+		// 	self.IlMisLefs.Lookout = map[string]TypeClock{}
+		// }
+		fmt.Println("+++++++++++++++++MESSAGE", message, "-----------: ")
+		fmt.Println(self.IlMisLefs.Lookout)
+		self.IlMisLefs.SetLookout(conn.GetIDSubRed(), TypeClock(-1))
+		// fmt.Println(self.IlMisLefs.Lookout)
+		// [conn.GetIDSubRed()] = TypeClock(-1)
 		self.IlMisLefs.Lookout[conn.GetIDSubRed()] = TypeClock(-1)
+		fmt.Println(self.IlMisLefs.Lookout)
 		Send(message, message.GetTo())
 	}
 
-	// Debo encontrar la manera de validar que me llegaron todos
-	// los lookout de las subredes
-	for !self.connect.GetAccept() {
-		// for !self.connect.GetAccept() {
-
+	// waiting receive all lookout
+	for !Active {
 	}
 	return
 
@@ -220,6 +248,29 @@ func (self SimulationEngineDist) RetornResults() string {
 
 /*
 -----------------------------------------------------------------
+   METODO: GetIDTransition
+   RECIBE: Valor del reloj local actual para el que queremos saber las
+	  transiciones sensibilizadas
+   DEVUELVE: OK si todo fue bien o ERROR en caso contrario
+   PROPOSITO: Que esta funcion sirva para recorrerse toda la lista de transiciones
+	   e Inserttar aquellas en la pila de transiciones sensibilizadas.
+COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
+	   invocar a esta funcion cuando ya hayan sido a�adidas todas las transiciones.
+-----------------------------------------------------------------
+*/
+func (self *SimulationEngineDist) GetIDTransition(id IndGlobalTrans) IndGlobalTrans {
+
+	for _, transition := range self.IlMisLefs.SubNet {
+		if id == transition.IDGlobal {
+			return IndGlobalTrans(transition.IDLocal)
+		}
+	}
+
+	return IndGlobalTrans(id)
+}
+
+/*
+-----------------------------------------------------------------
    METODO: Simulate
    RECIBE: Ciclo con el que partimos (por si el marcado recibido no
 				se corresponde al inicial sino a uno obtenido tras Simulate
@@ -232,7 +283,6 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
-	fmt.Println(*self)
 	ldInit := time.Now()
 
 	// Inicializamos el reloj local
@@ -273,7 +323,10 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		// el reloj local
 		// ------------------------------------------------------------------
 		if !self.IlMisLefs.ThereSensitive() {
-			// self.WaitAgents()
+			if self.IlRelojLocal == 0 {
+				time.Sleep(5 * time.Second)
+			}
+			self.WaitAgents()
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
 				self.IlRelojLocal = self.AdvanceTime()
 

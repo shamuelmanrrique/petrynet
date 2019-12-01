@@ -8,6 +8,9 @@ import (
 // Incidence is a dictionary of incidence  Pre, Post
 type Incidence map[IndGlobalTrans]u.Connect
 
+// Active check if get all lookout before init
+var Active bool = false
+
 // LefsDist es el tipo de datos principal que gestiona el disparo de transiciones.
 type LefsDist struct {
 	Post, Pre     Incidence            //
@@ -31,7 +34,10 @@ func NewLefsDist(listaTransiciones TransitionList) LefsDist {
 	l.SubNet = listaTransiciones
 	l.IsTransSensib = nil
 	l.IlEvents = nil
-
+	// l.Lookout = map[string]TypeClock{}
+	// l.Lookout = make(map[string]TypeClock)
+	// l.Pre = make(Incidence)
+	// l.Post = make(Incidence)
 	return l
 }
 
@@ -46,6 +52,22 @@ func NewLefsDist(listaTransiciones TransitionList) LefsDist {
 func (self *LefsDist) AddEvents(ae_evento EventDist) bool {
 	self.IlEvents.Insert(ae_evento)
 	return true
+}
+
+/*
+-----------------------------------------------------------------
+   METODO: AddEvents
+   RECIBE:
+   DEVUELVE:
+   PROPOSITO:
+-----------------------------------------------------------------
+*/
+func (self *LefsDist) SetLookout(str string, tim TypeClock) {
+	if self.Lookout == nil {
+		self.Lookout = map[string]TypeClock{}
+	}
+
+	self.Lookout[str] = tim
 }
 
 /*
@@ -78,6 +100,42 @@ func (self LefsDist) TimeFirstEvent() TypeClock {
 	} else {
 		return -1
 	}
+}
+
+/*
+-----------------------------------------------------------------
+   METODO: CheckLookout
+   RECIBE:
+   DEVUELVE:
+   PROPOSITO:
+-----------------------------------------------------------------
+*/
+func (self *LefsDist) CheckLookout() {
+	for _, lookahead := range self.Lookout {
+		if lookahead < 0 {
+			Active = false
+		} else {
+			Active = true
+		}
+	}
+}
+
+/*
+-----------------------------------------------------------------
+   METODO: AddEvents
+   RECIBE:
+   DEVUELVE:
+   PROPOSITO:
+-----------------------------------------------------------------
+*/
+func (self *LefsDist) TimeDuration(id IndGlobalTrans) TypeClock {
+	for _, trans := range self.SubNet {
+		if trans.IDGlobal == id {
+			return trans.IiShotDuration
+		}
+	}
+	// Chequear este caso
+	return TypeClock(1)
 }
 
 /*
@@ -296,6 +354,3 @@ func (self LefsDist) PrintEvent() {
 	fmt.Println("-----------Final lista eventos---------")
 	fmt.Println("FINAL ESTRUCTURA LefsDist")
 }
-
-
-

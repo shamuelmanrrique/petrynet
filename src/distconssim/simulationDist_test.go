@@ -8,6 +8,16 @@ import (
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
+// func init() {
+// 	gob.Register(u.Message{})
+// 	gob.Register(EventDist{})
+// 	gob.Register(LefsDist{})
+// 	// gob.Register(TypeClock)
+// 	// gob.Register(IndGlobalTrans)
+// 	gob.Register(TransitionConstant{})
+// 	gob.Register(TransitionList{})
+// }
+
 func TestSubNet0(t *testing.T) {
 	time.Sleep(4 * time.Second)
 	conects := u.NewConnec(u.LocalIP3s)

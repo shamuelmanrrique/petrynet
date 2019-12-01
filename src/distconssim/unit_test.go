@@ -9,11 +9,13 @@ import (
 )
 
 func init() {
-	gob.Register(u.Message{})
-	gob.Register(EventDist{})
-	gob.Register(LefsDist{})
-	gob.Register(TransitionConstant{})
-	gob.Register(TransitionList{})
+	gob.Register(&u.Message{})
+	// gob.Register(&EventDist{})
+	// gob.Register(&LefsDist{})
+	// // gob.Register(TypeClock{})
+	// // gob.Register(IndGlobalTrans{})
+	// gob.Register(&TransitionConstant{})
+	// gob.Register(&TransitionList{})
 }
 
 // TestConnections create connections
@@ -27,9 +29,9 @@ func TestConnect(t *testing.T) {
 func TestSendReceive(t *testing.T) {
 	even := EventDist{ITime: 4}
 	addr := "127.0.1.1:5002"
-	// con := u.Connect{IDSubRed: "127.0.1.1:5002"}
-	// sim := new(SimulationEngineDist)
-	// go Receive(sim, con)
+	con := u.Connect{IDSubRed: "127.0.1.1:5002"}
+	sim := new(SimulationEngineDist)
+	go Receive(sim, con)
 	time.Sleep(4 * time.Second)
 	message := u.Message{
 		To:   addr,
