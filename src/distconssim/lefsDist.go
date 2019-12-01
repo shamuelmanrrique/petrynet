@@ -2,6 +2,7 @@ package distconssim
 
 import (
 	"fmt"
+	"log"
 
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
@@ -111,17 +112,36 @@ func (self LefsDist) TimeFirstEvent() TypeClock {
    PROPOSITO:
 -----------------------------------------------------------------
 */
-func (self *LefsDist) CheckLookout() bool {
-	var aux = false
+func (self *LefsDist) CheckLookout() {
+	Active = true
 	for _, lookahead := range self.Lookout {
 		if lookahead < 0 {
 			Active = false
-		} else {
-			Active = true
+			break
 		}
 	}
-	aux = Active
-	return aux
+}
+
+/*
+-----------------------------------------------------------------
+   METODO: MinTime
+   RECIBE:
+   DEVUELVE:
+   PROPOSITO:
+-----------------------------------------------------------------
+*/
+func (self *LefsDist) MinTime() TypeClock {
+	var min TypeClock
+	for _, addr := range self.Pre {
+		min = self.Lookout[addr.GetIDSubRed()]
+		break
+	}
+	for _, tim := range self.Lookout {
+		if tim < min {
+			min = tim
+		}
+	}
+	return min
 }
 
 /*
@@ -139,6 +159,7 @@ func (self *LefsDist) TimeDuration(id IndGlobalTrans) TypeClock {
 		}
 	}
 	// Chequear este caso
+	log.Println("******************ERROR***************************")
 	return TypeClock(1)
 }
 
@@ -199,14 +220,8 @@ func (self *LefsDist) GetSensitive() IndGlobalTrans {
 -----------------------------------------------------------------
 */
 func (self *LefsDist) GetFirstEvent() EventDist {
-	/* fmt.Println("Lista antes de eliminar primer evento :")
-	(*self).IlEvents.PrintEvent()
-	*/
 	le_evento := (*self).IlEvents.GetFirstEvent()
 	(*self).IlEvents.DeleteFirstEvent()
-	/*fmt.Println("Lista DESPUES de eliminar primer evento :")
-	(*self).IlEvents.PrintEvent()
-	*/
 	return le_evento
 }
 
@@ -301,7 +316,6 @@ func (self *LefsDist) Shoot(ilTr IndGlobalTrans) bool {
 
 		return true
 	} else {
-		//  Enviar a red remota
 		return false
 	}
 }

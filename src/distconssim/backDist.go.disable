@@ -59,6 +59,7 @@ COMENTARIOS:
 func (self *SimulationEngineDist) FireEnabledTransitions(clock TypeClock) {
 	for self.IlMisLefs.ThereSensitive() { //while
 		liCodTrans := self.IlMisLefs.GetSensitive()
+		// fmt.Println("-----------------------------------------------------------------SED-FIreEnabled", liCodTrans)
 		self.IlMisLefs.Shoot(liCodTrans)
 
 		// Anotar el Resultado que disparo la liCodTrans en tiempoaiLocalClock
@@ -83,17 +84,25 @@ COMENTARIOS:
 func (self *SimulationEngineDist) TreatMenssage(msm *u.Message) {
 	switch pack := msm.GetPack().(type) {
 	case *EventDist:
-		log.Println("SED[Receive] -EventDist ==> :", *pack, "MSM", *msm)
+		log.Println("SED[Receive] -TreatMenssage ==> EventDist:", *pack, "MSM", *msm)
 		IDTrans := pack.GetTransition()
 		pack.SetTransition(self.GetIDTransition(IDTrans))
+		log.Println("SED[Receive] -TreatMenssage ==> EventDist Modificate Even:", *pack)
 		self.IlMisLefs.AddEvents(*pack)
+
 	case TypeClock:
-		log.Println("SED[Receive] -TypeClock ==>  ", pack, "MSM", *msm)
+		log.Println("SED[Receive] -TreatMenssage ==> TypeClock ", pack, "MSM", *msm)
+		log.Println("SED[Receive] -PRELookout ==> TypeClock ", self.IlMisLefs.Lookout)
 		self.IlMisLefs.Lookout[msm.GetFrom()] = pack
+		log.Println("SED[Receive] -POSTLookout ==> TypeClock ", self.IlMisLefs.Lookout)
 		self.IlMisLefs.CheckLookout()
 
 	case IndGlobalTrans:
-		log.Println("SED[Receive] -IndGlobalTrans ==> (NULL) ", pack, "MSM", *msm)
+		// if !self.IlMisLefs.CheckLookout() {
+		// 	time.Sleep(2 * time.Second)
+		// 	fmt.Println("++++++++++++++++++++++Estoy IndGlobalTrans ", self.IlMisLefs.Lookout)
+		// }
+		log.Println("SED[Receive] -TreatMenssage ==> IndGlobalTrans(NULL) ", pack, "MSM", *msm)
 		timeD := self.IlRelojLocal + self.IlMisLefs.TimeDuration(pack)
 		message := &u.Message{
 			To:   msm.GetFrom(),
@@ -101,6 +110,8 @@ func (self *SimulationEngineDist) TreatMenssage(msm *u.Message) {
 			Pack: timeD,
 		}
 		Send(message, message.GetTo())
+	default:
+		fmt.Println("default")
 	}
 }
 
@@ -122,18 +133,25 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 
 	for self.IlMisLefs.ThereEvent(ai_tiempo) {
 		lEvent = self.IlMisLefs.GetFirstEvent()
+
 		IDtrans := lEvent.GetTransition()
+		// fmt.Println("------------------********--------------------------SED IDTRA-", IDtrans)
 
 		if IDtrans < 0 {
-			u.DistMsm("Send Event to Remote Transition")
+			fmt.Println("Transicion Remota")
 			IDtrans *= -1
 			lEvent.SetTransition(IDtrans)
-			// create msm with event
+			// fmt.Println("---------------------------EVENT", lEvent)
+			// fmt.Println("---------------------------POST", self.IlMisLefs.Post)
+			// fmt.Println("---------------------------subredTo", self.IlMisLefs.Post[IDtrans].GetIDSubRed())
+			// fmt.Println("---------------------------subredfrom", self.connect.GetIDSubRed())
 			message := &u.Message{
 				To:   self.IlMisLefs.Post[IDtrans].GetIDSubRed(),
 				From: self.connect.GetIDSubRed(),
 				Pack: &lEvent,
 			}
+			// fmt.Println("******************************* SED", message)
+			// addr := self.IlMisLefs.Post[IDtrans].GetIp()
 			Send(message, message.GetTo())
 		} else {
 			// Establecer nuevo valor de la funcion
@@ -161,19 +179,35 @@ COMENTARIOS:
 func (self *SimulationEngineDist) WaitAgents() {
 	u.DistUnic("Wait agent")
 	subNets := self.IlMisLefs.Pre
+	// fmt.Println("SED ------> ", subNets)
 	for idTrans, conn := range subNets {
+		// fmt.Println("+++++++++++++++++IDTRANS", idTrans, "-----------CONN: ", conn)
 		message := &u.Message{
 			To:   conn.GetIDSubRed(),
 			From: self.connect.GetIDSubRed(),
 			Pack: idTrans,
 		}
-		// Add element to lookout map
+		// if self.IlMisLefs.Lookout == nil {
+		// 	self.IlMisLefs.Lookout = map[string]TypeClock{}
+		// }
+		// fmt.Println("+++++++++++++++++MESSAGE", message, "-----------: ")
+		// fmt.Println(self.IlMisLefs.Lookout)
 		self.IlMisLefs.SetLookout(conn.GetIDSubRed(), TypeClock(-1))
-
-		// Send Lookahead
+		// fmt.Println(self.IlMisLefs.Lookout)
+		// [conn.GetIDSubRed()] = TypeClock(-1)
+		self.IlMisLefs.Lookout[conn.GetIDSubRed()] = TypeClock(-1)
+		// fmt.Println(self.IlMisLefs.Lookout)
 		Send(message, message.GetTo())
 	}
 
+	// waiting receive all lookout
+	// fmt.Println("++++++++++++++++++++++Waiting lookahead self.IlMisLefs.Lookout", self.IlMisLefs.Lookout)
+	// // for !self.IlMisLefs.CheckLookout() {
+	// // }
+	// time.Sleep(5 * time.Second)
+	for !Active {
+	}
+	return
 }
 
 /*
@@ -189,18 +223,36 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) AdvanceTime() TypeClock {
-	eTime := self.IlMisLefs.TimeFirstEvent()
-	newTime := self.IlMisLefs.MinTime()
+
+	//MANEJAR TIEMPOS REMOTOS
+	Active = false
+	nextTime := self.IlMisLefs.TimeFirstEvent()
+	log.Println("==============================================SED-AdvanceTime ==> nextTime ", nextTime)
+	// fmt.Println("NEXT CLOCK...... : ", nextTime)
+	var currentLook = TypeClock(2000)
+	newLook := currentLook
+	log.Println("==============================================SED-self.IlMisLefs.Pre ==> self.IlMisLefs.Pre ", self.IlMisLefs.Pre)
+	log.Println("==============================================SED-self.IlMisLefs.Lookout ==> self.IlMisLefs.Lookout", self.IlMisLefs.Lookout)
+	for _, addr := range self.IlMisLefs.Pre {
+		newLook = self.IlMisLefs.Lookout[addr.GetIDSubRed()]
+		log.Println("==============================================SED-AdvanceTime ==> newLook ", newLook)
+		log.Println("============ newLook ", newLook, "========== nextTime ", nextTime, "============== currentLook ", currentLook)
+		if currentLook < newLook {
+			currentLook = newLook
+		}
+	}
 
 	self.IlMisLefs.Lookout = make(map[string]TypeClock)
 
-	if eTime <= newTime && eTime != -1 {
-		fmt.Println("NEXT CLOCK...... : eTime", eTime)
-		return eTime
+	if nextTime <= currentLook && nextTime != -1 {
+		// if nextTime <= currentLook {
+		fmt.Println("NEXT CLOCK...... : ", nextTime)
+		return nextTime
 	}
 
-	fmt.Println("NEXT CLOCK...... : newTime", newTime)
-	return newTime
+	fmt.Println("NEXT CLOCK...... : ", currentLook)
+	return currentLook
+
 }
 
 /*
@@ -314,8 +366,12 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		if !self.IlMisLefs.ThereSensitive() {
 
 			self.WaitAgents()
-			//  Check
-			for !Active {
+			// fmt.Println("++++++++++++++++++++++Waiting lookahead self.IlMisLefs.Lookout", self.IlMisLefs.Lookout)
+			fmt.Println("======================SIMULATE ==>", self.IlMisLefs.Lookout, "CHECK", self.IlMisLefs.CheckLookout())
+			// self.IlMisLefs.CheckLookout()
+			if !self.IlMisLefs.CheckLookout() {
+				time.Sleep(2 * time.Second)
+				fmt.Println("++++++++++++++++++++++Waiting lookahead Simulate", self.IlMisLefs.Lookout)
 			}
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
 				self.IlRelojLocal = self.AdvanceTime()

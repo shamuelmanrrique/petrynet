@@ -4,11 +4,19 @@ import (
 	"encoding/gob"
 	"net"
 
-	// dcs "github.com/shamuelmanrrique/petrynet/src/distconssim"
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
 // Receive a msm and check by type of packet received
+/*
+-----------------------------------------------------------------
+   METODO: Receive
+   RECIBE:  *SimulationEngineDist and Connect
+   DEVUELVE: Nada
+   PROPOSITO: Receive message unwrapper and process that and call
+				TreatMenssage
+-----------------------------------------------------------------
+*/
 func Receive(sim *SimulationEngineDist, connect u.Connect) error {
 	var listener net.Listener
 	var decoder *gob.Decoder
@@ -31,7 +39,6 @@ receiveChannel:
 
 		switch packNew := pack.(type) {
 		case *u.Message:
-			// log.Println("[Receive] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
 			go sim.TreatMenssage(packNew)
 		default:
 			u.Error(nil, "ERROR Receive type")
