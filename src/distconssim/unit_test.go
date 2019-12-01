@@ -57,3 +57,14 @@ func TestSendReceive(t *testing.T) {
 	time.Sleep(2 * time.Second)
 
 }
+
+func TestSSH(t *testing.T) {
+	value := []string{"155.210.154.199"}
+	connection := u.InitSSH(value[0])
+
+	// "/usr/local/go/bin/go run /home/a802400/go/src/practice1/app/main.go
+	// fmt.Println("ssh to:", defaultAddresses[i], len(defaultAddresses), i)
+	// go RunCommand("cd "+dir+" && go test -run "+subnets[i], conn)
+	go u.RunCommand("ls", connection)
+
+}
