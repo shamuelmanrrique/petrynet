@@ -20,6 +20,7 @@ func Send(pack interface{}, addr string) error {
 
 	log.Println(" ++> SEND Marker:", addr)
 	encoder = gob.NewEncoder(connection)
+	// err = encoder.Encode(&pack)
 	err = encoder.Encode(&pack)
 	u.Error(err, "Error Encoding message")
 

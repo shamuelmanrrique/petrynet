@@ -95,7 +95,7 @@ func (self *SimulationEngineDist) TreatMenssage(msm u.Message) {
 
 	case IndGlobalTrans:
 		timeD := self.IlRelojLocal + self.IlMisLefs.TimeDuration(pack)
-		message := u.Message{
+		message := &u.Message{
 			To:   msm.GetFrom(),
 			From: self.connect.GetIDSubRed(),
 			Pack: timeD,
