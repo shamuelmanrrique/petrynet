@@ -315,7 +315,9 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 
 			self.WaitAgents()
 			//  Check
-			for !Active {
+			self.IlMisLefs.CheckLookout()
+			if !Active {
+				time.Sleep(4 * time.Second)
 			}
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
 				self.IlRelojLocal = self.AdvanceTime()
