@@ -14,11 +14,9 @@ func init() {
 	gob.Register(&EventDist{})
 	gob.Register(IndGlobalTrans(0))
 	gob.Register(TypeClock(0))
-	// gob.Register(&LefsDist{})
-	// // gob.Register(TypeClock{})
-	// // gob.Register(IndGlobalTrans{})
-	// gob.Register(&TransitionConstant{})
-	// gob.Register(&TransitionList{})
+	gob.Register(&LefsDist{})
+	gob.Register(&TransitionConstant{})
+	gob.Register(&TransitionList{})
 }
 
 // TestConnections create connections
@@ -44,7 +42,7 @@ func TestSendReceive(t *testing.T) {
 	message := &u.Message{
 		To:   addr,
 		From: addr,
-		Pack: tim,
+		Pack: even,
 	}
 	Send(message, addr)
 	time.Sleep(2 * time.Second)

@@ -21,6 +21,7 @@ type Connection interface {
 	GetPort() string
 	GetIDs() []string
 	GetAccept() bool
+	SetAccept(b bool)
 }
 
 // Connect is a struct that contains information about connection
@@ -49,6 +50,10 @@ func (c Connect) GetAccept() bool {
 
 func (c Connect) GetIds() []string {
 	return c.IDs
+}
+
+func (c *Connect) SetAccept(b bool) {
+	c.Accept = b
 }
 
 // NewConnec will create slice of Connect

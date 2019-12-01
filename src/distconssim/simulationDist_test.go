@@ -1,6 +1,7 @@
 package distconssim
 
 import (
+	"encoding/gob"
 	"fmt"
 	"testing"
 	"time"
@@ -8,18 +9,17 @@ import (
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
-// func init() {
-// 	gob.Register(u.Message{})
-// 	gob.Register(EventDist{})
-// 	gob.Register(LefsDist{})
-// 	// gob.Register(TypeClock)
-// 	// gob.Register(IndGlobalTrans)
-// 	gob.Register(TransitionConstant{})
-// 	gob.Register(TransitionList{})
-// }
+func init() {
+	gob.Register(&u.Message{})
+	gob.Register(&EventDist{})
+	gob.Register(IndGlobalTrans(0))
+	gob.Register(TypeClock(0))
+	gob.Register(&LefsDist{})
+	gob.Register(&TransitionConstant{})
+	gob.Register(&TransitionList{})
+}
 
 func TestSubNet0(t *testing.T) {
-	time.Sleep(4 * time.Second)
 	conects := u.NewConnec(u.LocalIP3s)
 	IDSubNet := conects.GetConnection(0)
 	lfs := LefsDist{
@@ -60,12 +60,13 @@ func TestSubNet0(t *testing.T) {
 	// fmt.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
+	time.Sleep(5 * time.Second)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	fmt.Println("SDT Termino en 10s")
 	time.Sleep(10 * time.Second)
 }
 
 func TestSubNet1(t *testing.T) {
-	// time.Sleep(3 * time.Second)
 	conects := u.NewConnec(u.LocalIP3s)
 	IDSubNet := conects.GetConnection(1)
 	lfs := LefsDist{
@@ -100,18 +101,15 @@ func TestSubNet1(t *testing.T) {
 			0: conects.GetConnection(0),
 		},
 	}
-	// ms := MakeMotorSimulation(lfs, conects.GetConnection(1))
-	// ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
 	ms := MakeMotorSimulation(lfs, IDSubNet)
-	fmt.Println("^^^^^^^^^^^^ESCUCHANDO", IDSubNet)
-	// Receive(ms, IDSubNet)
 	go Receive(ms, IDSubNet)
+	time.Sleep(4 * time.Second)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	fmt.Println("SDT Termino en 10s")
 	time.Sleep(10 * time.Second)
 }
 
 func TestSubNet2(t *testing.T) {
-	// time.Sleep(2 * time.Second)
 	conects := u.NewConnec(u.LocalIP3s)
 	IDSubNet := conects.GetConnection(2)
 	lfs := LefsDist{
@@ -148,12 +146,8 @@ func TestSubNet2(t *testing.T) {
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
+	time.Sleep(3 * time.Second)
 	ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+	fmt.Println("SDT Termino en 10s")
 	time.Sleep(10 * time.Second)
 }
-
-/*
-func TestLefs(t *testing.T) {
-
-}
-*/

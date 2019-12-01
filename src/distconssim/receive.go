@@ -30,11 +30,10 @@ receiveChannel:
 		err = decoder.Decode(&pack)
 		u.Error(err, "Receive error  \n")
 
-		log.Println("[Receive] PACK", pack)
 		switch packNew := pack.(type) {
 		case *u.Message:
-			log.Println("[ReceiveM] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
-			// go sim.TreatMenssage(packNew)
+			log.Println("[Receive] ===> MESSAGE ", packNew, " DE ", packNew.GetFrom())
+			go sim.TreatMenssage(packNew)
 		default:
 			u.Error(nil, "ERROR Receive type")
 		}

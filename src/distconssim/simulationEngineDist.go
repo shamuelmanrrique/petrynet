@@ -80,12 +80,12 @@ func (self *SimulationEngineDist) FireEnabledTransitions(aiLocalClock TypeClock)
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self *SimulationEngineDist) TreatMenssage(msm u.Message) {
+func (self *SimulationEngineDist) TreatMenssage(msm *u.Message) {
 	switch pack := msm.GetPack().(type) {
-	case EventDist:
+	case *EventDist:
 		IDTrans := pack.GetTransition()
 		pack.SetTransition(self.GetIDTransition(IDTrans))
-		self.IlMisLefs.AddEvents(pack)
+		self.IlMisLefs.AddEvents(*pack)
 		fmt.Println("Evendist")
 
 	case TypeClock:
@@ -137,10 +137,10 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 			// fmt.Println("---------------------------SAl", self.IlMisLefs.Post)
 			// fmt.Println("---------------------------subredTo", self.IlMisLefs.Post[IDtrans].GetIDSubRed())
 			// fmt.Println("---------------------------subredfrom", self.connect.GetIDSubRed())
-			message := u.Message{
+			message := &u.Message{
 				To:   self.IlMisLefs.Post[IDtrans].GetIDSubRed(),
 				From: self.connect.GetIDSubRed(),
-				Pack: lEvent,
+				Pack: &lEvent,
 			}
 			fmt.Println("******************************* SED", message)
 			// addr := self.IlMisLefs.Post[IDtrans].GetIp()
@@ -212,7 +212,11 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) AdvanceTime() TypeClock {
+
+	//MANEJAR TIEMPOS REMOTOS
+
 	nextTime := self.IlMisLefs.TimeFirstEvent()
+
 	fmt.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
 }
@@ -336,6 +340,9 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 			}
 		}
 	}
+
+	// Close Receive
+	self.connect.SetAccept(true)
 
 	elapsedTime := time.Since(ldInit)
 
