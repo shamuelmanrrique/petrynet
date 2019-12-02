@@ -12,10 +12,16 @@ var GoMain = "/usr/local/go/bin/go run /home/a802400/go/src/github.com/shamuelma
 var GoTest = "/usr/local/go/bin/go test /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/distconssim -timeout 99s -v -run"
 var SSHIPs = []string{"155.210.154.199,155.210.154.209,155.210.154.208"}
 var LocalIP3s = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002"}
+
+// Inf Remote IPs
+var RemoteIP3 = map[string]string{"TestSubNet0": "155.210.154.199", "TestSubNet1": "155.210.154.200", "TestSubNet2": "155.210.154.204"}
+var RemoteIP3s = []string{"155.210.154.199", "155.210.154.200", "155.210.154.204"}
+
 var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
 	"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
+
+// var RemoteIP2s = []string{"155.210.154.207", "155.210.154.208", "155.210.154.209"}
 var RemoteIP1s = []string{"155.210.154.199:1400", "155.210.154.197:1400", "155.210.154.196:1400"}
-var RemoteIP2s = []string{"155.210.154.207:1400", "155.210.154.208:1400", "155.210.154.209:1400"}
 var Command = make(map[string]string)
 
 // Connections is an array of connection

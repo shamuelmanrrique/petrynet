@@ -19,8 +19,8 @@ func init() {
 	gob.Register(&TransitionList{})
 }
 
-func TestSubNetL0(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
+func TestSubNet0(t *testing.T) {
+	conects := u.NewConnec(u.RemoteIP3s)
 	IDSubNet := conects.GetConnection(0)
 	lfs := LefsDist{
 		SubNet: TransitionList{
@@ -68,8 +68,8 @@ func TestSubNetL0(t *testing.T) {
 	time.Sleep(160 * time.Second)
 }
 
-func TestSubNetL1(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
+func TestSubNet1(t *testing.T) {
+	conects := u.NewConnec(u.RemoteIP3s)
 	IDSubNet := conects.GetConnection(1)
 	lfs := LefsDist{
 		SubNet: TransitionList{
@@ -113,8 +113,8 @@ func TestSubNetL1(t *testing.T) {
 	time.Sleep(160 * time.Second)
 }
 
-func TestSubNetL2(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
+func TestSubNet2(t *testing.T) {
+	conects := u.NewConnec(u.RemoteIP3s)
 	IDSubNet := conects.GetConnection(2)
 	lfs := LefsDist{
 		SubNet: TransitionList{

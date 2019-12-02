@@ -62,7 +62,7 @@ func TestSSHPetry(t *testing.T) {
 	for testS, ip := range value {
 		// for _, ip := range value {
 		connection := u.InitSSH(ip)
-		fmt.Println(connection)
+		fmt.Println(u.GoMainLog + " -ip=" + ip + " -n=" + testS)
 		go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+testS, connection)
 		// go u.RunCommand(u.GoTest+" TestConnect", connection)
 

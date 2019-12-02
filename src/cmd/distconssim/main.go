@@ -31,6 +31,8 @@ func init() {
 func main() {
 	flag.Parse()
 
+	fmt.Println(checklog)
+
 	if checklog {
 		file, err := os.OpenFile(name+"_"+ip+"_log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 		if err != nil {
