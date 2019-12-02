@@ -45,7 +45,7 @@ func main() {
 		log.SetOutput(file)
 	}
 
-	conects := u.NewConnec(u.LocalIP3s)
+	conects := u.NewConnec(u.RemoteIP3s)
 	fmt.Println(conects)
 	if ip == conects.GetConnection(0).GetIDSubRed() {
 		u.DistUnic(name)
