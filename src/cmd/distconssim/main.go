@@ -43,50 +43,141 @@ func main() {
 		log.SetOutput(file)
 	}
 
-	var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
-		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
-	cons := u.NewConnec(LocalIPs)
-	log.Println(cons)
-	fmt.Println("puta")
-
-	if false {
-		//t.Skip("skipping test simulation.")
-		lfs := dcs.LefsDist{ //Ejemplo PN documento adjunto
+	conects := u.NewConnec(u.RemoteIP3s)
+	if ip == conects.GetConnection(0).GetIp() {
+		IDSubNet := conects.GetConnection(0)
+		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
+				// T0
 				dcs.TransitionDist{
 					IDGlobal:       0,
+					IDLocal:        0,
 					IiValorLef:     0,
 					IiShotDuration: 1,
 					IiListactes: []dcs.TransitionConstant{
 						dcs.TransitionConstant{0, 1},
-						dcs.TransitionConstant{1, -1},
-						dcs.TransitionConstant{2, -1},
+						dcs.TransitionConstant{-1, -1},
+						dcs.TransitionConstant{-3, -1},
 					},
 				},
+				// T5
 				dcs.TransitionDist{
-					IDGlobal:       1,
-					IiValorLef:     1,
-					IiShotDuration: 2,
-					IiListactes: []dcs.TransitionConstant{
-						dcs.TransitionConstant{1, 1},
-						dcs.TransitionConstant{2, -1},
-					},
-				},
-				dcs.TransitionDist{
-					IDGlobal:       2,
+					IDGlobal:       5,
+					IDLocal:        1,
 					IiValorLef:     2,
 					IiShotDuration: 1,
 					IiListactes: []dcs.TransitionConstant{
-						dcs.TransitionConstant{2, 2},
+						dcs.TransitionConstant{1, 2},
 						dcs.TransitionConstant{0, -1},
 					},
 				},
 			},
+			Pre: dcs.Incidence{
+				2: conects.GetConnection(1),
+				4: conects.GetConnection(2),
+			},
+			Post: dcs.Incidence{
+				1: conects.GetConnection(1),
+				3: conects.GetConnection(2),
+			},
 		}
-		var connect u.Connect
-		ms := dcs.MakeMotorSimulation(lfs, connect)
-		ms.Simulate(0, 3) // ciclo 0 hasta ciclo 3
+		// fmt.Println(IDSubNet)
+		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
+		go dcs.Receive(ms, IDSubNet)
+		time.Sleep(2 * time.Second)
+		init := dcs.TypeClock(u.InitTransition)
+		end := dcs.TypeClock(u.EndTransition)
+		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
+		fmt.Println("SDT Termino en 10s")
+
 	}
 
-	time.Sleep(5 * time.Second)
+	if ip == conects.GetConnection(1).GetIp() {
+		IDSubNet := conects.GetConnection(1)
+		lfs := dcs.LefsDist{
+			SubNet: dcs.TransitionList{
+				// T1
+				dcs.TransitionDist{
+					IDGlobal:       1,
+					IDLocal:        0,
+					IiValorLef:     1,
+					IiShotDuration: 1,
+					IiListactes: []dcs.TransitionConstant{
+						dcs.TransitionConstant{0, 1},
+						dcs.TransitionConstant{1, -1},
+					},
+				},
+				// T2
+				dcs.TransitionDist{
+					IDGlobal:       2,
+					IDLocal:        1,
+					IiValorLef:     1,
+					IiShotDuration: 2,
+					IiListactes: []dcs.TransitionConstant{
+						dcs.TransitionConstant{1, 1},
+						dcs.TransitionConstant{-5, -1},
+					},
+				},
+			},
+			Pre: dcs.Incidence{
+				0: conects.GetConnection(0),
+			},
+			Post: dcs.Incidence{
+				5: conects.GetConnection(0),
+			},
+		}
+		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
+		go dcs.Receive(ms, IDSubNet)
+		time.Sleep(2 * time.Second)
+		init := dcs.TypeClock(u.InitTransition)
+		end := dcs.TypeClock(u.EndTransition)
+		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
+		fmt.Println("SDT Termino en 10s")
+
+	}
+
+	if ip == conects.GetConnection(2).GetIp() {
+		IDSubNet := conects.GetConnection(2)
+		lfs := dcs.LefsDist{
+			SubNet: dcs.TransitionList{
+				// T3
+				dcs.TransitionDist{
+					IDGlobal:       3,
+					IDLocal:        0,
+					IiValorLef:     1,
+					IiShotDuration: 1,
+					IiListactes: []dcs.TransitionConstant{
+						dcs.TransitionConstant{0, 1},
+						dcs.TransitionConstant{1, -1},
+					},
+				},
+				// T4
+				dcs.TransitionDist{
+					IDGlobal:       4,
+					IDLocal:        1,
+					IiValorLef:     1,
+					IiShotDuration: 1,
+					IiListactes: []dcs.TransitionConstant{
+						dcs.TransitionConstant{1, 1},
+						dcs.TransitionConstant{-5, -1},
+					},
+				},
+			},
+			Pre: dcs.Incidence{
+				0: conects.GetConnection(0),
+			},
+			Post: dcs.Incidence{
+				5: conects.GetConnection(0),
+			},
+		}
+		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
+		go dcs.Receive(ms, IDSubNet)
+		time.Sleep(2 * time.Second)
+		init := dcs.TypeClock(u.InitTransition)
+		end := dcs.TypeClock(u.EndTransition)
+		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
+
+	}
+
+	time.Sleep(50 * time.Second)
 }

@@ -9,7 +9,7 @@ var EndTransition = 3
 var Dir = "/home/a802400/"
 var GoMainLog = "/usr/local/go/bin/go run /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/cmd/distconssim/main.go"
 var GoMain = "/usr/local/go/bin/go run /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/cmd/distconssim/main.go -l=false"
-var GoTest = "/usr/local/go/bin/go test /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/distconssim -v -run "
+var GoTest = "/usr/local/go/bin/go test /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/distconssim -timeout 499s -v -run "
 
 // var GoTest = "/usr/local/go/bin/go test /home/a802400/go/src/github.com/shamuelmanrrique/petrynet/src/distconssim -timeout 99s -v -run "
 var SSHIPs = []string{"155.210.154.199,155.210.154.209,155.210.154.208"}
