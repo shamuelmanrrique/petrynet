@@ -34,7 +34,8 @@ func TestSSH(t *testing.T) {
 	for name, ip := range value {
 		connection := u.InitSSH(ip)
 		fmt.Println(connection)
-		go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
+		// go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
+		go u.RunCommand(u.GoTest+name, connection)
 		// go u.RunCommand(u.GoTest+" TestLog  >> 1.txt", connection)
 	}
 	time.Sleep(300 * time.Second)
