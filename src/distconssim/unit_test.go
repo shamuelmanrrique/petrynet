@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -12,6 +13,7 @@ import (
 )
 
 func init() {
+	testing.Init()
 	gob.Register(&u.Message{})
 	gob.Register(&EventDist{})
 	gob.Register(IndGlobalTrans(0))
@@ -23,26 +25,12 @@ func init() {
 
 // TestConnections create connections
 func TestConnect(t *testing.T) {
-	var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
-		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
-	cons := u.NewConnec(LocalIPs)
+	cons := u.NewConnec(u.RemoteIP3s)
 	fmt.Println(cons)
 }
 
-func TestSSH(t *testing.T) {
-	value := map[string]string{"TestSubNet0": "155.210.154.199", "TestSubNet1": "155.210.154.200", "TestSubNet2": "155.210.154.204"}
-	for name, ip := range value {
-		connection := u.InitSSH(ip)
-		fmt.Println(connection)
-		// go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
-		go u.RunCommand(u.GoTest+name, connection)
-		// go u.RunCommand(u.GoTest+" TestLog  >> 1.txt", connection)
-	}
-	time.Sleep(300 * time.Second)
-}
-
 func TestLog(t *testing.T) {
-	file, err := os.OpenFile("log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	file, err := os.OpenFile("~"+u.Dir+"log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -50,29 +38,50 @@ func TestLog(t *testing.T) {
 	defer file.Close()
 	log.SetOutput(file)
 
-	var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
-		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
-	cons := u.NewConnec(LocalIPs)
+	cons := u.NewConnec(u.LocalIP3s)
 	log.Println(cons)
+}
+
+func TestSSH(t *testing.T) {
+	for name, ip := range u.RemoteIP3 {
+		addr := strings.Split(ip, ":")
+		connection := u.InitSSH(addr[0])
+		fmt.Println(connection, name, ip)
+		go u.ExcecuteSSH(u.GoLocalMainLog+" -i="+ip+" -n="+name, connection)
+		// go u.ExcecuteSSH(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
+		// go u.ExcecuteSSH(u.GoTest+name, connection)
+		// Ready
+		// go u.ExcecuteSSH(u.GoTest+"TestConnect", connection)
+		// go u.ExcecuteSSH(u.GoTest+"TestLog", connection)
+	}
+	time.Sleep(50 * time.Second)
+}
+
+func TestSSHRemote(t *testing.T) {
+	for _, ip := range u.RemoteIP3 {
+		addr := strings.Split(ip, ":")
+		fmt.Println(addr[0])
+		connection := u.InitSSH(addr[0])
+		go u.ExcecuteSSH(u.GoTest+"TestLog", connection)
+	}
+	time.Sleep(30 * time.Second)
 
 }
 
-func TestSSHPetry(t *testing.T) {
-	value := map[string]string{"TestSubNet0": "155.210.154.199", "TestSubNet1": "155.210.154.200", "TestSubNet2": "155.210.154.204"}
-
-	for testS, ip := range value {
-		// for _, ip := range value {
-		connection := u.InitSSH(ip)
-		fmt.Println(u.GoMainLog + " -ip=" + ip + " -n=" + testS)
-		go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+testS, connection)
-		// go u.RunCommand(u.GoTest+" TestConnect", connection)
-
+func TestSSHLOCALPetry(t *testing.T) {
+	for testS, ip := range u.LocalIP3 {
+		addr := strings.Split(ip, ":")
+		fmt.Println(addr[0])
+		connection := u.InitSSH(addr[0])
+		fmt.Println(" -ip="+ip+" -n="+testS, connection)
+		// go u.ExcecuteSSH(u.GoMainLog+" -ip="+ip+" -n="+testS, connection)
+		// go u.ExcecuteSSH(u.GoLocalTest+"TestLog", connection)
+		break
 	}
 
 	time.Sleep(300 * time.Second)
 
 }
-
 func TestMinTime(t *testing.T) {
 	var value = map[string]TypeClock{"127.0.1.1:5000": 3, "127.0.1.1:5001": 1, "127.0.1.1:5002": 2}
 	// d = {320:1, 321:0, 322:3}

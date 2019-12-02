@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"net"
@@ -49,7 +50,7 @@ func InitSSH(addr string) *ssh.Client {
 
 }
 
-func RunCommand(cmd string, conn *ssh.Client) {
+func ExcecuteSSH(cmd string, conn *ssh.Client) {
 	sess, err := conn.NewSession()
 	defer conn.Close()
 	if err != nil {
@@ -66,6 +67,7 @@ func RunCommand(cmd string, conn *ssh.Client) {
 		panic(err)
 	}
 	go io.Copy(os.Stderr, sessStderr)
+	fmt.Println(cmd)
 	err = sess.Run(cmd)
 	if err != nil {
 		panic(err)

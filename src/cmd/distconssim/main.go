@@ -18,13 +18,15 @@ var name string
 var checklog bool
 
 func init() {
-	gob.Register(u.Message{})
-	gob.Register(dcs.EventDist{})
-	gob.Register(dcs.LefsDist{})
-	gob.Register(dcs.TransitionConstant{})
-	gob.Register(dcs.TransitionList{})
+	gob.Register(&u.Message{})
+	gob.Register(&dcs.EventDist{})
+	gob.Register(dcs.IndGlobalTrans(0))
+	gob.Register(dcs.TypeClock(0))
+	gob.Register(&dcs.LefsDist{})
+	gob.Register(&dcs.TransitionConstant{})
+	gob.Register(&dcs.TransitionList{})
 	flag.StringVar(&name, "n", "SubRed", "SubRed Name")
-	flag.StringVar(&ip, "ip", "127.0.1.1:1400", "IP que se usara en el proceso")
+	flag.StringVar(&ip, "i", "127.0.1.1:1400", "IP que se usara en el proceso")
 	flag.BoolVar(&checklog, "l", true, "Send output to file true otherwise false")
 }
 
@@ -43,8 +45,10 @@ func main() {
 		log.SetOutput(file)
 	}
 
-	conects := u.NewConnec(u.RemoteIP3s)
-	if ip == conects.GetConnection(0).GetIp() {
+	conects := u.NewConnec(u.LocalIP3s)
+	fmt.Println(conects)
+	if ip == conects.GetConnection(0).GetIDSubRed() {
+		u.DistUnic(name)
 		IDSubNet := conects.GetConnection(0)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
@@ -84,7 +88,7 @@ func main() {
 		// fmt.Println(IDSubNet)
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -92,7 +96,8 @@ func main() {
 
 	}
 
-	if ip == conects.GetConnection(1).GetIp() {
+	if ip == conects.GetConnection(1).GetIDSubRed() {
+		u.DistUnic(name)
 		IDSubNet := conects.GetConnection(1)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
@@ -128,7 +133,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -136,7 +141,8 @@ func main() {
 
 	}
 
-	if ip == conects.GetConnection(2).GetIp() {
+	if ip == conects.GetConnection(2).GetIDSubRed() {
+		u.DistUnic(name)
 		IDSubNet := conects.GetConnection(2)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
@@ -172,7 +178,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(2 * time.Second)
+		time.Sleep(1 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
