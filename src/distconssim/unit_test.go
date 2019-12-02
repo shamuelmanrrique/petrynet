@@ -3,6 +3,8 @@ package distconssim
 import (
 	"encoding/gob"
 	"fmt"
+	"log"
+	"os"
 	"testing"
 	"time"
 
@@ -25,6 +27,49 @@ func TestConnect(t *testing.T) {
 		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
 	cons := u.NewConnec(LocalIPs)
 	fmt.Println(cons)
+}
+
+func TestSSH(t *testing.T) {
+	value := map[string]string{"TestSubNet0": "155.210.154.199", "TestSubNet1": "155.210.154.200", "TestSubNet2": "155.210.154.204"}
+	for name, ip := range value {
+		connection := u.InitSSH(ip)
+		fmt.Println(connection)
+		go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
+		// go u.RunCommand(u.GoTest+" TestLog  >> 1.txt", connection)
+	}
+	time.Sleep(300 * time.Second)
+}
+
+func TestLog(t *testing.T) {
+	file, err := os.OpenFile("log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer file.Close()
+	log.SetOutput(file)
+
+	var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
+		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
+	cons := u.NewConnec(LocalIPs)
+	log.Println(cons)
+
+}
+
+func TestSSHPetry(t *testing.T) {
+	value := map[string]string{"TestSubNet0": "155.210.154.199", "TestSubNet1": "155.210.154.200", "TestSubNet2": "155.210.154.204"}
+
+	for testS, ip := range value {
+		// for _, ip := range value {
+		connection := u.InitSSH(ip)
+		fmt.Println(connection)
+		go u.RunCommand(u.GoMainLog+" -ip="+ip+" -n="+testS, connection)
+		// go u.RunCommand(u.GoTest+" TestConnect", connection)
+
+	}
+
+	time.Sleep(300 * time.Second)
+
 }
 
 func TestMinTime(t *testing.T) {
@@ -55,16 +100,5 @@ func TestSendReceive(t *testing.T) {
 	}
 	Send(message, addr)
 	time.Sleep(2 * time.Second)
-
-}
-
-func TestSSH(t *testing.T) {
-	value := []string{"155.210.154.199"}
-	connection := u.InitSSH(value[0])
-
-	// "/usr/local/go/bin/go run /home/a802400/go/src/practice1/app/main.go
-	// fmt.Println("ssh to:", defaultAddresses[i], len(defaultAddresses), i)
-	// go RunCommand("cd "+dir+" && go test -run "+subnets[i], conn)
-	go u.RunCommand("ls", connection)
 
 }
