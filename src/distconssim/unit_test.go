@@ -23,8 +23,8 @@ func init() {
 func TestConnect(t *testing.T) {
 	var LocalIPs = []string{"127.0.1.1:5000", "127.0.1.1:5001", "127.0.1.1:5002", "127.0.1.1:5003",
 		"127.0.1.1:5004", "127.0.1.1:5005", "127.0.1.1:5006"}
-	u.NewConnec(LocalIPs)
-
+	cons := u.NewConnec(LocalIPs)
+	fmt.Println(cons)
 }
 
 func TestMinTime(t *testing.T) {
