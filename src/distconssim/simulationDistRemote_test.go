@@ -60,7 +60,7 @@ func TestSubNet0(t *testing.T) {
 	// fmt.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	// time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -105,7 +105,7 @@ func TestSubNet1(t *testing.T) {
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	// time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -150,7 +150,7 @@ func TestSubNet2(t *testing.T) {
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	// time.Sleep(2 * time.Second)
+	time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
