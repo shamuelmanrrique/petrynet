@@ -47,7 +47,7 @@ func TestSSH(t *testing.T) {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
 		fmt.Println(connection, name, ip)
-		go u.ExcecuteSSH(u.GoLocalMainLog+" -i="+ip+" -n="+name, connection)
+		go u.ExcecuteSSH(u.GoMainLog+" -i="+ip+" -n="+name, connection)
 		// go u.ExcecuteSSH(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
 		// go u.ExcecuteSSH(u.GoTest+name, connection)
 		// Ready
