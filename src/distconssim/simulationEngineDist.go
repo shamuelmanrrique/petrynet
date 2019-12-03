@@ -333,6 +333,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 			}
 
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
+				self.IlMisLefs.CheckLookout()
 				self.IlRelojLocal = self.AdvanceTime()
 
 				if self.IlRelojLocal == -1 {
