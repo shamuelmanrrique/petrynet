@@ -46,7 +46,7 @@ func main() {
 	}
 
 	conects := u.NewConnec(u.LocalIP3s)
-	fmt.Println(conects)
+	log.Println(conects)
 	if ip == conects.GetConnection(0).GetIDSubRed() {
 		u.DistUnic(name)
 		IDSubNet := conects.GetConnection(0)
@@ -85,14 +85,14 @@ func main() {
 				3: conects.GetConnection(2),
 			},
 		}
-		// fmt.Println(IDSubNet)
+		// log.Println(IDSubNet)
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
 		time.Sleep(1 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-		fmt.Println("SDT Termino en 10s")
+		log.Println("SDT Termino en 10s")
 
 	}
 
@@ -137,7 +137,7 @@ func main() {
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-		fmt.Println("SDT Termino en 10s")
+		log.Println("SDT Termino en 10s")
 
 	}
 
