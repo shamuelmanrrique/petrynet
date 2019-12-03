@@ -5,7 +5,9 @@ PROPOSITO: Guardar la informacion de los eventos necesarios para
 */
 package centralsim
 
-import "fmt"
+import (
+	"log"
+)
 
 type Event struct {
 	// Tiempo para el que debemos considerar el evento
