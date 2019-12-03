@@ -12,8 +12,8 @@ import (
 -----------------------------------------------------------------
    METODO: Send
    RECIBE: interface(Message will send) and address
-   DEVUELVE: Nada
-   PROPOSITO: Send message
+   DEVUELVE: Nothing
+   PROPOSITO: Send message to other subnets
 -----------------------------------------------------------------
 */
 func Send(pack interface{}, addr string) error {

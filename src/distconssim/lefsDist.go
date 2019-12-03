@@ -7,7 +7,7 @@ import (
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
-// Incidence is a dictionary of incidence  Pre, Post
+// Incidence is a dictionary of Global ID AND connection of Pre, Post
 type Incidence map[IndGlobalTrans]u.Connect
 
 // Active check if get all lookout before init
@@ -36,10 +36,6 @@ func NewLefsDist(listaTransiciones TransitionList) LefsDist {
 	l.SubNet = listaTransiciones
 	l.IsTransSensib = nil
 	l.IlEvents = nil
-	// l.Lookout = map[string]TypeClock{}
-	// l.Lookout = make(map[string]TypeClock)
-	// l.Pre = make(Incidence)
-	// l.Post = make(Incidence)
 	return l
 }
 
@@ -58,10 +54,10 @@ func (self *LefsDist) AddEvents(ae_evento EventDist) bool {
 
 /*
 -----------------------------------------------------------------
-   METODO: AddEvents
-   RECIBE:
-   DEVUELVE:
-   PROPOSITO:
+   METODO: SetLookout
+   RECIBE: IP who send msm and Type of subred
+   DEVUELVE: Nothing
+   PROPOSITO: Set to subred lookahead value
 -----------------------------------------------------------------
 */
 func (self *LefsDist) SetLookout(str string, tim TypeClock) {
@@ -107,9 +103,9 @@ func (self LefsDist) TimeFirstEvent() TypeClock {
 /*
 -----------------------------------------------------------------
    METODO: CheckLookout
-   RECIBE:
-   DEVUELVE:
-   PROPOSITO:
+   RECIBE: Nothing
+   DEVUELVE: Nothing
+   PROPOSITO: Checking if it has all lookahead
 -----------------------------------------------------------------
 */
 func (self *LefsDist) CheckLookout() {
@@ -125,9 +121,9 @@ func (self *LefsDist) CheckLookout() {
 /*
 -----------------------------------------------------------------
    METODO: MinTime
-   RECIBE:
-   DEVUELVE:
-   PROPOSITO:
+   RECIBE: Nothing
+   DEVUELVE: TypeClock
+   PROPOSITO: Search min time snapshot into lookout
 -----------------------------------------------------------------
 */
 func (self *LefsDist) MinTime() TypeClock {
@@ -146,10 +142,10 @@ func (self *LefsDist) MinTime() TypeClock {
 
 /*
 -----------------------------------------------------------------
-   METODO: AddEvents
-   RECIBE:
-   DEVUELVE:
-   PROPOSITO:
+   METODO: TimeDuration
+   RECIBE: IdGlbal of transition
+   DEVUELVE: TypeClock
+   PROPOSITO: calculate shooting time
 -----------------------------------------------------------------
 */
 func (self *LefsDist) TimeDuration(id IndGlobalTrans) TypeClock {

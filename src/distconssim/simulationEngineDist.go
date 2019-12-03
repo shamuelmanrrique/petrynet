@@ -70,28 +70,30 @@ func (self *SimulationEngineDist) FireEnabledTransitions(clock TypeClock) {
 /*
 -----------------------------------------------------------------
    METODO: TreatMenssage
-   RECIBE: Valor del reloj local
-   DEVUELVE: Nada
-   PROPOSITO: Accede a la lista de transiciones sensibilizadas y procede con su
-	   disparo, lo que generara nuevos eventos y modificara el marcado de la
-		transicion disparada. Igualmente anotara en los resultados el disparo de
-		cada transicion para el reloj actual dado
+   RECIBE: *Message
+   DEVUELVE: Nothing
+   PROPOSITO: Esta funcion maneja una parte muy importante del 
+	la comunicacion en la simulacion distribuida, recibe un mensaje
+	extrae el paquete de ese mensaje y realiza la accion correspondiente
+	dependiendo del typo del paquete
    HISTORIA DE CAMBIOS:
-COMENTARIOS:
+   COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) TreatMenssage(msm *u.Message) {
 	switch pack := msm.GetPack().(type) {
+	// Si es un evento lo add a mi lista de eventos	
 	case *EventDist:
 		log.Println("SED[Receive] -EventDist ==> :", *pack, "MSM", *msm)
 		IDTrans := pack.GetTransition()
 		pack.SetTransition(self.GetIDTransition(IDTrans))
 		self.IlMisLefs.AddEvents(*pack)
+	// Si es lookahead lo guardo y checkeo que me llegen todos	
 	case TypeClock:
 		log.Println("SED[Receive] -TypeClock ==>  ", pack, "MSM", *msm)
 		self.IlMisLefs.Lookout[msm.GetFrom()] = pack
 		self.IlMisLefs.CheckLookout()
-
+    // Si recibo msm null envio lookahead
 	case IndGlobalTrans:
 		log.Println("SED[Receive] -IndGlobalTrans ==> (NULL) ", pack, "MSM", *msm)
 		timeD := self.IlRelojLocal + self.IlMisLefs.TimeDuration(pack)
@@ -312,13 +314,17 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		// el reloj local
 		// ------------------------------------------------------------------
 		if !self.IlMisLefs.ThereSensitive() {
-
+			// Envio msm null a los demas para que me envien sus lookaheads
+			// ------------------------------------------------------------------
 			self.WaitAgents()
-			//  Check
+			
+			// Chequeo que me llegaron todos los lookahead en caso contrario espero
+			// ------------------------------------------------------------------
 			self.IlMisLefs.CheckLookout()
 			if !Active {
 				time.Sleep(4 * time.Second)
 			}
+
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {
 				self.IlRelojLocal = self.AdvanceTime()
 
