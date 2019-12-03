@@ -7,7 +7,6 @@ import (
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
 )
 
-// Receive a msm and check by type of packet received
 /*
 -----------------------------------------------------------------
    METODO: Receive
@@ -36,7 +35,8 @@ receiveChannel:
 		decoder = gob.NewDecoder(red)
 		err = decoder.Decode(&pack)
 		u.Error(err, "Receive error  \n")
-
+		
+		// Check if pack is a message
 		switch packNew := pack.(type) {
 		case *u.Message:
 			go sim.TreatMenssage(packNew)
@@ -44,7 +44,7 @@ receiveChannel:
 			u.Error(nil, "ERROR Receive type")
 		}
 
-		// TODO CHANGE BY GLOBAL SIMULATION NUMBER
+		// Checking simulation end
 		if connect.GetAccept() {
 			red.Close()
 			break receiveChannel

@@ -5,7 +5,7 @@ import "fmt"
 // EventDist es la es
 type EventDist struct {
 	ITime       TypeClock      // Tiempo para el que debemos considerar el evento
-	ITransition IndGlobalTrans // A que transicion (indice transicion Global
+	ITransition IndGlobalTrans // A que transicion (indice transicion Global)
 	IConst      TypeConst      // Constante que mandamos
 }
 
