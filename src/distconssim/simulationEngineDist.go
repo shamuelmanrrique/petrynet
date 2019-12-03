@@ -1,7 +1,6 @@
 package distconssim
 
 import (
-	"fmt"
 	"log"
 	"time"
 
@@ -127,7 +126,7 @@ func (self *SimulationEngineDist) TreatEvent(ai_tiempo TypeClock) {
 		IDtrans := lEvent.GetTransition()
 
 		if IDtrans < 0 {
-			u.DistMsm("Send Event to Remote Transition")
+			// u.DistMsm("Send Event to Remote Transition")
 			IDtrans *= -1
 			lEvent.SetTransition(IDtrans)
 			// create msm with event
@@ -161,7 +160,7 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) WaitAgents() {
-	u.DistUnic("Wait agent")
+	// u.DistUnic("Wait agent")
 	subNets := self.IlMisLefs.Pre
 	for idTrans, conn := range subNets {
 		message := &u.Message{
@@ -216,22 +215,21 @@ func (self *SimulationEngineDist) AdvanceTime() TypeClock {
 COMENTARIOS:
 -----------------------------------------------------------------
 */
-func (self SimulationEngineDist) RetornResults() string {
-	resultados := "----------------------------------------\n"
-	resultados += "Resultados del simulador local\n"
-	resultados += "----------------------------------------\n"
+func (self SimulationEngineDist) RetornResults() {
+	u.DistWall()
+	u.DistWall()
+	log.Println("RESULTADOS DEL SIMULADOR LOCAL " + u.NetName)
+	u.DistWall()
+
 	if len(self.IvResults) == 0 {
-		resultados += "No esperes ningun resultado...\n"
+		log.Println("No esperes ningun resultado...")
+	} else {
+		for _, li_result := range self.IvResults {
+			log.Println("TIEMPO: ", li_result.ValorRelojDisparo, " -> TRANSICION: ",
+				self.GetIDLocalTrans(li_result.CodTransition))
+			//  ID LOCAL Transition li_result.CodTransition,
+		}
 	}
-
-	for _, li_result := range self.IvResults {
-		resultados +=
-			"TIEMPO: " + fmt.Sprintf("%v", li_result.ValorRelojDisparo) +
-				" -> TRANSICION: " + fmt.Sprintf("%v", li_result.CodTransition) + "\n"
-	}
-
-	log.Println(resultados)
-	return resultados
 }
 
 /*
@@ -242,8 +240,6 @@ func (self SimulationEngineDist) RetornResults() string {
    DEVUELVE: OK si todo fue bien o ERROR en caso contrario
    PROPOSITO: Que esta funcion sirva para recorrerse toda la lista de transiciones
 	   e Inserttar aquellas en la pila de transiciones sensibilizadas.
-COMENTARIOS: Me recorro todo el array de transiciones, por lo que deberiamos
-	   invocar a esta funcion cuando ya hayan sido a�adidas todas las transiciones.
 -----------------------------------------------------------------
 */
 func (self *SimulationEngineDist) GetIDTransition(id IndGlobalTrans) IndGlobalTrans {
@@ -251,6 +247,16 @@ func (self *SimulationEngineDist) GetIDTransition(id IndGlobalTrans) IndGlobalTr
 	for _, transition := range self.IlMisLefs.SubNet {
 		if id == transition.IDGlobal {
 			return IndGlobalTrans(transition.IDLocal)
+		}
+	}
+
+	return IndGlobalTrans(id)
+}
+
+func (self *SimulationEngineDist) GetIDLocalTrans(id IndGlobalTrans) IndGlobalTrans {
+	for _, transition := range self.IlMisLefs.SubNet {
+		if id == IndGlobalTrans(transition.IDLocal) {
+			return transition.IDGlobal
 		}
 	}
 
@@ -283,8 +289,9 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 	self.IlMisLefs.UpdateSensitive(self.IlRelojLocal)
 
 	for self.IlRelojLocal <= endCycle {
-		self.IlMisLefs.PrintEvent() //DEPURACION
+		// self.IlMisLefs.PrintEvent() //DEPURACION
 		log.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
+		u.DistWall()
 
 		if initCycle == 0 {
 			time.Sleep(2 * time.Second)
@@ -340,14 +347,12 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 
 	elapsedTime := time.Since(ldInit)
 
-	// Devolver los resultados de la simulacion
+	// Print los resultados de la simulacion
 	self.RetornResults()
-	result := "\n---------------------"
-	result += "NUMERO DE TRANSICIONES DISPARADAS " +
-		fmt.Sprintf("%d", len(self.IvResults)) + "\n"
-	result += "TIEMPO SIMULADO en ciclos: " +
-		fmt.Sprintf("%d", endCycle-initCycle) + "\n"
-	result += "COSTE REAL SIMULACION: " +
-		fmt.Sprintf("%v", elapsedTime.String()) + "\n"
-	log.Println(result)
+	u.DistL()
+	log.Println("NUMERO DE TRANSICIONES DISPARADAS", len(self.IvResults))
+	log.Println("TIEMPO SIMULADO en ciclos: ", endCycle-initCycle)
+	log.Println("COSTE REAL SIMULACION: ", elapsedTime.String())
+	u.DistWall()
+	u.DistWall()
 }

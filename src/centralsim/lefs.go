@@ -9,7 +9,9 @@ PROPOSITO:
 */
 package centralsim
 
-import "fmt"
+import (
+	"log"
+)
 
 type TypeIndexSubNet int32
 
@@ -284,10 +286,10 @@ func (self Lefs) PrintEvent() {
 	if self.IsTransSensib.isEmpty() {
 		log.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
 	} else {
-		log.Println("\tLista transciones sensibilizadas :")
+		log.Print("\tLista transciones sensibilizadas :")
 		for _, iTr := range self.IsTransSensib {
-			log.Print(iTr, " ")
-			log.Println(" ")
+			log.Println(iTr, " ")
+			// log.Println(" ")
 		}
 	}
 	log.Println("------Lista transiciones---------")

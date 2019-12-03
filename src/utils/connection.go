@@ -8,8 +8,10 @@ import (
 var InitTransition = 0
 
 // EndTransition time to end transtition
-var EndTransition = 3
+var EndTransition = 4
+
 var Dir = "/home/a802400/"
+var NetName = ""
 
 // Inf Remote IPs
 var RemoteIP3 = map[string]string{"TestSubNet0": "155.210.154.199:1400", "TestSubNet1": "155.210.154.200:1400", "TestSubNet2": "155.210.154.204:1400"}
@@ -96,9 +98,3 @@ func (c Connections) GetConnection(n int) Connect {
 	}
 	return Connect{}
 }
-
-// func (c *u.Connect) SetAddrs(inc Incidence) {
-// 	for _, addr := range inc {
-// 		*c.IDs = append(*c.IDs, addr)
-// 	}
-// }

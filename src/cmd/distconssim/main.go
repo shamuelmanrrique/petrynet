@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/gob"
 	"flag"
-	"fmt"
 	"log"
 	"os"
 	"time"
@@ -33,8 +32,6 @@ func init() {
 func main() {
 	flag.Parse()
 
-	fmt.Println(checklog)
-
 	if checklog {
 		file, err := os.OpenFile(name+"_"+ip+"_log.txt", os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 		if err != nil {
@@ -45,10 +42,12 @@ func main() {
 		log.SetOutput(file)
 	}
 
-	conects := u.NewConnec(u.RemoteIP3s)
-	log.Println(conects)
+	// Get Ip
+	conects := u.NewConnec(u.LocalIP3s)
+
 	if ip == conects.GetConnection(0).GetIDSubRed() {
-		u.DistUnic(name)
+		u.NetName = name + " " + ip
+		u.DistUnic(u.NetName)
 		IDSubNet := conects.GetConnection(0)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
@@ -97,7 +96,8 @@ func main() {
 	}
 
 	if ip == conects.GetConnection(1).GetIDSubRed() {
-		u.DistUnic(name)
+		u.NetName = name + " " + ip
+		u.DistUnic(u.NetName)
 		IDSubNet := conects.GetConnection(1)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{
@@ -142,7 +142,8 @@ func main() {
 	}
 
 	if ip == conects.GetConnection(2).GetIDSubRed() {
-		u.DistUnic(name)
+		u.NetName = name + " " + ip
+		u.DistUnic(u.NetName)
 		IDSubNet := conects.GetConnection(2)
 		lfs := dcs.LefsDist{
 			SubNet: dcs.TransitionList{

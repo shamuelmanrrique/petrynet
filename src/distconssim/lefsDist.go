@@ -342,9 +342,8 @@ func (self LefsDist) PrintEventTransitions() {
 -----------------------------------------------------------------
 */
 func (self LefsDist) PrintEvent() {
-
+	u.DistWall()
 	log.Println("STRUCT LefsDist")
-	//log.Println ("\tNº transiciones: ", self.ii_indice)
 	log.Println("\tNº transiciones: ", self.SubNet.Length())
 
 	if self.IsTransSensib.isEmpty() {
@@ -352,8 +351,7 @@ func (self LefsDist) PrintEvent() {
 	} else {
 		log.Println("\tLista transciones sensibilizadas :")
 		for _, iTr := range self.IsTransSensib {
-			log.Print(iTr, " ")
-			log.Println(" ")
+			log.Println(iTr, " ")
 		}
 	}
 	log.Println("------Lista transiciones---------")

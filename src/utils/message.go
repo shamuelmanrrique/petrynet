@@ -2,8 +2,6 @@ package utils
 
 import "log"
 
-
-
 // Msm int
 type Msm interface {
 	GetTo() string
@@ -35,6 +33,10 @@ func DistMsm(s string) {
 
 func DistWall() {
 	log.Println("############################################################################")
+}
+
+func DistL() {
+	log.Println("----------------------------------------------------------------------------")
 }
 
 func DistUnic(s string) {

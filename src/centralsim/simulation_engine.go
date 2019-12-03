@@ -240,7 +240,7 @@ func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 
 	// Devolver los resultados de la simulacion
 	self.RetornResults()
-	result := "\n---------------------"
+	result := "\n---------------------\n"
 	result += "NUMERO DE TRANSICIONES DISPARADAS " +
 		fmt.Sprintf("%d", len(self.IvResults)) + "\n"
 	result += "TIEMPO SIMULADO en ciclos: " +
