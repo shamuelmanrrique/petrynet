@@ -1,9 +1,9 @@
 package utils
 
 import (
-	"fmt"
 	"io"
 	"io/ioutil"
+	"log"
 	"net"
 	"os"
 
@@ -67,7 +67,7 @@ func ExcecuteSSH(cmd string, conn *ssh.Client) {
 		panic(err)
 	}
 	go io.Copy(os.Stderr, sessStderr)
-	fmt.Println(cmd)
+	log.Println(cmd)
 	err = sess.Run(cmd)
 	if err != nil {
 		panic(err)

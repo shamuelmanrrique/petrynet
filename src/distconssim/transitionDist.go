@@ -1,7 +1,7 @@
 package distconssim
 
 import (
-	"fmt"
+	"log"
 )
 
 // TransitionList is a list of transitions themselves
@@ -62,14 +62,14 @@ type TransitionDist struct {
 		-----------------------------------------------------------------
 */
 func (self *TransitionDist) PrintEvent() {
-	fmt.Println("Dato Transicion:")
-	fmt.Println("IDGLOBAL: ", self.IDGlobal)
-	fmt.Println(" VALOR LEF: ", self.IiValorLef)
-	fmt.Println(" TIEMPO: ", self.ITime)
-	fmt.Println(" DURACION DISPARO: ", self.IiShotDuration)
-	fmt.Println(" LISTA DE CTES: ")
+	log.Println("Dato Transicion:")
+	log.Println("IDGLOBAL: ", self.IDGlobal)
+	log.Println(" VALOR LEF: ", self.IiValorLef)
+	log.Println(" TIEMPO: ", self.ITime)
+	log.Println(" DURACION DISPARO: ", self.IiShotDuration)
+	log.Println(" LISTA DE CTES: ")
 	for _, v := range self.IiListactes {
-		fmt.Println("\tTRANSICION: ", v.INextTrans, "\t\tCTE: ", v.Const)
+		log.Println("\tTRANSICION: ", v.INextTrans, "\t\tCTE: ", v.Const)
 	}
 }
 
@@ -83,10 +83,10 @@ func (self *TransitionDist) PrintEvent() {
 	-----------------------------------------------------------------
 */
 func (self TransitionDist) PrintEventValues() {
-	fmt.Println("Transicion -> ")
-	fmt.Println("\tIDGLOBAL: ", self.IDGlobal)
-	fmt.Println("\t\tVALOR LEF: ", self.IiValorLef)
-	fmt.Println("\t\tTIEMPO: ", self.ITime)
+	log.Println("Transicion -> ")
+	log.Println("\tIDGLOBAL: ", self.IDGlobal)
+	log.Println("\t\tVALOR LEF: ", self.IiValorLef)
+	log.Println("\t\tTIEMPO: ", self.ITime)
 }
 
 //----------------------------------------------------------------------

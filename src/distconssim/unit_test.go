@@ -2,7 +2,6 @@ package distconssim
 
 import (
 	"encoding/gob"
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -26,7 +25,7 @@ func init() {
 // TestConnections create connections
 func TestConnect(t *testing.T) {
 	cons := u.NewConnec(u.RemoteIP3s)
-	fmt.Println(cons)
+	log.Println(cons)
 }
 
 func TestLog(t *testing.T) {
@@ -46,7 +45,7 @@ func TestSSH(t *testing.T) {
 	for name, ip := range u.RemoteIP3 {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
-		fmt.Println(connection, name, ip)
+		log.Println(connection, name, ip)
 		go u.ExcecuteSSH(u.GoMainLog+" -i="+ip+" -n="+name, connection)
 		// go u.ExcecuteSSH(u.GoMainLog+" -ip="+ip+" -n="+name, connection)
 		// go u.ExcecuteSSH(u.GoTest+name, connection)
@@ -60,7 +59,7 @@ func TestSSH(t *testing.T) {
 func TestSSHRemote(t *testing.T) {
 	for _, ip := range u.RemoteIP3 {
 		addr := strings.Split(ip, ":")
-		fmt.Println(addr[0])
+		log.Println(addr[0])
 		connection := u.InitSSH(addr[0])
 		go u.ExcecuteSSH(u.GoTest+"TestLog", connection)
 	}
@@ -71,9 +70,9 @@ func TestSSHRemote(t *testing.T) {
 func TestSSHLOCALPetry(t *testing.T) {
 	for testS, ip := range u.LocalIP3 {
 		addr := strings.Split(ip, ":")
-		fmt.Println(addr[0])
+		log.Println(addr[0])
 		connection := u.InitSSH(addr[0])
-		fmt.Println(" -ip="+ip+" -n="+testS, connection)
+		log.Println(" -ip="+ip+" -n="+testS, connection)
 		// go u.ExcecuteSSH(u.GoMainLog+" -ip="+ip+" -n="+testS, connection)
 		// go u.ExcecuteSSH(u.GoLocalTest+"TestLog", connection)
 		break
@@ -87,7 +86,7 @@ func TestMinTime(t *testing.T) {
 	// d = {320:1, 321:0, 322:3}
 	// m := min(value, key=lambda value: value[k])
 	// u.NewConnec(LocalIPs)
-	fmt.Println(value)
+	log.Println(value)
 
 }
 
@@ -102,7 +101,7 @@ func TestSendReceive(t *testing.T) {
 	sim := new(SimulationEngineDist)
 	go Receive(sim, con)
 	time.Sleep(4 * time.Second)
-	fmt.Println("EventDistr:", *even, "typeClock:", *timp, "idGLobal:", *idp)
+	log.Println("EventDistr:", *even, "typeClock:", *timp, "idGLobal:", *idp)
 	message := &u.Message{
 		To:   addr,
 		From: addr,

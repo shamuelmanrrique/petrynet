@@ -60,14 +60,14 @@ type Transition struct {
 		-----------------------------------------------------------------
 */
 func (self *Transition) PrintEvent() {
-	fmt.Println("Dato Transicion:")
-	fmt.Println("IDGLOBAL: ", self.IdLocal)
-	fmt.Println(" VALOR LEF: ", self.IiValorLef)
-	fmt.Println(" TIEMPO: ", self.ITime)
-	fmt.Println(" DURACION DISPARO: ", self.IiShotDuration)
-	fmt.Println(" LISTA DE CTES: ")
+	log.Println("Dato Transicion:")
+	log.Println("IDGLOBAL: ", self.IdLocal)
+	log.Println(" VALOR LEF: ", self.IiValorLef)
+	log.Println(" TIEMPO: ", self.ITime)
+	log.Println(" DURACION DISPARO: ", self.IiShotDuration)
+	log.Println(" LISTA DE CTES: ")
 	for _, v := range self.IiListactes {
-		fmt.Println("\tTRANSICION: ", v.INextTrans, "\t\tCTE: ", v.Cnstnt)
+		log.Println("\tTRANSICION: ", v.INextTrans, "\t\tCTE: ", v.Cnstnt)
 	}
 }
 
@@ -81,10 +81,10 @@ func (self *Transition) PrintEvent() {
 	-----------------------------------------------------------------
 */
 func (self Transition) PrintEventValues() {
-	fmt.Println("Transicion -> ")
-	//	fmt.Println("\tIDGLOBAL: ", self.Ii_idglobal)
-	fmt.Println("\t\tVALOR LEF: ", self.IiValorLef)
-	fmt.Println("\t\tTIEMPO: ", self.ITime)
+	log.Println("Transicion -> ")
+	//	log.Println("\tIDGLOBAL: ", self.Ii_idglobal)
+	log.Println("\t\tVALOR LEF: ", self.IiValorLef)
+	log.Println("\t\tTIEMPO: ", self.ITime)
 }
 
 //----------------------------------------------------------------------

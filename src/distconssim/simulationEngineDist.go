@@ -72,7 +72,7 @@ func (self *SimulationEngineDist) FireEnabledTransitions(clock TypeClock) {
    METODO: TreatMenssage
    RECIBE: *Message
    DEVUELVE: Nothing
-   PROPOSITO: Esta funcion maneja una parte muy importante del 
+   PROPOSITO: Esta funcion maneja una parte muy importante del
 	la comunicacion en la simulacion distribuida, recibe un mensaje
 	extrae el paquete de ese mensaje y realiza la accion correspondiente
 	dependiendo del typo del paquete
@@ -82,18 +82,18 @@ func (self *SimulationEngineDist) FireEnabledTransitions(clock TypeClock) {
 */
 func (self *SimulationEngineDist) TreatMenssage(msm *u.Message) {
 	switch pack := msm.GetPack().(type) {
-	// Si es un evento lo add a mi lista de eventos	
+	// Si es un evento lo add a mi lista de eventos
 	case *EventDist:
 		log.Println("SED[Receive] -EventDist ==> :", *pack, "MSM", *msm)
 		IDTrans := pack.GetTransition()
 		pack.SetTransition(self.GetIDTransition(IDTrans))
 		self.IlMisLefs.AddEvents(*pack)
-	// Si es lookahead lo guardo y checkeo que me llegen todos	
+	// Si es lookahead lo guardo y checkeo que me llegen todos
 	case TypeClock:
 		log.Println("SED[Receive] -TypeClock ==>  ", pack, "MSM", *msm)
 		self.IlMisLefs.Lookout[msm.GetFrom()] = pack
 		self.IlMisLefs.CheckLookout()
-    // Si recibo msm null envio lookahead
+		// Si recibo msm null envio lookahead
 	case IndGlobalTrans:
 		log.Println("SED[Receive] -IndGlobalTrans ==> (NULL) ", pack, "MSM", *msm)
 		timeD := self.IlRelojLocal + self.IlMisLefs.TimeDuration(pack)
@@ -197,11 +197,11 @@ func (self *SimulationEngineDist) AdvanceTime() TypeClock {
 	self.IlMisLefs.Lookout = make(map[string]TypeClock)
 
 	if eTime <= newTime && eTime != -1 {
-		fmt.Println("NEXT CLOCK...... : eTime", eTime)
+		log.Println("NEXT CLOCK...... : eTime", eTime)
 		return eTime
 	}
 
-	fmt.Println("NEXT CLOCK...... : newTime", newTime)
+	log.Println("NEXT CLOCK...... : newTime", newTime)
 	return newTime
 }
 
@@ -230,7 +230,7 @@ func (self SimulationEngineDist) RetornResults() string {
 				" -> TRANSICION: " + fmt.Sprintf("%v", li_result.CodTransition) + "\n"
 	}
 
-	fmt.Println(resultados)
+	log.Println(resultados)
 	return resultados
 }
 
@@ -284,7 +284,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 
 	for self.IlRelojLocal <= endCycle {
 		self.IlMisLefs.PrintEvent() //DEPURACION
-		fmt.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
+		log.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
 
 		if initCycle == 0 {
 			time.Sleep(2 * time.Second)
@@ -317,7 +317,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 			// Envio msm null a los demas para que me envien sus lookaheads
 			// ------------------------------------------------------------------
 			self.WaitAgents()
-			
+
 			// Chequeo que me llegaron todos los lookahead en caso contrario espero
 			// ------------------------------------------------------------------
 			self.IlMisLefs.CheckLookout()
@@ -349,5 +349,5 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 		fmt.Sprintf("%d", endCycle-initCycle) + "\n"
 	result += "COSTE REAL SIMULACION: " +
 		fmt.Sprintf("%v", elapsedTime.String()) + "\n"
-	fmt.Println(result)
+	log.Println(result)
 }

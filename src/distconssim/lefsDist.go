@@ -1,7 +1,6 @@
 package distconssim
 
 import (
-	"fmt"
 	"log"
 
 	u "github.com/shamuelmanrrique/petrynet/src/utils"
@@ -325,13 +324,13 @@ func (self *LefsDist) Shoot(ilTr IndGlobalTrans) bool {
 -----------------------------------------------------------------
 */
 func (self LefsDist) PrintEventTransitions() {
-	fmt.Println(" ")
-	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
+	log.Println(" ")
+	log.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
 	for _, tr := range self.SubNet {
 		tr.PrintEventValues()
 	}
-	fmt.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
-	fmt.Println(" ")
+	log.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
+	log.Println(" ")
 }
 
 /*
@@ -344,27 +343,27 @@ func (self LefsDist) PrintEventTransitions() {
 */
 func (self LefsDist) PrintEvent() {
 
-	fmt.Println("STRUCT LefsDist")
-	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
-	fmt.Println("\tNº transiciones: ", self.SubNet.Length())
+	log.Println("STRUCT LefsDist")
+	//log.Println ("\tNº transiciones: ", self.ii_indice)
+	log.Println("\tNº transiciones: ", self.SubNet.Length())
 
 	if self.IsTransSensib.isEmpty() {
-		fmt.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
+		log.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
 	} else {
-		fmt.Println("\tLista transciones sensibilizadas :")
+		log.Println("\tLista transciones sensibilizadas :")
 		for _, iTr := range self.IsTransSensib {
-			fmt.Print(iTr, " ")
-			fmt.Println(" ")
+			log.Print(iTr, " ")
+			log.Println(" ")
 		}
 	}
-	fmt.Println("------Lista transiciones---------")
+	log.Println("------Lista transiciones---------")
 	for _, tr := range self.SubNet {
 		tr.PrintEvent()
 	}
-	fmt.Println("------Final lista transiciones---------")
+	log.Println("------Final lista transiciones---------")
 
-	fmt.Println("-----------Lista eventos---------")
+	log.Println("-----------Lista eventos---------")
 	self.IlEvents.PrintEvent()
-	fmt.Println("-----------Final lista eventos---------")
-	fmt.Println("FINAL ESTRUCTURA LefsDist")
+	log.Println("-----------Final lista eventos---------")
+	log.Println("FINAL ESTRUCTURA LefsDist")
 }

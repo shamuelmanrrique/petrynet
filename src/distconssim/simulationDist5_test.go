@@ -2,7 +2,7 @@ package distconssim
 
 import (
 	"encoding/gob"
-	"fmt"
+	"log"
 	"testing"
 	"time"
 
@@ -63,14 +63,14 @@ func TestSubNetL50(t *testing.T) {
 			7: conects.GetConnection(2),
 		},
 	}
-	// fmt.Println(IDSubNet)
+	// log.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
 	// time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
@@ -115,7 +115,7 @@ func TestSubNetL51(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
@@ -160,12 +160,11 @@ func TestSubNetL52(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
-
-func TestSubNetL52(t *testing.T) {
+func TestSubNetL53(t *testing.T) {
 	conects := u.NewConnec(u.LocalIP3s)
 	IDSubNet := conects.GetConnection(2)
 	lfs := LefsDist{
@@ -206,56 +205,54 @@ func TestSubNetL52(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
-
-func TestSubNetL53(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
-	IDSubNet := conects.GetConnection(3)
-	lfs := LefsDist{
-		SubNet: TransitionList{
-			// T5
-			TransitionDist{
-				IDGlobal:       5,
-				IDLocal:        0,
-				IiValorLef:     1,
-				IiShotDuration: 1,
-				IiListactes: []TransitionConstant{
-					TransitionConstant{0, 1},
-					TransitionConstant{1, -1},
-				},
-			},
-			// T6
-			TransitionDist{
-				IDGlobal:       6,
-				IDLocal:        1,
-				IiValorLef:     1,
-				IiShotDuration: 1,
-				IiListactes: []TransitionConstant{
-					TransitionConstant{1, 1},
-					TransitionConstant{-9, -1},
-				},
-			},
-		},
-		Pre: Incidence{
-			0: conects.GetConnection(0),
-		},
-		Post: Incidence{
-			9: conects.GetConnection(0),
-		},
-	}
-	ms := MakeMotorSimulation(lfs, IDSubNet)
-	go Receive(ms, IDSubNet)
-	// time.Sleep(2 * time.Second)
-	init := TypeClock(u.InitTransition)
-	end := TypeClock(u.EndTransition)
-	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
-	time.Sleep(160 * time.Second)
-}
-
+// func TestSubNetL53(t *testing.T) {
+// 	conects := u.NewConnec(u.LocalIP3s)
+// 	IDSubNet := conects.GetConnection(3)
+// 	lfs := LefsDist{
+// 		SubNet: TransitionList{
+// 			// T5
+// 			TransitionDist{
+// 				IDGlobal:       5,
+// 				IDLocal:        0,
+// 				IiValorLef:     1,
+// 				IiShotDuration: 1,
+// 				IiListactes: []TransitionConstant{
+// 					TransitionConstant{0, 1},
+// 					TransitionConstant{1, -1},
+// 				},
+// 			},
+// 			// T6
+// 			TransitionDist{
+// 				IDGlobal:       6,
+// 				IDLocal:        1,
+// 				IiValorLef:     1,
+// 				IiShotDuration: 1,
+// 				IiListactes: []TransitionConstant{
+// 					TransitionConstant{1, 1},
+// 					TransitionConstant{-9, -1},
+// 				},
+// 			},
+// 		},
+// 		Pre: Incidence{
+// 			0: conects.GetConnection(0),
+// 		},
+// 		Post: Incidence{
+// 			9: conects.GetConnection(0),
+// 		},
+// 	}
+// 	ms := MakeMotorSimulation(lfs, IDSubNet)
+// 	go Receive(ms, IDSubNet)
+// 	// time.Sleep(2 * time.Second)
+// 	init := TypeClock(u.InitTransition)
+// 	end := TypeClock(u.EndTransition)
+// 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
+// 	log.Println("SDT Termino en 10s")
+// 	time.Sleep(160 * time.Second)
+// }
 
 func TestSubNetL54(t *testing.T) {
 	conects := u.NewConnec(u.LocalIP3s)
@@ -298,6 +295,6 @@ func TestSubNetL54(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }

@@ -143,12 +143,12 @@ func (self *Lefs) GetSensitive() IndLocalTrans {
 -----------------------------------------------------------------
 */
 func (self *Lefs) GetFirstEvent() Event {
-	/* fmt.Println("Lista antes de eliminar primer evento :")
+	/* log.Println("Lista antes de eliminar primer evento :")
 	(*self).IlEvents.PrintEvent()
 	*/
 	le_evento := (*self).IlEvents.GetFirstEvent()
 	(*self).IlEvents.DeleteFirstEvent()
-	/*fmt.Println("Lista DESPUES de eliminar primer evento :")
+	/*log.Println("Lista DESPUES de eliminar primer evento :")
 	(*self).IlEvents.PrintEvent()
 	*/
 	return le_evento
@@ -258,13 +258,13 @@ func (self *Lefs) Shoot(ilTr IndLocalTrans) bool {
 -----------------------------------------------------------------
 */
 func (self Lefs) PrintEventTransitions() {
-	fmt.Println(" ")
-	fmt.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
+	log.Println(" ")
+	log.Println("------IMPRIMIMOS LA LISTA DE TRANSICIONES---------")
 	for _, tr := range self.SubNet {
 		tr.PrintEventValues()
 	}
-	fmt.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
-	fmt.Println(" ")
+	log.Println("------FINAL DE LA LISTA DE TRANSICIONES---------")
+	log.Println(" ")
 }
 
 /*
@@ -277,27 +277,27 @@ func (self Lefs) PrintEventTransitions() {
 */
 func (self Lefs) PrintEvent() {
 
-	fmt.Println("STRUCT LEFS")
-	//fmt.Println ("\tNº transiciones: ", self.ii_indice)
-	fmt.Println("\tNº transiciones: ", self.SubNet.Length())
+	log.Println("STRUCT LEFS")
+	//log.Println ("\tNº transiciones: ", self.ii_indice)
+	log.Println("\tNº transiciones: ", self.SubNet.Length())
 
 	if self.IsTransSensib.isEmpty() {
-		fmt.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
+		log.Println("\tLISTA TRANSICIONES SENSIBILIZADAS VACIA")
 	} else {
-		fmt.Println("\tLista transciones sensibilizadas :")
+		log.Println("\tLista transciones sensibilizadas :")
 		for _, iTr := range self.IsTransSensib {
-			fmt.Print(iTr, " ")
-			fmt.Println(" ")
+			log.Print(iTr, " ")
+			log.Println(" ")
 		}
 	}
-	fmt.Println("------Lista transiciones---------")
+	log.Println("------Lista transiciones---------")
 	for _, tr := range self.SubNet {
 		tr.PrintEvent()
 	}
-	fmt.Println("------Final lista transiciones---------")
+	log.Println("------Final lista transiciones---------")
 
-	fmt.Println("-----------Lista eventos---------")
+	log.Println("-----------Lista eventos---------")
 	self.IlEvents.PrintEvent()
-	fmt.Println("-----------Final lista eventos---------")
-	fmt.Println("FINAL ESTRUCTURA LEFS")
+	log.Println("-----------Final lista eventos---------")
+	log.Println("FINAL ESTRUCTURA LEFS")
 }

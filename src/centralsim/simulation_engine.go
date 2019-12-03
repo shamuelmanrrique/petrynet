@@ -14,6 +14,7 @@ package centralsim
 
 import (
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -121,7 +122,7 @@ COMENTARIOS:
 -----------------------------------------------------------------
 */
 func (self *SimulationEngine) WaitAgents() {
-	fmt.Println("Aun sin agentes")
+	log.Println("Aun sin agentes")
 }
 
 /*
@@ -138,7 +139,7 @@ COMENTARIOS:
 */
 func (self *SimulationEngine) AdvanceTime() TypeClock {
 	nextTime := self.IlMisLefs.TimeFirstEvent()
-	fmt.Println("NEXT CLOCK...... : ", nextTime)
+	log.Println("NEXT CLOCK...... : ", nextTime)
 	return nextTime
 }
 
@@ -167,7 +168,7 @@ func (self SimulationEngine) RetornResults() string {
 				" -> TRANSICION: " + fmt.Sprintf("%v", li_result.CodTransition) + "\n"
 	}
 
-	fmt.Println(resultados)
+	log.Println(resultados)
 	return resultados
 }
 
@@ -198,7 +199,7 @@ func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 
 	for self.IlRelojLocal <= ai_nciclos {
 		self.IlMisLefs.PrintEvent() //DEPURACION
-		fmt.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
+		log.Println("RELOJ LOCAL !!!  = ", self.IlRelojLocal)
 
 		// Si existen transiciones sensibilizadas para reloj local las disparamos
 		// ------------------------------------------------------------------
@@ -246,5 +247,5 @@ func (self *SimulationEngine) Simulate(ai_cicloinicial, ai_nciclos TypeClock) {
 		fmt.Sprintf("%d", ai_nciclos-ai_cicloinicial) + "\n"
 	result += "COSTE REAL SIMULACION: " +
 		fmt.Sprintf("%v", elapsedTime.String()) + "\n"
-	fmt.Println(result)
+	log.Println(result)
 }

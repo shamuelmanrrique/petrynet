@@ -2,7 +2,7 @@ package distconssim
 
 import (
 	"encoding/gob"
-	"fmt"
+	"log"
 	"testing"
 	"time"
 
@@ -57,14 +57,14 @@ func TestSubNet0(t *testing.T) {
 			3: conects.GetConnection(2),
 		},
 	}
-	// fmt.Println(IDSubNet)
+	// log.Println(IDSubNet)
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
 	time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
@@ -109,7 +109,7 @@ func TestSubNet1(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }
 
@@ -154,6 +154,6 @@ func TestSubNet2(t *testing.T) {
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	fmt.Println("SDT Termino en 10s")
+	log.Println("SDT Termino en 10s")
 	time.Sleep(160 * time.Second)
 }

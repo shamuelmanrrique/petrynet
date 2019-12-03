@@ -1,6 +1,6 @@
 package distconssim
 
-import "fmt"
+import "log"
 
 // EventDist es la es
 type EventDist struct {
@@ -107,10 +107,10 @@ func (self EventDist) getConst() TypeConst {
 -----------------------------------------------------------------
 */
 func (self EventDist) PrintEvent(i int) {
-	fmt.Println("  EVENTO -> ", i)
-	fmt.Println("    Tiempo: ", self.ITime)
-	fmt.Println("    Transicion: ", self.ITransition)
-	fmt.Println("    Constante: ", self.IConst)
+	log.Println("  EVENTO -> ", i)
+	log.Println("    Tiempo: ", self.ITime)
+	log.Println("    Transicion: ", self.ITransition)
+	log.Println("    Constante: ", self.IConst)
 }
 
 //----------------------------------------------------------------------------
@@ -143,7 +143,7 @@ PROPOSITO: Inserttar el evento en la lista de eventos, de forma que
 func (self *EventList) Insert(ae_evento EventDist) {
 	var i int // INITIALIZED to 0 !!!
 
-	//fmt.Println("Inserttar evento en lista : ", ae_evento, *self)
+	//log.Println("Inserttar evento en lista : ", ae_evento, *self)
 
 	// Obtengo la posicion ordenada del evento en slice con i
 	for _, e := range *self {
@@ -153,10 +153,10 @@ func (self *EventList) Insert(ae_evento EventDist) {
 		i++
 	}
 
-	//fmt.Println("POSICION a InsertTAR en lista de evnetos : ", i)
+	//log.Println("POSICION a InsertTAR en lista de evnetos : ", i)
 	*self = append((*self)[:i], append([]EventDist{ae_evento}, (*self)[i:]...)...)
 
-	//fmt.Println("DESPUES de Inserttar : ", *self)
+	//log.Println("DESPUES de Inserttar : ", *self)
 }
 
 /*
@@ -213,7 +213,7 @@ PROPOSITO: Imprimir la lista de eventos
 -----------------------------------------------------------------
 */
 func (self EventList) PrintEvent() {
-	fmt.Println("Estructura EventList")
+	log.Println("Estructura EventList")
 	for i, e := range self {
 		e.PrintEvent(i)
 	}
