@@ -107,7 +107,7 @@ func TestSubNetRD51(t *testing.T) {
 				IDGlobal:       3,
 				IDLocal:        2,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 3,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 1},
 					TransitionConstant{3, -1},
@@ -151,7 +151,7 @@ func TestSubNetRD52(t *testing.T) {
 				IDGlobal:       5,
 				IDLocal:        0,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 2,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{0, 1},
 					TransitionConstant{1, -1},
@@ -173,7 +173,7 @@ func TestSubNetRD52(t *testing.T) {
 				IDGlobal:       7,
 				IDLocal:        2,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 3,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 1},
 					TransitionConstant{3, -1},
@@ -238,7 +238,7 @@ func TestSubNetRD53(t *testing.T) {
 			TransitionDist{
 				IDGlobal:       11,
 				IDLocal:        2,
-				IiValorLef:     1,
+				IiValorLef:     2,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 1},
@@ -294,7 +294,7 @@ func TestSubNetRD54(t *testing.T) {
 				IDGlobal:       14,
 				IDLocal:        1,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 2,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
 					TransitionConstant{2, -1},
@@ -305,7 +305,7 @@ func TestSubNetRD54(t *testing.T) {
 				IDGlobal:       15,
 				IDLocal:        2,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 3,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{2, 1},
 					TransitionConstant{3, -1},
@@ -316,7 +316,7 @@ func TestSubNetRD54(t *testing.T) {
 				IDGlobal:       16,
 				IDLocal:        3,
 				IiValorLef:     1,
-				IiShotDuration: 2,
+				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{3, 1},
 					TransitionConstant{-17, -1},
