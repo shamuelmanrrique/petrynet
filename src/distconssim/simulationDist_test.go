@@ -19,9 +19,10 @@ func init() {
 	gob.Register(&TransitionList{})
 }
 
+var conects3 = u.NewConnec(u.LocalIP3s)
+
 func TestSubNetL0(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
-	IDSubNet := conects.GetConnection(0)
+	IDSubNet := conects3.GetConnection(0)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T0
@@ -49,12 +50,12 @@ func TestSubNetL0(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			2: conects.GetConnection(1),
-			4: conects.GetConnection(2),
+			2: conects3.GetConnection(1),
+			4: conects3.GetConnection(2),
 		},
 		Post: Incidence{
-			1: conects.GetConnection(1),
-			3: conects.GetConnection(2),
+			1: conects3.GetConnection(1),
+			3: conects3.GetConnection(2),
 		},
 	}
 	// log.Println(IDSubNet)
@@ -69,8 +70,7 @@ func TestSubNetL0(t *testing.T) {
 }
 
 func TestSubNetL1(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
-	IDSubNet := conects.GetConnection(1)
+	IDSubNet := conects3.GetConnection(1)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T1
@@ -97,10 +97,10 @@ func TestSubNetL1(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			0: conects.GetConnection(0),
+			0: conects3.GetConnection(0),
 		},
 		Post: Incidence{
-			5: conects.GetConnection(0),
+			5: conects3.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
@@ -114,8 +114,7 @@ func TestSubNetL1(t *testing.T) {
 }
 
 func TestSubNetL2(t *testing.T) {
-	conects := u.NewConnec(u.LocalIP3s)
-	IDSubNet := conects.GetConnection(2)
+	IDSubNet := conects3.GetConnection(2)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T3
@@ -142,10 +141,10 @@ func TestSubNetL2(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			0: conects.GetConnection(0),
+			0: conects3.GetConnection(0),
 		},
 		Post: Incidence{
-			5: conects.GetConnection(0),
+			5: conects3.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)

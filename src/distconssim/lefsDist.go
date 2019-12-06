@@ -154,8 +154,9 @@ func (self *LefsDist) TimeDuration(id IndGlobalTrans) TypeClock {
 		}
 	}
 	// Chequear este caso
-	log.Println("******************ERROR***************************")
-	return TypeClock(1)
+	// log.Println("******************ERROR***************************")
+	// return TypeClock(1)
+	return TypeClock(0)
 }
 
 /*

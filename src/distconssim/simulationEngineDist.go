@@ -329,7 +329,7 @@ func (self *SimulationEngineDist) Simulate(initCycle, endCycle TypeClock) {
 			// ------------------------------------------------------------------
 			self.IlMisLefs.CheckLookout()
 			if !Active {
-				time.Sleep(4 * time.Second)
+				time.Sleep(3 * time.Second)
 			}
 
 			if !self.IlMisLefs.ThereEvent(self.IlRelojLocal) {

@@ -20,10 +20,10 @@ func init() {
 	gob.Register(&TransitionList{})
 }
 
-var conects = u.NewConnec(u.LocalIP5s)
+var connect = u.NewConnec(u.LocalIP5s)
 
-func TestSubNetR50(t *testing.T) {
-	IDSubNet := conects.GetConnection(0)
+func TestSubNetRD50(t *testing.T) {
+	IDSubNet := connect.GetConnection(0)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T0
@@ -35,14 +35,14 @@ func TestSubNetR50(t *testing.T) {
 				IiListactes: []TransitionConstant{
 					TransitionConstant{0, 1},
 					TransitionConstant{-1, -1},
-					TransitionConstant{-3, -1},
 					TransitionConstant{-5, -1},
-					TransitionConstant{-7, -1},
+					TransitionConstant{-9, -1},
+					TransitionConstant{-13, -1},
 				},
 			},
-			// T9
+			// T17
 			TransitionDist{
-				IDGlobal:       9,
+				IDGlobal:       17,
 				IDLocal:        1,
 				IiValorLef:     4,
 				IiShotDuration: 1,
@@ -53,16 +53,16 @@ func TestSubNetR50(t *testing.T) {
 			},
 		},
 		Pre: Incidence{
-			2: conects.GetConnection(1),
-			4: conects.GetConnection(2),
-			6: conects.GetConnection(3),
-			8: conects.GetConnection(4),
+			4:  connect.GetConnection(1),
+			8:  connect.GetConnection(2),
+			12: connect.GetConnection(3),
+			16: connect.GetConnection(4),
 		},
 		Post: Incidence{
-			1: conects.GetConnection(1),
-			3: conects.GetConnection(2),
-			5: conects.GetConnection(3),
-			7: conects.GetConnection(4),
+			1:  connect.GetConnection(1),
+			5:  connect.GetConnection(2),
+			9:  connect.GetConnection(3),
+			13: connect.GetConnection(4),
 		},
 	}
 	// log.Println(IDSubNet)
@@ -76,8 +76,8 @@ func TestSubNetR50(t *testing.T) {
 	time.Sleep(100 * time.Second)
 }
 
-func TestSubNetR51(t *testing.T) {
-	IDSubNet := conects.GetConnection(1)
+func TestSubNetRD51(t *testing.T) {
+	IDSubNet := connect.GetConnection(1)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T1
@@ -96,62 +96,40 @@ func TestSubNetR51(t *testing.T) {
 				IDGlobal:       2,
 				IDLocal:        1,
 				IiValorLef:     1,
-				IiShotDuration: 2,
+				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
-					TransitionConstant{-9, -1},
+					TransitionConstant{2, -1},
 				},
 			},
-		},
-		Pre: Incidence{
-			0: conects.GetConnection(0),
-		},
-		Post: Incidence{
-			9: conects.GetConnection(0),
-		},
-	}
-	ms := MakeMotorSimulation(lfs, IDSubNet)
-	go Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
-	init := TypeClock(u.InitTransition)
-	end := TypeClock(u.EndTransition)
-	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
-	log.Println("SDT Termino en 10s")
-	time.Sleep(100 * time.Second)
-}
-
-func TestSubNetR52(t *testing.T) {
-	IDSubNet := conects.GetConnection(2)
-	lfs := LefsDist{
-		SubNet: TransitionList{
 			// T3
 			TransitionDist{
 				IDGlobal:       3,
-				IDLocal:        0,
+				IDLocal:        2,
 				IiValorLef:     1,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
-					TransitionConstant{0, 1},
-					TransitionConstant{1, -1},
+					TransitionConstant{2, 1},
+					TransitionConstant{3, -1},
 				},
 			},
 			// T4
 			TransitionDist{
 				IDGlobal:       4,
-				IDLocal:        1,
+				IDLocal:        3,
 				IiValorLef:     1,
-				IiShotDuration: 1,
+				IiShotDuration: 2,
 				IiListactes: []TransitionConstant{
-					TransitionConstant{1, 1},
-					TransitionConstant{-9, -1},
+					TransitionConstant{3, 1},
+					TransitionConstant{-17, -1},
 				},
 			},
 		},
 		Pre: Incidence{
-			0: conects.GetConnection(0),
+			0: connect.GetConnection(0),
 		},
 		Post: Incidence{
-			9: conects.GetConnection(0),
+			17: connect.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
@@ -164,8 +142,8 @@ func TestSubNetR52(t *testing.T) {
 	time.Sleep(100 * time.Second)
 }
 
-func TestSubNetR53(t *testing.T) {
-	IDSubNet := conects.GetConnection(3)
+func TestSubNetRD52(t *testing.T) {
+	IDSubNet := connect.GetConnection(2)
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T5
@@ -187,20 +165,42 @@ func TestSubNetR53(t *testing.T) {
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
-					TransitionConstant{-9, -1},
+					TransitionConstant{2, -1},
+				},
+			},
+			// T7
+			TransitionDist{
+				IDGlobal:       7,
+				IDLocal:        2,
+				IiValorLef:     1,
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{2, 1},
+					TransitionConstant{3, -1},
+				},
+			},
+			// T8
+			TransitionDist{
+				IDGlobal:       8,
+				IDLocal:        3,
+				IiValorLef:     1,
+				IiShotDuration: 2,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{3, 1},
+					TransitionConstant{-17, -1},
 				},
 			},
 		},
 		Pre: Incidence{
-			0: conects.GetConnection(0),
+			0: connect.GetConnection(0),
 		},
 		Post: Incidence{
-			9: conects.GetConnection(0),
+			17: connect.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
 	go Receive(ms, IDSubNet)
-	time.Sleep(1 * time.Second)
+	time.Sleep(2 * time.Second)
 	init := TypeClock(u.InitTransition)
 	end := TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -208,13 +208,13 @@ func TestSubNetR53(t *testing.T) {
 	time.Sleep(100 * time.Second)
 }
 
-func TestSubNetR54(t *testing.T) {
-	IDSubNet := conects.GetConnection(4)
+func TestSubNetRD53(t *testing.T) {
+	IDSubNet := connect.GetConnection(3)
 	lfs := LefsDist{
 		SubNet: TransitionList{
-			// T7
+			// T9
 			TransitionDist{
-				IDGlobal:       7,
+				IDGlobal:       9,
 				IDLocal:        0,
 				IiValorLef:     1,
 				IiShotDuration: 1,
@@ -223,23 +223,45 @@ func TestSubNetR54(t *testing.T) {
 					TransitionConstant{1, -1},
 				},
 			},
-			// T8
+			// T10
 			TransitionDist{
-				IDGlobal:       8,
+				IDGlobal:       10,
 				IDLocal:        1,
 				IiValorLef:     1,
 				IiShotDuration: 1,
 				IiListactes: []TransitionConstant{
 					TransitionConstant{1, 1},
-					TransitionConstant{-9, -1},
+					TransitionConstant{2, -1},
+				},
+			},
+			// T11
+			TransitionDist{
+				IDGlobal:       11,
+				IDLocal:        2,
+				IiValorLef:     1,
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{2, 1},
+					TransitionConstant{3, -1},
+				},
+			},
+			// T12
+			TransitionDist{
+				IDGlobal:       12,
+				IDLocal:        3,
+				IiValorLef:     1,
+				IiShotDuration: 2,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{3, 1},
+					TransitionConstant{-17, -1},
 				},
 			},
 		},
 		Pre: Incidence{
-			0: conects.GetConnection(0),
+			0: connect.GetConnection(0),
 		},
 		Post: Incidence{
-			9: conects.GetConnection(0),
+			17: connect.GetConnection(0),
 		},
 	}
 	ms := MakeMotorSimulation(lfs, IDSubNet)
@@ -252,8 +274,74 @@ func TestSubNetR54(t *testing.T) {
 	time.Sleep(100 * time.Second)
 }
 
-func TestSSHDist5(t *testing.T) {
-	for name, ip := range u.RemoteIP5 {
+func TestSubNetRD54(t *testing.T) {
+	IDSubNet := connect.GetConnection(4)
+	lfs := LefsDist{
+		SubNet: TransitionList{
+			// T13
+			TransitionDist{
+				IDGlobal:       13,
+				IDLocal:        0,
+				IiValorLef:     1,
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{0, 1},
+					TransitionConstant{1, -1},
+				},
+			},
+			// T14
+			TransitionDist{
+				IDGlobal:       14,
+				IDLocal:        1,
+				IiValorLef:     1,
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{1, 1},
+					TransitionConstant{2, -1},
+				},
+			},
+			// T15
+			TransitionDist{
+				IDGlobal:       15,
+				IDLocal:        2,
+				IiValorLef:     1,
+				IiShotDuration: 1,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{2, 1},
+					TransitionConstant{3, -1},
+				},
+			},
+			// T16
+			TransitionDist{
+				IDGlobal:       16,
+				IDLocal:        3,
+				IiValorLef:     1,
+				IiShotDuration: 2,
+				IiListactes: []TransitionConstant{
+					TransitionConstant{3, 1},
+					TransitionConstant{-17, -1},
+				},
+			},
+		},
+		Pre: Incidence{
+			0: connect.GetConnection(0),
+		},
+		Post: Incidence{
+			17: connect.GetConnection(0),
+		},
+	}
+	ms := MakeMotorSimulation(lfs, IDSubNet)
+	go Receive(ms, IDSubNet)
+	time.Sleep(1 * time.Second)
+	init := TypeClock(u.InitTransition)
+	end := TypeClock(u.EndTransition)
+	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
+	log.Println("SDT Termino en 10s")
+	time.Sleep(100 * time.Second)
+}
+
+func TestSSHDistTime5(t *testing.T) {
+	for name, ip := range u.RemoteIP5T {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
 		log.Println(connection, name, ip)
