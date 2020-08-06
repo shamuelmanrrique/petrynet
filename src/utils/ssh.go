@@ -11,10 +11,9 @@ import (
 )
 
 func InitSSH(addr string) *ssh.Client {
-	// func InitSSH(addr string) (ssh.Session, error) {
-	IDRsa := "/home/shamuel/.ssh/id_rsa"
-	var user = "a802400"
-	// var user = "shamuel"
+	IDRsa := "/home/smmanrrique/.ssh/id_rsa"
+	// var user = "a802400"
+	var user = "smmanrrique"
 
 	key, err := ioutil.ReadFile(IDRsa)
 	if err != nil {

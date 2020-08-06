@@ -1,4 +1,4 @@
-package distconssim
+package main
 
 import (
 	"encoding/gob"
@@ -10,45 +10,36 @@ import (
 
 	"gopkg.in/ini.v1"
 
-	f "sd_paxos/src/functions"
+	dcs "sd_petry_nets/src/distconssim"
 	u "sd_petry_nets/src/utils"
 )
 
 func init() {
 	testing.Init()
 	gob.Register(&u.Message{})
-	gob.Register(&EventDist{})
-	gob.Register(IndGlobalTrans(0))
-	gob.Register(TypeClock(0))
-	gob.Register(&LefsDist{})
-	gob.Register(&TransitionConstant{})
-	gob.Register(&TransitionList{})
+	gob.Register(&dcs.EventDist{})
+	gob.Register(dcs.IndGlobalTrans(0))
+	gob.Register(dcs.TypeClock(0))
+	gob.Register(&dcs.LefsDist{})
+	gob.Register(&dcs.TransitionConstant{})
+	gob.Register(&dcs.TransitionList{})
 }
 
 func TestSimpleSSH(t *testing.T) {
-
-	connection := f.InitSSH("127.0.0.1")
+	connection := u.InitSSH("127.0.0.1")
 	println(connection, "localhost", "ip")
-	go f.ExcecuteSSH("ls", connection)
+	go u.ExcecuteSSH("ls", connection)
 	time.Sleep(5 * time.Second)
 }
 
 func TestSSH(t *testing.T) {
-	// Change values of
-	// 		mode -> whatever you want tcp,udp,chandy
-	//		log  -> true, false
-	//      enviromment -> develomment, production
-
-	// Declaring variables
-	var environment string
 	var logMode string
-	var mode string
 	var path string
-	var machinesID []string
-	var machinesName []string
+	var environment string
+	var subNetNames []string
+	var subNetIDS []string
 
 	// Loading configuration file
-	// cfg, err := ini.Load("~/go/src/sd_paxos/src/config/go.ini")
 	cfg, err := ini.Load("../config/go.ini")
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
@@ -58,17 +49,17 @@ func TestSSH(t *testing.T) {
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
 	path = cfg.Section(environment).Key("mainPath").String()
+	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
+	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
 	logMode = cfg.Section("general").Key("log").String()
-	mode = cfg.Section("general").Key("mode").String()
-	machinesID = strings.Split(cfg.Section(environment).Key("machinesID").String(), ",")
-	machinesName = strings.Split(cfg.Section(environment).Key("machinesName").String(), ",")
 
-	for i, ip := range machinesID {
+	for i, ip := range subNetIDS {
 		addr := strings.Split(ip, ":")
-		connection := f.InitSSH(addr[0])
-		println(path+" -name="+machinesName[i]+" -mode="+mode+" -log="+logMode, ip)
+		connection := u.InitSSH(addr[0])
+		
+		println(path+" -name="+subNetNames[i]+" -log="+logMode, ip)
 
-		go f.ExcecuteSSH("cd ~/go/src/sd_paxos/src ; go run main.go -name="+machinesName[i]+" -mode="+mode+" -log="+logMode, connection)
+		go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)
 	}
 
 	time.Sleep(50 * time.Second)
