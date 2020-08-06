@@ -39,13 +39,6 @@ func InitSSH(addr string) *ssh.Client {
 		panic(err.Error())
 	}
 
-	// // Create a session. It is one session per command.
-	// session, err := client.NewSession()
-	// if err != nil {
-	// 	panic(err.Error())
-	// }
-
-	// return *session, err
 	return client
 
 }

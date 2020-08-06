@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	u "github.com/shamuelmanrrique/petrynet/src/utils"
+	u "sd_petry_nets/src/utils"
 )
 
 func init() {

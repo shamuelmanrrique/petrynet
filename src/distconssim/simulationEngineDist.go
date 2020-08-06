@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	u "github.com/shamuelmanrrique/petrynet/src/utils"
+	u "sd_petry_nets/src/utils"
 )
 
 // TypeClock defines integer size for holding time.

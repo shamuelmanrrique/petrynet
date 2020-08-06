@@ -3,7 +3,7 @@ package distconssim
 import (
 	"log"
 
-	u "github.com/shamuelmanrrique/petrynet/src/utils"
+	u "sd_petry_nets/src/utils"
 )
 
 // Incidence is a dictionary of Global ID AND connection of Pre, Post
