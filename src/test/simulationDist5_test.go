@@ -15,6 +15,12 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+var path5 string
+var environment5 string
+var subNetNames5 []string
+var subNetIDS5 []string
+var connect5 u.Connections
+
 func init() {
 	testing.Init()
 	gob.Register(&u.Message{})
@@ -33,27 +39,28 @@ func init() {
 	}
 
 	// Getting configuration values from .ini
-	environment = cfg.Section("general").Key("environment").String()
-	path = cfg.Section(environment).Key("mainPath").String()
-	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName5").String(), ",")
-	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID5").String(), ",")
-	logMode = cfg.Section("general").Key("log").String()
-	connect = u.NewConnec(subNetIDS)
-	// var conects = u.NewConnec(u.LocalIP5s)
+	environment5 = cfg.Section("general").Key("environment").String()
+	subNetNames5 = strings.Split(cfg.Section(environment5).Key("subNetName5").String(), ",")
+	subNetIDS5 = strings.Split(cfg.Section(environment5).Key("subNetID5").String(), ",")
+	connect5 = u.NewConnec(subNetIDS5)
 }
 
 func TestSSHDist5(t *testing.T) {
-	for name, ip := range u.RemoteIP5 {
+	for i, ip := range subNetIDS5 {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
-		log.Println(connection, name, ip)
-		go u.ExcecuteSSH(u.GoTest+name, connection)
+
+		println(pathTest+subNetNames5[i], ip, addr)
+
+		go u.ExcecuteSSH(pathTest+subNetNames5[i], connection)
 	}
-	time.Sleep(70 * time.Second)
+
+	time.Sleep(80 * time.Second)
 }
 
 func TestSubNet51(t *testing.T) {
-	IDSubNet := connect.GetConnection(0)
+	IDSubNet := connect5.GetConnection(0)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T0
@@ -83,22 +90,22 @@ func TestSubNet51(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			2: connect.GetConnection(1),
-			4: connect.GetConnection(2),
-			6: connect.GetConnection(3),
-			8: connect.GetConnection(4),
+			2: connect5.GetConnection(1),
+			4: connect5.GetConnection(2),
+			6: connect5.GetConnection(3),
+			8: connect5.GetConnection(4),
 		},
 		Post: dcs.Incidence{
-			1: connect.GetConnection(1),
-			3: connect.GetConnection(2),
-			5: connect.GetConnection(3),
-			7: connect.GetConnection(4),
+			1: connect5.GetConnection(1),
+			3: connect5.GetConnection(2),
+			5: connect5.GetConnection(3),
+			7: connect5.GetConnection(4),
 		},
 	}
 	// log.Println(IDSubNet)
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -107,7 +114,8 @@ func TestSubNet51(t *testing.T) {
 }
 
 func TestSubNet52(t *testing.T) {
-	IDSubNet := connect.GetConnection(1)
+	IDSubNet := connect5.GetConnection(1)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T1
@@ -134,15 +142,15 @@ func TestSubNet52(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			9: connect.GetConnection(0),
+			9: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -151,7 +159,8 @@ func TestSubNet52(t *testing.T) {
 }
 
 func TestSubNet53(t *testing.T) {
-	IDSubNet := connect.GetConnection(2)
+	IDSubNet := connect5.GetConnection(2)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T3
@@ -178,15 +187,15 @@ func TestSubNet53(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			9: connect.GetConnection(0),
+			9: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -195,7 +204,8 @@ func TestSubNet53(t *testing.T) {
 }
 
 func TestSubNet54(t *testing.T) {
-	IDSubNet := connect.GetConnection(3)
+	IDSubNet := connect5.GetConnection(3)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T5
@@ -222,15 +232,15 @@ func TestSubNet54(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			9: connect.GetConnection(0),
+			9: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -239,7 +249,8 @@ func TestSubNet54(t *testing.T) {
 }
 
 func TestSubNet55(t *testing.T) {
-	IDSubNet := connect.GetConnection(4)
+	IDSubNet := connect5.GetConnection(4)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T7
@@ -266,15 +277,15 @@ func TestSubNet55(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			9: connect.GetConnection(0),
+			9: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3

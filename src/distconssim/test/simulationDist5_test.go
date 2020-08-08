@@ -24,6 +24,7 @@ var conects = u.NewConnec(u.LocalIP5s)
 
 func TestSubNetR50(t *testing.T) {
 	IDSubNet := conects.GetConnection(0)
+	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := LefsDist{
 		SubNet: TransitionList{
 			// T0

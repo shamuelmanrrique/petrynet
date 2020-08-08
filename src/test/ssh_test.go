@@ -59,7 +59,7 @@ func TestSSH(t *testing.T) {
 		
 		println(path+" -name="+subNetNames[i]+" -log="+logMode, ip)
 
-		go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)
+		go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)	
 	}
 
 	time.Sleep(50 * time.Second)

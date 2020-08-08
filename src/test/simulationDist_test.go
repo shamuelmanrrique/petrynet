@@ -17,6 +17,7 @@ import (
 
 var logMode string
 var path string
+var pathTest string
 var environment string
 var subNetNames []string
 var subNetIDS []string
@@ -41,11 +42,25 @@ func init() {
 
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
-	path = cfg.Section(environment).Key("mainPath").String()
+	pathTest = cfg.Section(environment).Key("testPath").String()
 	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
 	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
 	logMode = cfg.Section("general").Key("log").String()
 	connect = u.NewConnec(subNetIDS)
+}
+
+func TestSSHDist(t *testing.T) {
+	println("TestSSHDist", strings.Join(subNetIDS, ", "))
+	for i, ip := range subNetIDS {
+		addr := strings.Split(ip, ":")
+		connection := u.InitSSH(addr[0])
+
+		println(pathTest+subNetNames[i], ip, addr)
+
+		go u.ExcecuteSSH(pathTest+subNetNames[i], connection)
+	}
+
+	time.Sleep(150 * time.Second)
 }
 
 func TestSubNet1(t *testing.T) {

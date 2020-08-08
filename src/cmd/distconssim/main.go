@@ -18,10 +18,10 @@ import (
 
 var ip string
 var checklog bool
-var role string
 var environment string
 var subNetName string
 var subNetID []string
+var subNetNames []string
 
 func init() {
 	// Register all interface to use
@@ -51,8 +51,14 @@ func main() {
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
 	subNetID = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
-	role = cfg.Section(environment + " " + subNetName).Key("role").String()
-	ip = cfg.Section(environment + " " + subNetName).Key("ip").String()
+	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
+	
+	for i, name := range subNetNames  {
+		if name == subNetName {
+			ip = subNetID[i]
+			break
+		}
+	}
 
 	// Writting output in log if checklog is true
 	if checklog {

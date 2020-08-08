@@ -82,6 +82,7 @@ func (c *Connect) SetAccept(b bool) {
 // NewConnec will create slice of Connect
 func NewConnec(IPs []string) Connections {
 	var connections Connections
+
 	for _, val := range IPs {
 		addr := strings.Split(val, ":")
 		conn := Connect{}

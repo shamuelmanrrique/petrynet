@@ -35,7 +35,7 @@ receiveChannel:
 		decoder = gob.NewDecoder(red)
 		err = decoder.Decode(&pack)
 		u.Error(err, "Receive error  \n")
-		
+
 		// Check if pack is a message
 		switch packNew := pack.(type) {
 		case *u.Message:

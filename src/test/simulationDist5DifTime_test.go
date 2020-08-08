@@ -15,6 +15,8 @@ import (
 	"gopkg.in/ini.v1"
 )
 
+var subNetNamesD5 []string 
+
 func init() {
 	testing.Init()
 	gob.Register(&u.Message{})
@@ -35,17 +37,28 @@ func init() {
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
 	path = cfg.Section(environment).Key("mainPath").String()
-	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName5").String(), ",")
+	subNetNamesD5 = strings.Split(cfg.Section(environment).Key("subNetNameD5").String(), ",")
 	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID5").String(), ",")
 	logMode = cfg.Section("general").Key("log").String()
-	connect = u.NewConnec(subNetIDS)
-	// var conects = u.NewConnec(u.LocalIP5s)
+	connect5 = u.NewConnec(subNetIDS)
 }
 
-var connect = u.NewConnec(u.LocalIP5s)
+func TestSSHDistTime5(t *testing.T) {
+	for i, ip := range subNetIDS5 {
+		addr := strings.Split(ip, ":")
+		connection := u.InitSSH(addr[0])
+
+		println(path+subNetNamesD5[i], ip, addr)
+
+		go u.ExcecuteSSH(path+subNetNamesD5[i], connection)
+	}
+
+	time.Sleep(80 * time.Second)
+}
 
 func TestSubNetD51(t *testing.T) {
-	IDSubNet := connect.GetConnection(0)
+	IDSubNet := connect5.GetConnection(0)
+	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T0
@@ -75,22 +88,22 @@ func TestSubNetD51(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			4:  connect.GetConnection(1),
-			8:  connect.GetConnection(2),
-			12: connect.GetConnection(3),
-			16: connect.GetConnection(4),
+			4:  connect5.GetConnection(1),
+			8:  connect5.GetConnection(2),
+			12: connect5.GetConnection(3),
+			16: connect5.GetConnection(4),
 		},
 		Post: dcs.Incidence{
-			1:  connect.GetConnection(1),
-			5:  connect.GetConnection(2),
-			9:  connect.GetConnection(3),
-			13: connect.GetConnection(4),
+			1:  connect5.GetConnection(1),
+			5:  connect5.GetConnection(2),
+			9:  connect5.GetConnection(3),
+			13: connect5.GetConnection(4),
 		},
 	}
 	// log.Println(IDSubNet)
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -99,7 +112,8 @@ func TestSubNetD51(t *testing.T) {
 }
 
 func TestSubNetD52(t *testing.T) {
-	IDSubNet := connect.GetConnection(1)
+	IDSubNet := connect5.GetConnection(1)
+	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T1
@@ -148,15 +162,15 @@ func TestSubNetD52(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			17: connect.GetConnection(0),
+			17: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -165,7 +179,8 @@ func TestSubNetD52(t *testing.T) {
 }
 
 func TestSubNetD53(t *testing.T) {
-	IDSubNet := connect.GetConnection(2)
+	IDSubNet := connect5.GetConnection(2)
+	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T5
@@ -214,15 +229,15 @@ func TestSubNetD53(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			17: connect.GetConnection(0),
+			17: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(2 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -231,7 +246,8 @@ func TestSubNetD53(t *testing.T) {
 }
 
 func TestSubNetD54(t *testing.T) {
-	IDSubNet := connect.GetConnection(3)
+	IDSubNet := connect5.GetConnection(3)
+	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T9
@@ -280,15 +296,15 @@ func TestSubNetD54(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			17: connect.GetConnection(0),
+			17: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -297,7 +313,8 @@ func TestSubNetD54(t *testing.T) {
 }
 
 func TestSubNetD55(t *testing.T) {
-	IDSubNet := connect.GetConnection(4)
+	IDSubNet := connect5.GetConnection(4)
+	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T13
@@ -346,28 +363,18 @@ func TestSubNetD55(t *testing.T) {
 			},
 		},
 		Pre: dcs.Incidence{
-			0: connect.GetConnection(0),
+			0: connect5.GetConnection(0),
 		},
 		Post: dcs.Incidence{
-			17: connect.GetConnection(0),
+			17: connect5.GetConnection(0),
 		},
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(1 * time.Second)
+	time.Sleep(5 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	log.Println("SDT Termino en 10s")
 	time.Sleep(100 * time.Second)
-}
-
-func TestSSHDistTime5(t *testing.T) {
-	for name, ip := range u.RemoteIP5T {
-		addr := strings.Split(ip, ":")
-		connection := u.InitSSH(addr[0])
-		log.Println(connection, name, ip)
-		go u.ExcecuteSSH(u.GoTest+name, connection)
-	}
-	time.Sleep(70 * time.Second)
 }
