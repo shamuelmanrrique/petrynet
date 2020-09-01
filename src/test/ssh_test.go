@@ -33,6 +33,7 @@ func TestSimpleSSH(t *testing.T) {
 }
 
 func TestSSH(t *testing.T) {
+	println("------------------------------- ESTOY SSH ---------------------------------------")
 	var logMode string
 	var path string
 	var environment string
@@ -54,13 +55,13 @@ func TestSSH(t *testing.T) {
 	logMode = cfg.Section("general").Key("log").String()
 
 	for i, ip := range subNetIDS {
-		// addr := strings.Split(ip, ":")
-		// connection := u.InitSSH(addr[0])
+		addr := strings.Split(ip, ":")
+		connection := u.InitSSH(addr[0])
 
 		println(path+" -name="+subNetNames[i]+" -log="+logMode, ip)
 
-		// go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)
+		go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)
 	}
 
-	// time.Sleep(50 * time.Second)
+	time.Sleep(60 * time.Second)
 }

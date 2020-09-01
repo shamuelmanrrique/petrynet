@@ -15,13 +15,15 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-var logMode string
+var logMode bool
 var path string
 var pathTest string
 var environment string
 var subNetNames []string
 var subNetIDS []string
 var connect u.Connections
+
+// var err error
 
 func init() {
 	testing.Init()
@@ -45,11 +47,13 @@ func init() {
 	pathTest = cfg.Section(environment).Key("testPath").String()
 	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
 	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
-	logMode = cfg.Section("general").Key("log").String()
+	log, err := cfg.Section("general").Key("log").Bool()
+	logMode = log
 	connect = u.NewConnec(subNetIDS)
 }
 
-func TestSSHDist(t *testing.T) {
+func TestDist(t *testing.T) {
+	println("------------------------------- ESTOY TestSSHDist ---------------------------------------")
 	println("TestSSHDist", strings.Join(subNetIDS, ", "))
 	for i, ip := range subNetIDS {
 		addr := strings.Split(ip, ":")
@@ -60,12 +64,24 @@ func TestSSHDist(t *testing.T) {
 		go u.ExcecuteSSH(pathTest+subNetNames[i], connection)
 	}
 
-	time.Sleep(150 * time.Second)
+	time.Sleep(80 * time.Second)
 }
 
 func TestSubNet1(t *testing.T) {
 	println(environment, path, subNetNames, subNetIDS, logMode)
+
 	IDSubNet := connect.GetConnection(0)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet1.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T0
@@ -109,11 +125,24 @@ func TestSubNet1(t *testing.T) {
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	log.Println("SDT Termino en 10s")
-	time.Sleep(160 * time.Second)
+	time.Sleep(100 * time.Second)
 }
 
 func TestSubNet2(t *testing.T) {
+	println(environment, path, subNetNames, subNetIDS, logMode)
+
 	IDSubNet := connect.GetConnection(1)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet2.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T1
@@ -153,11 +182,24 @@ func TestSubNet2(t *testing.T) {
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	log.Println("SDT Termino en 10s")
-	time.Sleep(160 * time.Second)
+	time.Sleep(100 * time.Second)
 }
 
 func TestSubNet3(t *testing.T) {
+	println(environment, path, subNetNames, subNetIDS, logMode)
+
 	IDSubNet := connect.GetConnection(2)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet3.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
 			// T3
@@ -197,5 +239,5 @@ func TestSubNet3(t *testing.T) {
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
 	log.Println("SDT Termino en 10s")
-	time.Sleep(160 * time.Second)
+	time.Sleep(100 * time.Second)
 }

@@ -15,7 +15,7 @@ import (
 	"gopkg.in/ini.v1"
 )
 
-var subNetNamesD5 []string 
+var subNetNamesD5 []string
 
 func init() {
 	testing.Init()
@@ -36,28 +36,41 @@ func init() {
 
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
-	path = cfg.Section(environment).Key("mainPath").String()
+	pathTest = cfg.Section(environment).Key("mainPath").String()
 	subNetNamesD5 = strings.Split(cfg.Section(environment).Key("subNetNameD5").String(), ",")
 	subNetIDS = strings.Split(cfg.Section(environment).Key("subNetID5").String(), ",")
-	logMode = cfg.Section("general").Key("log").String()
+	// logMode = cfg.Section("general").Key("log").String()
 	connect5 = u.NewConnec(subNetIDS)
 }
 
-func TestSSHDistTime5(t *testing.T) {
+func TestTime5Dist(t *testing.T) {
+	println("------------------------------- ESTOY TestSSHDistTime5 ---------------------------------------")
 	for i, ip := range subNetIDS5 {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
 
-		println(path+subNetNamesD5[i], ip, addr)
+		println(pathTest+subNetNamesD5[i], ip, addr)
 
-		go u.ExcecuteSSH(path+subNetNamesD5[i], connection)
+		go u.ExcecuteSSH(pathTest+subNetNamesD5[i], connection)
 	}
 
 	time.Sleep(80 * time.Second)
 }
 
 func TestSubNetD51(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(0)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNetD51.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -112,7 +125,18 @@ func TestSubNetD51(t *testing.T) {
 }
 
 func TestSubNetD52(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(1)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNetD52.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
 	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -179,7 +203,18 @@ func TestSubNetD52(t *testing.T) {
 }
 
 func TestSubNetD53(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(2)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNetD53.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
 	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -246,7 +281,18 @@ func TestSubNetD53(t *testing.T) {
 }
 
 func TestSubNetD54(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(3)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNetD54.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
 	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -314,6 +360,16 @@ func TestSubNetD54(t *testing.T) {
 
 func TestSubNetD55(t *testing.T) {
 	IDSubNet := connect5.GetConnection(4)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNetD55.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
 	println("------------>", IDSubNet.GetIDSubRed())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{

@@ -50,12 +50,12 @@ You can check the latest sources with the command:
 
 # Execute Test with three subNets
 
-> ~/go/src/sd_petry_nets/src/test && go test -v -run TestSSHDist  
+> ~/go/src/sd_petry_nets/src/test && go test -v -run TestDist  
 
 # Execute Test with five subNets
 
-> ~/go/src/sd_petry_nets/src/test && go test -v -run TestSSHDist5  
+> ~/go/src/sd_petry_nets/src/test && go test -v -run Test5Dist  
 
 # Execute Test with five subNets and different times
 
-> ~/go/src/sd_petry_nets/src/test && go test -v -run TestSSHDistTime5  
+> ~/go/src/sd_petry_nets/src/test && go test -v -run TestTime5Dist  
