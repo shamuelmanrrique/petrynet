@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -8,12 +9,27 @@ import (
 	"os"
 
 	"golang.org/x/crypto/ssh"
+	"gopkg.in/ini.v1"
 )
 
 func InitSSH(addr string) *ssh.Client {
-	IDRsa := "/home/smmanrrique/.ssh/id_rsa"
-	// var user = "a802400"
-	var user = "smmanrrique"
+	var environment string
+	var IDRsa string
+	var user string
+
+	// Loading configuration file
+	cfg, err := ini.Load("../config/go.ini")
+	if err != nil {
+		fmt.Printf("Fail to read file: %v", err)
+		os.Exit(1)
+	}
+
+	// Getting configuration values from .ini
+	environment = cfg.Section("general").Key("environment").String()
+	IDRsa = cfg.Section("general").Key("IDRsa").String()
+	user = cfg.Section(environment).Key("user").String()
+
+	println(environment, IDRsa, user)
 
 	key, err := ioutil.ReadFile(IDRsa)
 	if err != nil {

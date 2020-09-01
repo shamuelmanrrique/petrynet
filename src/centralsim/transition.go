@@ -1,6 +1,8 @@
 package centralsim
 
-import "fmt"
+import (
+	"log"
+)
 
 //--------------------------------------------------------------------------
 // TransitionList is a list of transitions themselves

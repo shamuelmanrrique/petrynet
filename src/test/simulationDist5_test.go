@@ -45,7 +45,8 @@ func init() {
 	connect5 = u.NewConnec(subNetIDS5)
 }
 
-func TestSSHDist5(t *testing.T) {
+func Test5Dist(t *testing.T) {
+	println("------------------------------- ESTOY TestSSHDist5 ---------------------------------------")
 	for i, ip := range subNetIDS5 {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
@@ -59,7 +60,19 @@ func TestSSHDist5(t *testing.T) {
 }
 
 func TestSubNet51(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(0)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet51.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -105,7 +118,7 @@ func TestSubNet51(t *testing.T) {
 	// log.Println(IDSubNet)
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -114,7 +127,19 @@ func TestSubNet51(t *testing.T) {
 }
 
 func TestSubNet52(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(1)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet52.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -150,7 +175,7 @@ func TestSubNet52(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -159,7 +184,19 @@ func TestSubNet52(t *testing.T) {
 }
 
 func TestSubNet53(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(2)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet53.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -195,7 +232,7 @@ func TestSubNet53(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -204,7 +241,19 @@ func TestSubNet53(t *testing.T) {
 }
 
 func TestSubNet54(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(3)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet54.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -240,7 +289,7 @@ func TestSubNet54(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -249,7 +298,19 @@ func TestSubNet54(t *testing.T) {
 }
 
 func TestSubNet55(t *testing.T) {
+
 	IDSubNet := connect5.GetConnection(4)
+	if logMode {
+		file, err := os.OpenFile("../logs/["+IDSubNet.GetIp()+"]-TestSubNet55.log",
+			os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		defer file.Close()
+		log.SetOutput(file)
+	}
+
 	println(IDSubNet.GetIDSubRed(), IDSubNet.GetIp(), IDSubNet.GetPort(), IDSubNet.GetIds())
 	lfs := dcs.LefsDist{
 		SubNet: dcs.TransitionList{
@@ -285,7 +346,7 @@ func TestSubNet55(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3

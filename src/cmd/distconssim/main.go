@@ -52,8 +52,8 @@ func main() {
 	environment = cfg.Section("general").Key("environment").String()
 	subNetID = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
 	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
-	
-	for i, name := range subNetNames  {
+
+	for i, name := range subNetNames {
 		if name == subNetName {
 			ip = subNetID[i]
 			break
@@ -120,7 +120,7 @@ func main() {
 		log.Println(IDSubNet)
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(1 * time.Second)
+		time.Sleep(4 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -166,7 +166,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(1 * time.Second)
+		time.Sleep(4 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -212,7 +212,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(1 * time.Second)
+		time.Sleep(4 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
