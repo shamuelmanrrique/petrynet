@@ -58,9 +58,9 @@ func TestSSH(t *testing.T) {
 		addr := strings.Split(ip, ":")
 		connection := u.InitSSH(addr[0])
 
-		println(path+" -name="+subNetNames[i]+" -log="+logMode, ip)
+		println(path+subNetNames[i]+" -log="+logMode, ip)
 
-		go u.ExcecuteSSH(path+" -name="+subNetNames[i]+" -log="+logMode, connection)
+		go u.ExcecuteSSH(path+subNetNames[i]+" -log="+logMode, connection)
 	}
 
 	time.Sleep(60 * time.Second)

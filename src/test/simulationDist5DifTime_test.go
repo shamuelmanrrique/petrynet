@@ -116,7 +116,7 @@ func TestSubNetD51(t *testing.T) {
 	// log.Println(IDSubNet)
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -194,7 +194,7 @@ func TestSubNetD52(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -272,7 +272,7 @@ func TestSubNetD53(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -350,7 +350,7 @@ func TestSubNetD54(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -427,7 +427,7 @@ func TestSubNetD55(t *testing.T) {
 	}
 	ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 	go dcs.Receive(ms, IDSubNet)
-	time.Sleep(5 * time.Second)
+	time.Sleep(8 * time.Second)
 	init := dcs.TypeClock(u.InitTransition)
 	end := dcs.TypeClock(u.EndTransition)
 	ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
