@@ -34,7 +34,7 @@ func init() {
 	gob.Register(&dcs.TransitionList{})
 
 	flag.StringVar(&subNetName, "name", "subNet1", "Insert name like subNet# (# is a number 1-3) ")
-	flag.BoolVar(&checklog, "log", false, "Send output to file true otherwise false")
+	flag.BoolVar(&checklog, "log", true, "Send output to file true otherwise false")
 }
 
 func main() {
@@ -50,6 +50,7 @@ func main() {
 
 	// Getting configuration values from .ini
 	environment = cfg.Section("general").Key("environment").String()
+	println("enviroment ----------->",environment)
 	subNetID = strings.Split(cfg.Section(environment).Key("subNetID").String(), ",")
 	subNetNames = strings.Split(cfg.Section(environment).Key("subNetName").String(), ",")
 
@@ -120,7 +121,7 @@ func main() {
 		log.Println(IDSubNet)
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(4 * time.Second)
+		time.Sleep(8 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -166,7 +167,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(4 * time.Second)
+		time.Sleep(7 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -212,7 +213,7 @@ func main() {
 		}
 		ms := dcs.MakeMotorSimulation(lfs, IDSubNet)
 		go dcs.Receive(ms, IDSubNet)
-		time.Sleep(4 * time.Second)
+		time.Sleep(6 * time.Second)
 		init := dcs.TypeClock(u.InitTransition)
 		end := dcs.TypeClock(u.EndTransition)
 		ms.Simulate(init, end) // ciclo 0 hasta ciclo 3
@@ -220,5 +221,5 @@ func main() {
 
 	}
 
-	time.Sleep(50 * time.Second)
+	time.Sleep(60 * time.Second)
 }
